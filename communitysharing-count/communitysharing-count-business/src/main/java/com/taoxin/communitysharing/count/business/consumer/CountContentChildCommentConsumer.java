@@ -5,17 +5,24 @@ import com.github.phantomthief.collection.BufferTrigger;
 import com.google.common.collect.Lists;
 import com.taoxin.communitysharing.common.uitl.JsonUtil;
 import com.taoxin.communitysharing.count.business.constant.MQConstant;
+import com.taoxin.communitysharing.count.business.domain.mapper.CommentDoMapper;
 import com.taoxin.communitysharing.count.business.enums.CommentLevelEnum;
 import com.taoxin.communitysharing.count.business.model.dto.CountPublishCommentMqDTO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.rocketmq.client.producer.SendCallback;
+import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -27,6 +34,10 @@ import java.util.stream.Collectors;
 public class CountContentChildCommentConsumer implements RocketMQListener<String> {
     @Resource
     private RateLimiter rateLimiter;
+    @Resource
+    private CommentDoMapper commentDoMapper;
+    @Resource
+    private RocketMQTemplate rocketMQTemplate;
 
     private final BufferTrigger<String> bufferTrigger = BufferTrigger.<String>batchBlocking()
             .bufferSize(50000)
@@ -57,15 +68,34 @@ public class CountContentChildCommentConsumer implements RocketMQListener<String
         });
 
         // 按笔记 ID 进行分组
-        Map<Long, Long> map = countPublishCommentMqDTOS.stream()
+        Map<Long, Integer> map = countPublishCommentMqDTOS.stream()
                 .filter(entity -> Objects.equals(entity.getLevel(), CommentLevelEnum.SECOND_LEVEL.getCode()))
                 .collect(Collectors.groupingBy(
-                        CountPublishCommentMqDTO::getContentId,
-                        Collectors.counting()
+                        CountPublishCommentMqDTO::getParentId,
+                        Collectors.summingInt(e-> 1)
                 ));
         log.info("【子评论数计数】 二级评论: {}", map);
-        map.forEach((contentId, count) -> {
-            log.info("【子评论数计数】内容 {} 二级评论数 {}", contentId, count);
+        map.forEach((parentId, count) -> {
+            log.info("【子评论数计数】父评论 {} 二级评论数 {}", parentId, count);
+            commentDoMapper.updateChildCommentTotal(parentId, count);
+        });
+
+        // 发送评论热度更新消息
+        Set<Long> commentIds = countPublishCommentMqDTOS.stream()
+                .map(CountPublishCommentMqDTO::getParentId)
+                .collect(Collectors.toSet());
+        Message<String> message = MessageBuilder.withPayload(JsonUtil.toJsonString(commentIds)).build();
+
+        rocketMQTemplate.asyncSend(MQConstant.TOPIC_COUNT_HEAT_UPDATE, message, new SendCallback() {
+            @Override
+            public void onSuccess(SendResult sendResult) {
+                log.info("【子评论数计数】 发送评论热度更新消息成功： {}", sendResult);
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                log.error("【子评论数计数】 发送评论热度更新消息失败： {}", throwable);
+            }
         });
     }
 }

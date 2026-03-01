@@ -2,6 +2,7 @@ package com.taoxin.communitysharing.comment.business.domain.mapper;
 
 import com.taoxin.communitysharing.comment.business.domain.databaseObject.CommentDo;
 import com.taoxin.communitysharing.comment.business.model.bo.CommentBo;
+import com.taoxin.communitysharing.comment.business.model.bo.CommentHotBo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -27,4 +28,10 @@ public interface CommentDoMapper {
     List<CommentDo> selectByCommentIds(@Param("commentIds") List<Long> commentIds);
 
     int batchInsert(@Param("comments") List<CommentBo> comments);
+
+    int bacthUpdateCommentHeat(@Param("commentIds") List<Long> commentIds,@Param("commentHeatMap") List<CommentHotBo> commentHeatMap);
+
+    CommentDo selectEarliestByParentId(Long parentId);
+
+    int updateFirstReplyCommentIdByPrimaryKey(@Param("firstReplyCommentId") Long firstReplyCommentId, @Param("commentId") Long commentId);
 }

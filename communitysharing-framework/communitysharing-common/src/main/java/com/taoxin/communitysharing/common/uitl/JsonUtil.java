@@ -9,8 +9,10 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * JSON工具类，提供对象与JSON字符串之间的转换功能
@@ -111,5 +113,23 @@ public class JsonUtil {
         };
         // 将json转换为列表
         return objectMapper.readValue(jsonStr, objectMapper.getTypeFactory().constructCollectionType(List.class, clazz));
+    }
+
+    /**
+     * 将 JSON 字符串解析为指定元素类型的 Set<T>。
+     * @param jsonStr 要解析的 JSON 字符串，不能为空或无效的 JSON
+     * @param clazz Set 元素的类型（例如 {@code User.class}）
+     * @return 按给定元素类型解析后的 Set<T>（当输入为空或空数组时，Jackson 可能返回 空Set 或抛出异常，取决于配置）
+     * @param <T> Set 元素的泛型类型
+     * @throws Exception 当 JSON 解析失败或类型转换错误时抛出（建议在调用处改为更具体的异常处理或封装为运行时异常）
+     */
+    public static <T> Set<T> parseSet(String jsonStr, Class<T> clazz) throws Exception {
+        // 使用 TypeReference 创建 Set<T> 的类型引用
+        return objectMapper.readValue(jsonStr, new com.fasterxml.jackson.core.type.TypeReference<Set<T>>() {
+            @Override
+            public Type getType() {
+                return objectMapper.getTypeFactory().constructCollectionType(Set.class, clazz);
+            }
+        });
     }
 }

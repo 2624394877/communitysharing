@@ -15,6 +15,10 @@ import org.springframework.retry.support.RetryTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 
+
+/**
+ * spring-retry重试助手
+ */
 @Component
 @Slf4j
 public class SendMQRetryHelper {

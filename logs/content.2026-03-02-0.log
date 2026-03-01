@@ -230,3 +230,7 @@
 2026-03-02 00:17:16.285 [main] INFO  c.a.n.c.config.impl.ClientWorker - [fixed-2e254952-9803-4eae-8771-b086042c797f-127.0.0.1_8848] [subscribe] communitysharing-content+DEFAULT_GROUP+2e254952-9803-4eae-8771-b086042c797f
 2026-03-02 00:17:16.285 [main] INFO  c.a.n.client.config.impl.CacheData - [fixed-2e254952-9803-4eae-8771-b086042c797f-127.0.0.1_8848] [add-listener] ok, tenant=2e254952-9803-4eae-8771-b086042c797f, dataId=communitysharing-content, group=DEFAULT_GROUP, cnt=1
 2026-03-02 00:17:16.285 [main] INFO  c.a.c.n.r.NacosContextRefresher - [Nacos Config] Listening config: dataId=communitysharing-content, group=DEFAULT_GROUP
+2026-03-02 03:00:44.625 [NettyClientSelector_1] INFO  RocketmqRemoting - closeChannel: close the connection to remote address[127.0.0.1:9876] result: true
+2026-03-02 03:00:44.656 [NettyClientSelector_1] INFO  RocketmqRemoting - closeChannel: close the connection to remote address[192.168.2.145:10911] result: true
+2026-03-02 03:00:44.735 [NettyClientSelector_1] INFO  RocketmqRemoting - closeChannel: close the connection to remote address[192.168.2.145:10911] result: true
+2026-03-02 03:00:44.893 [NettyClientSelector_1] INFO  RocketmqRemoting - closeChannel: close the connection to remote address[127.0.0.1:9876] result: true

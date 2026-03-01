@@ -42,4 +42,6 @@ public interface MQConstant {
     String TOPIC_COLLECT_OR_UNCOLLECT = "CollectUnCollectTopic"; // 收藏或取消收藏的Topic
 
     String TOPIC_COUNT_COMMENT = "topicCountComment"; // 评论数计数的Topic
+
+    String TOPIC_COUNT_HEAT_UPDATE = "CountHeatUpdateTopic"; // 热度更新
 }

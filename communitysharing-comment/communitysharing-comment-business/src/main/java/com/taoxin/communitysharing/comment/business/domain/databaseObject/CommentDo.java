@@ -40,4 +40,8 @@ public class CommentDo {
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
+
+    private Long childCommentTotal; // 子评论数
+
+    private Long firstReplyCommentId; // 第一个回复评论的id
 }
