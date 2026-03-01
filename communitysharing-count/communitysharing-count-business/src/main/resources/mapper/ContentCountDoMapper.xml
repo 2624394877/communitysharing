@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taoxin.communitysharing.count.business.domain.mapper.ContentCountDoMapper">
+  <resultMap id="BaseResultMap" type="com.taoxin.communitysharing.count.business.domain.databaseObject.ContentCountDo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="content_id" jdbcType="BIGINT" property="contentId" />
+    <result column="like_total" jdbcType="BIGINT" property="likeTotal" />
+    <result column="collect_total" jdbcType="BIGINT" property="collectTotal" />
+    <result column="comment_total" jdbcType="BIGINT" property="commentTotal" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, content_id, like_total, collect_total, comment_total
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_content_count
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_content_count
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.taoxin.communitysharing.count.business.domain.databaseObject.ContentCountDo">
+    insert into t_content_count (id, content_id, like_total, 
+      collect_total, comment_total)
+    values (#{id,jdbcType=BIGINT}, #{contentId,jdbcType=BIGINT}, #{likeTotal,jdbcType=BIGINT}, 
+      #{collectTotal,jdbcType=BIGINT}, #{commentTotal,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.taoxin.communitysharing.count.business.domain.databaseObject.ContentCountDo">
+    insert into t_content_count
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="contentId != null">
+        content_id,
+      </if>
+      <if test="likeTotal != null">
+        like_total,
+      </if>
+      <if test="collectTotal != null">
+        collect_total,
+      </if>
+      <if test="commentTotal != null">
+        comment_total,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="contentId != null">
+        #{contentId,jdbcType=BIGINT},
+      </if>
+      <if test="likeTotal != null">
+        #{likeTotal,jdbcType=BIGINT},
+      </if>
+      <if test="collectTotal != null">
+        #{collectTotal,jdbcType=BIGINT},
+      </if>
+      <if test="commentTotal != null">
+        #{commentTotal,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+    <insert id="insertOrUpdateLikeTotalByContentId" parameterType="map">
+      insert into t_content_count (content_id, like_total)
+      values (#{contentId,jdbcType=BIGINT}, #{likeTotal,jdbcType=BIGINT})
+      on duplicate key update like_total = like_total + (#{likeTotal,jdbcType=BIGINT})
+    </insert>
+    <insert id="insertOrUpdateCollectTotalByContentId" parameterType="map">
+        insert into t_content_count (content_id, collect_total)
+        values (#{contentId,jdbcType=BIGINT}, #{collectTotal,jdbcType=BIGINT})
+        on duplicate key update collect_total = collect_total + (#{collectTotal,jdbcType=BIGINT})
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.taoxin.communitysharing.count.business.domain.databaseObject.ContentCountDo">
+    update t_content_count
+    <set>
+      <if test="contentId != null">
+        content_id = #{contentId,jdbcType=BIGINT},
+      </if>
+      <if test="likeTotal != null">
+        like_total = #{likeTotal,jdbcType=BIGINT},
+      </if>
+      <if test="collectTotal != null">
+        collect_total = #{collectTotal,jdbcType=BIGINT},
+      </if>
+      <if test="commentTotal != null">
+        comment_total = #{commentTotal,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.taoxin.communitysharing.count.business.domain.databaseObject.ContentCountDo">
+    update t_content_count
+    set content_id = #{contentId,jdbcType=BIGINT},
+      like_total = #{likeTotal,jdbcType=BIGINT},
+      collect_total = #{collectTotal,jdbcType=BIGINT},
+      comment_total = #{commentTotal,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

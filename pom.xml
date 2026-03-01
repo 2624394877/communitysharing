@@ -1,0 +1,523 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.communitysharing</groupId>
+  <artifactId>communitysharing</artifactId>
+  <version>${revision}</version>
+
+  <!-- 项目名称 -->
+  <name>${project.artifactId}</name>
+  <!-- 项目描述 -->
+  <description>内容分享平台，基于Spring Cloud Alibaba微服务架构开发</description>
+
+  <!-- 设置多模块项目的打包方式 -->
+  <packaging>pom</packaging>
+
+  <!-- 子模块管理，后续创建的子模块躲在这里（当前模块的下一层） -->
+  <modules>
+    <module>communitysharing-auth</module>
+    <module>communitysharing-framework</module>
+    <module>communitysharing-gateway</module>
+    <module>communitysharing-oss</module>
+    <module>communitysharing-user</module>
+    <module>communitysharing-KV</module>
+    <module>communitysharing-distributed-id-constructor</module>
+    <module>communitysharing-content</module>
+    <module>communitysharing-user-relation</module>
+    <module>communitysharing-count</module>
+    <module>communitysharing-notify</module>
+    <module>communitysharing-algin</module>
+    <module>communitysharing-search</module>
+    <module>communitysharing-comment</module>
+  </modules>
+
+  <!-- 统一版本号 -->
+  <properties>
+    <!-- 项目版本号 -->
+    <revision>0.0.1-SNAPSHOT</revision>
+    <!-- jdk版本 -->
+    <java.version>17</java.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+    <!-- 项目编码 -->
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <!-- maven版本号 -->
+    <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+    <!-- springboot版本号 -->
+    <spring-boot.version>3.0.2</spring-boot.version>
+    <!-- springcloud版本号 -->
+    <spring-cloud.alibaba.version>2022.0.0.0</spring-cloud.alibaba.version>
+    <spring-cloud.version>2022.0.0</spring-cloud.version>
+
+    <!-- protobuf版本号 -->
+    <protobuf.version>3.25.3</protobuf.version>
+
+    <!-- 引入依赖版本号 -->
+    <lombok.version>1.18.30</lombok.version>
+    <jackson.version>2.16.1</jackson.version>
+    <mysql-connector-java.version>8.0.27</mysql-connector-java.version>
+    <druid.version>1.2.23</druid.version>
+    <mybatis-generator.version>1.3.5</mybatis-generator.version>
+    <flatten-maven-plugin.version>1.5.0</flatten-maven-plugin.version>
+    <sa-token.version>1.38.0</sa-token.version>
+    <guava.version>33.0.0-jre</guava.version>
+    <hutool.version>5.8.26</hutool.version>
+    <commons-lang3.version>3.12.0</commons-lang3.version>
+    <dypnsapi.version>2.0.0</dypnsapi.version>
+    <nacos-config.version>0.3.0-RC</nacos-config.version>
+    <transmittable-thread-local.version>2.14.2</transmittable-thread-local.version>
+    <minio.version>8.2.1</minio.version>
+    <aliyun-oss.version>3.17.4</aliyun-oss.version>
+    <jaxb-api.version>2.3.1</jaxb-api.version>
+    <javax-activation.version>1.1.1</javax-activation.version>
+    <jaxb-runtime.version>2.3.3</jaxb-runtime.version>
+    <feign-form.version>3.8.0</feign-form.version>
+    <caffeine.version>3.1.8</caffeine.version>
+    <rocketmq.version>2.2.3</rocketmq.version>
+    <buffertrigger.version>0.2.21</buffertrigger.version>
+    <xxl-job.version>3.3.2</xxl-job.version>
+    <elasticsearch.version>7.17.9</elasticsearch.version>
+    <canal.version>1.1.8</canal.version>
+    <rocketmq-client.version>4.9.4</rocketmq-client.version>
+  </properties>
+
+  <!-- 依赖管理 -->
+  <dependencyManagement>
+    <dependencies>
+
+      <!-- Canal -->
+      <dependency>
+        <groupId>com.alibaba.otter</groupId>
+        <artifactId>canal.client</artifactId>
+        <version>${canal.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.alibaba.otter</groupId>
+        <artifactId>canal.common</artifactId>
+        <version>${canal.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.alibaba.otter</groupId>
+        <artifactId>canal.protocol</artifactId>
+        <version>${canal.version}</version>
+      </dependency>
+
+      <!-- RestHighLevelClient 版本须与引擎版本一致 -->
+      <dependency>
+        <groupId>org.elasticsearch.client</groupId>
+        <artifactId>elasticsearch-rest-high-level-client</artifactId>
+        <version>${elasticsearch.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.elasticsearch.client</groupId>
+        <artifactId>elasticsearch-rest-client</artifactId>
+        <version>${elasticsearch.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.elasticsearch</groupId>
+        <artifactId>elasticsearch</artifactId>
+        <version>${elasticsearch.version}</version>
+      </dependency>
+
+      <!-- 调度中心 -->
+      <dependency>
+        <groupId>com.xuxueli</groupId>
+        <artifactId>xxl-job-core</artifactId>
+        <version>${xxl-job.version}</version>
+      </dependency>
+
+      <!-- BufferTrigger 流量聚合 -->
+      <dependency>
+        <groupId>com.github.phantomthief</groupId>
+        <artifactId>buffer-trigger</artifactId>
+        <version>${buffertrigger.version}</version>
+      </dependency>
+
+      <!-- Rocket MQ 客户端 -->
+      <dependency>
+        <groupId>org.apache.rocketmq</groupId>
+        <artifactId>rocketmq-client</artifactId>
+        <version>${rocketmq-client.version}</version>
+      </dependency>
+
+      <!-- MQ -->
+      <dependency>
+        <groupId>org.apache.rocketmq</groupId>
+        <artifactId>rocketmq-spring-boot-starter</artifactId>
+        <version>${rocketmq.version}</version>
+      </dependency>
+
+      <!-- Caffeine 本地缓存 -->
+      <dependency>
+        <groupId>com.github.ben-manes.caffeine</groupId>
+        <artifactId>caffeine</artifactId>
+        <version>${caffeine.version}</version>
+      </dependency>
+
+      <!-- feign的表单，用于调用服务控制器时，传递表单参数 -->
+      <dependency>
+        <groupId>io.github.openfeign.form</groupId>
+        <artifactId>feign-form</artifactId>
+        <version>${feign-form.version}</version>
+      </dependency>
+
+      <!-- Aliyun-oss存储 -->
+      <dependency>
+        <groupId>com.aliyun.oss</groupId>
+        <artifactId>aliyun-sdk-oss</artifactId>
+        <version>${aliyun-oss.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>javax.xml.bind</groupId>
+        <artifactId>jaxb-api</artifactId>
+        <version>${jaxb-api.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>javax.activation</groupId>
+        <artifactId>activation</artifactId>
+        <version>${javax-activation.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.glassfish.jaxb</groupId>
+        <artifactId>jaxb-runtime</artifactId>
+        <version>${jaxb-runtime.version}</version>
+      </dependency>
+
+      <!-- oss-Minio存储 -->
+      <dependency>
+        <groupId>io.minio</groupId>
+        <artifactId>minio</artifactId>
+        <version>${minio.version}</version>
+      </dependency>
+
+      <!-- TransmittableThreadLocal 异步线程库 -->
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>transmittable-thread-local</artifactId>
+        <version>${transmittable-thread-local.version}</version>
+      </dependency>
+
+      <!-- Nacos 配置中心 -->
+      <dependency>
+        <groupId>com.alibaba.boot</groupId>
+        <artifactId>nacos-config-spring-boot-starter</artifactId>
+        <version>${nacos-config.version}</version>
+      </dependency>
+
+      <!-- Sa-Token 整合 Redis（使用 jackson 序列化方式） -->
+      <dependency>
+        <groupId>cn.dev33</groupId>
+        <artifactId>sa-token-redis-jackson</artifactId>
+        <version>${sa-token.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>cn.dev33</groupId>
+        <artifactId>sa-token-reactor-spring-boot3-starter</artifactId>
+        <version>${sa-token.version}</version>
+      </dependency>
+
+      <!-- 阿里云短信服务 -->
+      <dependency>
+        <groupId>com.aliyun</groupId>
+        <artifactId>dypnsapi20170525</artifactId>
+        <version>${dypnsapi.version}</version>
+      </dependency>
+
+      <!-- Guava提供的实用工具类和集合框架 -->
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>${guava.version}</version>
+      </dependency>
+
+      <!-- Java工具包集合 -->
+      <dependency>
+        <groupId>cn.hutool</groupId>
+        <artifactId>hutool-all</artifactId>
+        <version>${hutool.version}</version>
+      </dependency>
+
+      <!-- 通用工具类 -->
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>${commons-lang3.version}</version>
+      </dependency>
+
+      <!-- Sa-Token 权限认证，在线文档：https://sa-token.cc -->
+      <dependency>
+        <groupId>cn.dev33</groupId>
+        <artifactId>sa-token-spring-boot3-starter</artifactId>
+        <version>${sa-token.version}</version>
+      </dependency>
+
+      <!-- 引入德鲁伊连接池 -->
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>druid-spring-boot-3-starter</artifactId>
+        <version>${druid.version}</version>
+      </dependency>
+
+      <!-- 引入MySQL 驱动 -->
+      <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>${mysql-connector-java.version}</version>
+      </dependency>
+
+      <!-- 引入mybatis -->
+      <dependency>
+        <groupId>org.mybatis.spring.boot</groupId>
+        <artifactId>mybatis-spring-boot-starter</artifactId>
+        <version>${spring-boot.version}</version>
+      </dependency>
+
+      <!-- JSON解析和生成的核心功能(jackson) -->
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+
+      <!-- 提供JSON解析和生成的核心功能(jackson) -->
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-core</artifactId>
+        <version>${jackson.version}</version>
+      </dependency>
+
+      <!-- 声明子模块的依赖以及其版本号 -->
+      <dependency>
+        <groupId>com.communitysharing</groupId>
+        <artifactId>communitysharing-search-api</artifactId>
+        <version>${revision}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.communitysharing</groupId>
+        <artifactId>communitysharing-notify-api</artifactId>
+        <version>${revision}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.communitysharing</groupId>
+        <artifactId>communitysharing-distributed-id-constructor-api</artifactId>
+        <version>${revision}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.communitysharing</groupId>
+        <artifactId>communitysharing-content-api</artifactId>
+        <version>${revision}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.communitysharing</groupId>
+        <artifactId>communitysharing-KV-api</artifactId>
+        <version>${revision}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.communitysharing</groupId>
+        <artifactId>communitysharing-KV</artifactId>
+        <version>${revision}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.communitysharing</groupId>
+        <artifactId>communitysharing-user-api</artifactId>
+        <version>${revision}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.communitysharing</groupId>
+        <artifactId>communitysharing-oss-api</artifactId>
+        <version>${revision}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.communitysharing</groupId>
+        <artifactId>communitysharing-spring-boot-starter-business-context</artifactId>
+        <version>${revision}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.communitysharing</groupId>
+        <artifactId>communitysharing-spring-boot-starter-business-jackson</artifactId>
+        <version>${revision}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.communitysharing</groupId>
+        <artifactId>communitysharing-spring-boot-starter-business-operationlog</artifactId>
+        <version>${revision}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.communitysharing</groupId>
+        <artifactId>communitysharing-common</artifactId>
+        <version>${revision}</version>
+      </dependency>
+
+      <!-- 引入protobuf -->
+      <dependency>
+        <groupId>com.google.protobuf</groupId>
+        <artifactId>protobuf-java</artifactId>
+        <version>${protobuf.version}</version>
+      </dependency>
+
+      <!-- springboot 官方依赖管理 -->
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring-boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <!-- Spring Cloud Alibaba 官方依赖管理 -->
+      <dependency>
+        <groupId>com.alibaba.cloud</groupId>
+        <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+        <version>${spring-cloud.alibaba.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <!-- Spring Cloud 官方依赖管理 -->
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring-cloud.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <!-- lombok 作用：减少重复代码, 如：getter、setter、toString、equals、hashCode、RequiredArgsConstructor. -->
+      <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <version>${lombok.version}</version>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+
+  <!-- 构建管理 -->
+  <build>
+    <pluginManagement>
+      <plugins>
+        <!-- 引入mybatis代码生成器 用于自动创建样板式代码 这属于插件 -->
+        <plugin>
+          <groupId>org.mybatis.generator</groupId>
+          <artifactId>mybatis-generator-maven-plugin</artifactId>
+          <version>${mybatis-generator.version}</version>
+          <!-- 配置mybatis构造器 -->
+          <configuration>
+            <verbose>true</verbose><!-- 允许移动生成的文件 -->
+            <overwrite>true</overwrite> <!-- 允许覆盖生成的文件 -->
+          </configuration>
+          <!-- 为构造器引入数据库驱动 -->
+          <dependencies>
+            <dependency>
+              <groupId>mysql</groupId>
+              <artifactId>mysql-connector-java</artifactId>
+              <version>${mysql-connector-java.version}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <version>${spring-boot.version}</version>
+          <!-- 配置打包方式: 这一组的含义是： 打成jar包，而不是war包 -->
+          <executions>
+            <execution>
+              <id>repackage</id>
+              <goals>
+                <goal>repackage</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+        <!-- 配置lombok -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven-compiler-plugin.version}</version>
+          <configuration>
+              <source>${java.version}</source>
+              <target>${java.version}</target>
+              <encoding>${project.build.sourceEncoding}</encoding>
+              <annotationProcessorPaths>
+                <path>
+                  <groupId>org.projectlombok</groupId>
+                  <artifactId>lombok</artifactId>
+                  <version>${lombok.version}</version>
+                </path>
+              </annotationProcessorPaths>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <!-- 为什么要单独放到pluginManagement外
+      1. pluginManagement 中的插件仅作配置管理，不实际执行
+      2. 这里需要在父POM构建时自动执行，所以必须在 pluginManagement 外
+    -->
+    <plugins>
+      <!-- 引入flatten-maven-plugin -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>flatten-maven-plugin</artifactId>
+        <version>${flatten-maven-plugin.version}</version>
+        <!-- 配置flatten-maven-plugin -->
+        <configuration>
+          <flattenMode>resolveCiFriendliesOnly</flattenMode>
+          <updatePomFile>true</updatePomFile>
+        </configuration>
+        <!-- 配置flatten-maven-plugin的运行 -->
+        <executions>
+          <!-- 通常在项目构建过程中自动运行 -->
+          <execution>
+            <id>flatten</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>flatten</goal>
+            </goals>
+          </execution>
+          <!-- 通常在项目清理过程中自动运行 -->
+          <execution>
+            <id>flatten.clean</id>
+            <phase>clean</phase>
+            <goals>
+              <goal>clean</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+
+
+  <!-- 添加远程仓库 -->
+  <repositories>
+    <repository>
+      <id>huaweicloud</id>
+      <name>huawei</name>
+      <url>https://mirrors.huaweicloud.com/repository/maven/</url>
+    </repository>
+    <repository>
+      <id>aliyun</id>
+      <name>aliyun</name>
+      <url>https://maven.aliyun.com/repository/public</url>
+    </repository>
+  </repositories>
+</project>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!-- 定义了一个MyBatis配置文件中的上下文环境
+        id="myTables"：设置上下文标识符
+        targetRuntime="MyBatis3"：指定目标运行时为MyBatis3版本
+        defaultModelType="flat"：设置默认模型类型
+    -->
+    <context id="myTables" targetRuntime="MyBatis3" defaultModelType="flat">
+        <!-- 自动检查关键字，为关键字增加反引号 防止关键字与标识符冲突 -->
+        <property name="autoDelimitKeywords" value="true"/>
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+        <!-- 指定生产的Java文件的编码格式 -->
+        <property name="javaFileEncoding" value="UTF-8"/>
+
+        <!-- 对生成的注释进行控制，是否生产代码注释 -->
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <!-- 数据库连接信息 该插件需要进行数据库连接 -->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/communitysharing?useUnicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;transformedBitIsBoolean=true"
+                        userId="root"
+                        password="123456">
+            <property name="nullCatalogMeansCurrent" value="true"/>
+        </jdbcConnection>
+
+        <!-- 不强制将所有的数值类型映射为 Java 的 BigDecimal 类型 -->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- 配置实体类存放路径 -->
+        <javaModelGenerator targetPackage="com.taoxin.communitysharing.user.relation.buiness.domain.databaseObject" targetProject="src/main/java">
+            <!-- 是否对生成的实体类进行格式化 -->
+            <property name="formattedJava" value="true"/>
+            <!-- 是否对生成的实体类进行注释 -->
+            <property name="enableSubPackages" value="true"/>
+            <!-- 是否对生成的实体类进行注释 -->
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- 配置Mapper映射文件存放路径 -->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"/>
+
+        <!-- 配置Mapper接口存放路径 -->
+        <javaClientGenerator targetPackage="com.taoxin.communitysharing.user.relation.buiness.domain.mapper" targetProject="src/main/java" type="XMLMAPPER"/>
+
+        <!-- 配置MyBatis-Generator的表映射规则
+            禁用Example相关的功能（计数、更新、删除、查询）
+         -->
+        <table tableName="t_fans" domainObjectName="FansDo"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false"
+        />
+    </context>
+</generatorConfiguration>

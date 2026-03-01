@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: communitysharing-gateway # 配置服务名称
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      discovery:
+        enabled: true
+        server-addr: http://127.0.0.1:8848
+        group: DEFAULT_GROUP
+        namespace: 2e254952-9803-4eae-8771-b086042c797f

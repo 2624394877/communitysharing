@@ -1,0 +1,24 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.communitysharing</groupId>
+        <artifactId>communitysharing</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <packaging>pom</packaging>
+
+    <artifactId>communitysharing-search</artifactId>
+    <name>${project.artifactId}</name>
+    <description>内容搜索服务：使用搜索引擎进行内容搜索</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <modules>
+        <module>communitysharing-search-api</module>
+        <module>communitysharing-search-business</module>
+    </modules>
+</project>

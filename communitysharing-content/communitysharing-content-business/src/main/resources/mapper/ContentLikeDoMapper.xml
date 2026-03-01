@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taoxin.communitysharing.content.business.domain.mapper.ContentLikeDoMapper">
+  <resultMap id="BaseResultMap" type="com.taoxin.communitysharing.content.business.domain.databaseObject.ContentLikeDo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="content_id" jdbcType="BIGINT" property="contentId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, content_id, create_time, `status`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_content_like
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectCountByUserIdAndContentId" resultType="java.lang.Integer" parameterType="map">
+    select count(1)
+    from t_content_like
+    where user_id = #{userId,jdbcType=BIGINT}
+      and content_id = #{contentId,jdbcType=BIGINT}
+      and `status` = 1 limit 1
+  </select>
+  <select id="selectContentsIdByUserId" parameterType="map" resultMap="BaseResultMap">
+    select content_id
+    from t_content_like
+    where user_id = #{userId,jdbcType=BIGINT} and `status` = 1
+  </select>
+  <select id="selectCountIsLiked" resultType="java.lang.Integer" parameterType="map">
+    select count(1) from t_content_like
+    where user_id = #{userId,jdbcType=BIGINT} and content_id = #{contentId,jdbcType=BIGINT} and `status` = 1 limit 1
+  </select>
+  <select id="selectLikedByUserIdAndLimit" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_content_like
+    where user_id = #{userId,jdbcType=BIGINT} and `status` = 1
+    order by create_time desc
+    limit #{limit,jdbcType=INTEGER}
+  </select> <!-- 这里直接拿固定数量 -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_content_like
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.taoxin.communitysharing.content.business.domain.databaseObject.ContentLikeDo">
+    insert into t_content_like (id, user_id, content_id, 
+      create_time, `status`)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{contentId,jdbcType=BIGINT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.taoxin.communitysharing.content.business.domain.databaseObject.ContentLikeDo">
+    insert into t_content_like
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="contentId != null">
+        content_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="contentId != null">
+        #{contentId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <insert id="insertOrUpdate" parameterType="com.taoxin.communitysharing.content.business.domain.databaseObject.ContentLikeDo">
+    insert into t_content_like (user_id, content_id, create_time, `status`)
+    values (#{userId,jdbcType=BIGINT}, #{contentId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=TINYINT})
+    on duplicate key update create_time = #{createTime,jdbcType=TIMESTAMP}, `status` = #{status,jdbcType=TINYINT}
+  </insert>
+  <insert id="insertOrUpdateUnlike" parameterType="com.taoxin.communitysharing.content.business.domain.databaseObject.ContentLikeDo">
+    update t_content_like set create_time = #{createTime,jdbcType=TIMESTAMP}, `status` = #{status,jdbcType=TINYINT}
+    where user_id = #{userId,jdbcType=BIGINT} and content_id = #{contentId,jdbcType=BIGINT} and `status` = 1
+  </insert>
+  <insert id="batchInsertOrUpdate" parameterType="list">
+    insert into t_content_like (user_id, content_id, create_time, `status`)
+    values
+    <foreach collection="contentLikeDos" item="contentLikeDo" separator=",">
+      (#{contentLikeDo.userId,jdbcType=BIGINT}, #{contentLikeDo.contentId,jdbcType=BIGINT},
+       #{contentLikeDo.createTime,jdbcType=TIMESTAMP}, #{contentLikeDo.status,jdbcType=TINYINT})
+    </foreach>
+    on duplicate key update `status` = values(`status`)
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.taoxin.communitysharing.content.business.domain.databaseObject.ContentLikeDo">
+    update t_content_like
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="contentId != null">
+        content_id = #{contentId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.taoxin.communitysharing.content.business.domain.databaseObject.ContentLikeDo">
+    update t_content_like
+    set user_id = #{userId,jdbcType=BIGINT},
+      content_id = #{contentId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      `status` = #{status,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

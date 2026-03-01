@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: communitysharing-notify # 应用名称
+  profiles:
+    active: dev # 默认激活 dev 本地开发环境
+  cloud:
+    nacos:
+      discovery: # Nacos 服务注册发现
+#        ip: host.docker.internal # 在 Docker 容器中访问宿主机的地址
+        enabled: true # 是否启用 Nacos 服务注册发现
+        server-addr: http://127.0.0.1:8848
+        namespace: 2e254952-9803-4eae-8771-b086042c797f
+        group: DEFAULT_GROUP

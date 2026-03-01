@@ -1,0 +1,8 @@
+server:
+  port: 8083
+spring:
+  profiles:
+    active: dev
+
+mybatis:
+  mapper-locations: classpath:/mapper/*.xml # 配置mybatis的xml文件位置 (classpath:/mapper/*.xml)表示扫描classpath下的mapper目录下的所有xml文件

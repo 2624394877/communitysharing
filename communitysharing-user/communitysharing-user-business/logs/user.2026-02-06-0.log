@@ -1,0 +1,194 @@
+2026-02-06 12:15:20.819 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-02-06 12:15:20.880 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-02-06 12:15:21.086 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-02-06 12:15:21.089 [main] INFO  c.a.nacos.client.utils.ParamUtil - [settings] [req-serv] nacos-server port:8848
+2026-02-06 12:15:21.089 [main] INFO  c.a.nacos.client.utils.ParamUtil - [settings] [http-client] connect timeout:1000
+2026-02-06 12:15:21.090 [main] INFO  c.a.nacos.client.utils.ParamUtil - PER_TASK_CONFIG_SIZE: 3000.0
+2026-02-06 12:15:21.117 [main] INFO  c.a.n.p.a.s.c.ClientAuthPluginManager - [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.impl.NacosClientAuthServiceImpl success.
+2026-02-06 12:15:21.117 [main] INFO  c.a.n.p.a.s.c.ClientAuthPluginManager - [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.ram.RamClientAuthServiceImpl success.
+2026-02-06 12:15:21.120 [main] INFO  c.a.n.c.a.r.i.CredentialWatcher - null No credential found
+2026-02-06 12:15:21.446 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-02-06 12:15:21.463 [main] INFO  c.a.n.c.c.i.LocalConfigInfoProcessor - LOCAL_SNAPSHOT_PATH:C:\Users\moonth\nacos\config
+2026-02-06 12:15:21.471 [main] INFO  c.alibaba.nacos.common.remote.client - [RpcClientFactory] create a new rpc client of dcc4911a-0919-4b58-8643-c523e1dd13b6_config-0
+2026-02-06 12:15:21.503 [main] INFO  c.alibaba.nacos.common.remote.client - [dcc4911a-0919-4b58-8643-c523e1dd13b6_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$932/0x000000080106eb58
+2026-02-06 12:15:21.503 [main] INFO  c.alibaba.nacos.common.remote.client - [dcc4911a-0919-4b58-8643-c523e1dd13b6_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$933/0x000000080106ef78
+2026-02-06 12:15:21.503 [main] INFO  c.alibaba.nacos.common.remote.client - [dcc4911a-0919-4b58-8643-c523e1dd13b6_config-0] Registry connection listener to current client:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$1
+2026-02-06 12:15:21.503 [main] INFO  c.alibaba.nacos.common.remote.client - [dcc4911a-0919-4b58-8643-c523e1dd13b6_config-0] RpcClient init, ServerListFactory = com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$2
+2026-02-06 12:15:21.511 [main] INFO  c.alibaba.nacos.common.remote.client - [dcc4911a-0919-4b58-8643-c523e1dd13b6_config-0] Try to connect to server on start up, server: {serverIp = '127.0.0.1', server main port = 8848}
+2026-02-06 12:15:21.542 [main] INFO  c.a.n.c.r.client.grpc.GrpcClient - grpc client connection server:127.0.0.1 ip,serverPort:9848,grpcTslConfig:{"sslProvider":"OPENSSL","enableTls":false,"mutualAuthEnable":false,"trustAll":false}
+2026-02-06 12:15:22.404 [main] INFO  c.alibaba.nacos.common.remote.client - [dcc4911a-0919-4b58-8643-c523e1dd13b6_config-0] Success to connect to server [127.0.0.1:8848] on start up, connectionId = 1770351322222_172.17.0.1_40826
+2026-02-06 12:15:22.405 [com.alibaba.nacos.client.remote.worker] INFO  c.alibaba.nacos.common.remote.client - [dcc4911a-0919-4b58-8643-c523e1dd13b6_config-0] Notify connected event to listeners.
+2026-02-06 12:15:22.405 [com.alibaba.nacos.client.remote.worker] INFO  c.a.n.c.config.impl.ClientWorker - [dcc4911a-0919-4b58-8643-c523e1dd13b6_config-0] Connected,notify listen context...
+2026-02-06 12:15:22.405 [main] INFO  c.alibaba.nacos.common.remote.client - [dcc4911a-0919-4b58-8643-c523e1dd13b6_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$ConnectResetRequestHandler
+2026-02-06 12:15:22.405 [main] INFO  c.alibaba.nacos.common.remote.client - [dcc4911a-0919-4b58-8643-c523e1dd13b6_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$$Lambda$952/0x00000008011d7068
+2026-02-06 12:15:22.434 [main] INFO  c.a.nacos.client.config.impl.Limiter - limitTime:5.0
+2026-02-06 12:15:22.457 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[communitysharing-user] & group[DEFAULT_GROUP]
+2026-02-06 12:15:22.465 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[communitysharing-user.yaml] & group[DEFAULT_GROUP]
+2026-02-06 12:15:22.474 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[communitysharing-user-dev.yaml] & group[DEFAULT_GROUP]
+2026-02-06 12:15:22.474 [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: [BootstrapPropertySource {name='bootstrapProperties-communitysharing-user-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-communitysharing-user.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-communitysharing-user,DEFAULT_GROUP'}]
+2026-02-06 12:15:22.503 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-02-06 12:15:22.504 [main] INFO  c.c.user.business.DruidTest - The following 1 profile is active: "dev"
+2026-02-06 12:15:23.053 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-02-06 12:15:23.055 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-02-06 12:15:23.075 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 8 ms. Found 0 Redis repository interfaces.
+2026-02-06 12:15:23.298 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=642dba68-528e-3370-a58b-57b779654941
+2026-02-06 12:15:23.358 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'api.constructor.id.distributed.com.taoxin.communitysharing.search.IdConstructorFeignApi' of type [org.springframework.cloud.openfeign.FeignClientFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-02-06 12:15:23.359 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'api.user.com.taoxin.communitysharing.search.UserFeignApi' of type [org.springframework.cloud.openfeign.FeignClientFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-02-06 12:15:23.360 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'com.taoxin.communitysharing.oss.api.FileFeignApi' of type [org.springframework.cloud.openfeign.FeignClientFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-02-06 12:15:23.628 [main] INFO  c.a.d.s.b.a.DruidDataSourceAutoConfigure - Init DruidDataSource
+2026-02-06 12:15:24.050 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2026-02-06 12:15:24.644 [main] INFO  o.s.c.o.FeignClientFactoryBean - For 'communitysharing-oss' URL not provided. Will try picking an instance via load-balancing.
+2026-02-06 12:15:25.049 [main] INFO  o.s.c.o.FeignClientFactoryBean - For 'communitysharing-distributed-id-constructor' URL not provided. Will try picking an instance via load-balancing.
+2026-02-06 12:15:26.187 [main] INFO  c.c.user.business.DruidTest - Started DruidTest in 5.857 seconds (process running for 7.044)
+2026-02-06 12:15:26.189 [main] INFO  c.c.u.b.r.PushRolePermissionToRedisByRunning - == 项目启动 ==> 将数据库角色权限关系推送到Redis中
+2026-02-06 12:15:26.539 [main] DEBUG c.c.u.b.d.m.R.selectEnabledRolesList - ==>  Preparing: select id,role_key, role_name from t_role where status = 0 and is_deleted = 0
+2026-02-06 12:15:26.660 [main] DEBUG c.c.u.b.d.m.R.selectEnabledRolesList - ==> Parameters: 
+2026-02-06 12:15:26.675 [main] DEBUG c.c.u.b.d.m.R.selectEnabledRolesList - <==      Total: 1
+2026-02-06 12:15:26.677 [main] INFO  c.c.u.b.r.PushRolePermissionToRedisByRunning - == 项目启动 ==> 获取所有启用的角色: [1]
+2026-02-06 12:15:26.686 [main] DEBUG c.c.u.b.d.m.R.selectByRoleIds - ==>  Preparing: select role_id, permission_id from t_role_permission_rel where role_id in ( ? )
+2026-02-06 12:15:26.688 [main] DEBUG c.c.u.b.d.m.R.selectByRoleIds - ==> Parameters: 1(Long)
+2026-02-06 12:15:26.691 [main] DEBUG c.c.u.b.d.m.R.selectByRoleIds - <==      Total: 2
+2026-02-06 12:15:26.691 [main] DEBUG c.c.u.b.d.m.P.selectEnabledList - ==>  Preparing: select id, name, permission_key from t_permission where status = 0 and type = 3 and is_deleted = 0
+2026-02-06 12:15:26.693 [main] DEBUG c.c.u.b.d.m.P.selectEnabledList - ==> Parameters: 
+2026-02-06 12:15:26.696 [main] DEBUG c.c.u.b.d.m.P.selectEnabledList - <==      Total: 3
+2026-02-06 12:15:26.712 [main] INFO  c.c.u.b.r.PushRolePermissionToRedisByRunning - == 项目启动 ==> 角色权限关系推送到Redis中完成
+2026-02-06 12:15:26.714 [main] INFO  c.a.n.client.config.impl.CacheData - nacos.cache.data.init.snapshot = true 
+2026-02-06 12:15:26.714 [main] INFO  c.a.n.c.config.impl.ClientWorker - [fixed-2e254952-9803-4eae-8771-b086042c797f-127.0.0.1_8848] [subscribe] communitysharing-user.yaml+DEFAULT_GROUP+2e254952-9803-4eae-8771-b086042c797f
+2026-02-06 12:15:26.720 [main] INFO  c.a.n.client.config.impl.CacheData - [fixed-2e254952-9803-4eae-8771-b086042c797f-127.0.0.1_8848] [add-listener] ok, tenant=2e254952-9803-4eae-8771-b086042c797f, dataId=communitysharing-user.yaml, group=DEFAULT_GROUP, cnt=1
+2026-02-06 12:15:26.720 [main] INFO  c.a.c.n.r.NacosContextRefresher - [Nacos Config] Listening config: dataId=communitysharing-user.yaml, group=DEFAULT_GROUP
+2026-02-06 12:15:26.720 [main] INFO  c.a.n.c.config.impl.ClientWorker - [fixed-2e254952-9803-4eae-8771-b086042c797f-127.0.0.1_8848] [subscribe] communitysharing-user+DEFAULT_GROUP+2e254952-9803-4eae-8771-b086042c797f
+2026-02-06 12:15:26.720 [main] INFO  c.a.n.client.config.impl.CacheData - [fixed-2e254952-9803-4eae-8771-b086042c797f-127.0.0.1_8848] [add-listener] ok, tenant=2e254952-9803-4eae-8771-b086042c797f, dataId=communitysharing-user, group=DEFAULT_GROUP, cnt=1
+2026-02-06 12:15:26.720 [main] INFO  c.a.c.n.r.NacosContextRefresher - [Nacos Config] Listening config: dataId=communitysharing-user, group=DEFAULT_GROUP
+2026-02-06 12:15:26.721 [main] INFO  c.a.n.c.config.impl.ClientWorker - [fixed-2e254952-9803-4eae-8771-b086042c797f-127.0.0.1_8848] [subscribe] communitysharing-user-dev.yaml+DEFAULT_GROUP+2e254952-9803-4eae-8771-b086042c797f
+2026-02-06 12:15:26.721 [main] INFO  c.a.n.client.config.impl.CacheData - [fixed-2e254952-9803-4eae-8771-b086042c797f-127.0.0.1_8848] [add-listener] ok, tenant=2e254952-9803-4eae-8771-b086042c797f, dataId=communitysharing-user-dev.yaml, group=DEFAULT_GROUP, cnt=1
+2026-02-06 12:15:26.721 [main] INFO  c.a.c.n.r.NacosContextRefresher - [Nacos Config] Listening config: dataId=communitysharing-user-dev.yaml, group=DEFAULT_GROUP
+2026-02-06 12:15:27.009 [main] INFO  c.c.user.business.DruidTest - 集合不会空：[null, null, null]
+2026-02-06 12:15:27.016 [Thread-7] WARN  c.a.nacos.common.notify.NotifyCenter - [NotifyCenter] Start destroying Publisher
+2026-02-06 12:15:27.017 [Thread-7] WARN  c.a.nacos.common.notify.NotifyCenter - [NotifyCenter] Destruction of the end
+2026-02-06 12:15:27.017 [Thread-1] WARN  c.a.n.c.http.HttpClientBeanHolder - [HttpClientBeanHolder] Start destroying common HttpClient
+2026-02-06 12:15:27.017 [Thread-1] WARN  c.a.n.c.http.HttpClientBeanHolder - [HttpClientBeanHolder] Destruction of the end
+2026-02-06 12:15:27.148 [SpringApplicationShutdownHook] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
+2026-02-06 12:15:27.153 [SpringApplicationShutdownHook] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed
+2026-02-06 12:18:17.898 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-02-06 12:18:17.942 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-02-06 12:18:18.121 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-02-06 12:18:18.122 [main] INFO  c.a.nacos.client.utils.ParamUtil - [settings] [req-serv] nacos-server port:8848
+2026-02-06 12:18:18.123 [main] INFO  c.a.nacos.client.utils.ParamUtil - [settings] [http-client] connect timeout:1000
+2026-02-06 12:18:18.124 [main] INFO  c.a.nacos.client.utils.ParamUtil - PER_TASK_CONFIG_SIZE: 3000.0
+2026-02-06 12:18:18.163 [main] INFO  c.a.n.p.a.s.c.ClientAuthPluginManager - [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.impl.NacosClientAuthServiceImpl success.
+2026-02-06 12:18:18.163 [main] INFO  c.a.n.p.a.s.c.ClientAuthPluginManager - [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.ram.RamClientAuthServiceImpl success.
+2026-02-06 12:18:18.167 [main] INFO  c.a.n.c.a.r.i.CredentialWatcher - null No credential found
+2026-02-06 12:18:18.528 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-02-06 12:18:18.540 [main] INFO  c.a.n.c.c.i.LocalConfigInfoProcessor - LOCAL_SNAPSHOT_PATH:C:\Users\moonth\nacos\config
+2026-02-06 12:18:18.546 [main] INFO  c.alibaba.nacos.common.remote.client - [RpcClientFactory] create a new rpc client of 3aa1f2e2-148f-4924-b18a-370f78c6799e_config-0
+2026-02-06 12:18:18.563 [main] INFO  c.alibaba.nacos.common.remote.client - [3aa1f2e2-148f-4924-b18a-370f78c6799e_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$932/0x000000080106fbf8
+2026-02-06 12:18:18.564 [main] INFO  c.alibaba.nacos.common.remote.client - [3aa1f2e2-148f-4924-b18a-370f78c6799e_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$933/0x0000000801070200
+2026-02-06 12:18:18.565 [main] INFO  c.alibaba.nacos.common.remote.client - [3aa1f2e2-148f-4924-b18a-370f78c6799e_config-0] Registry connection listener to current client:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$1
+2026-02-06 12:18:18.565 [main] INFO  c.alibaba.nacos.common.remote.client - [3aa1f2e2-148f-4924-b18a-370f78c6799e_config-0] RpcClient init, ServerListFactory = com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$2
+2026-02-06 12:18:18.573 [main] INFO  c.alibaba.nacos.common.remote.client - [3aa1f2e2-148f-4924-b18a-370f78c6799e_config-0] Try to connect to server on start up, server: {serverIp = '127.0.0.1', server main port = 8848}
+2026-02-06 12:18:18.610 [main] INFO  c.a.n.c.r.client.grpc.GrpcClient - grpc client connection server:127.0.0.1 ip,serverPort:9848,grpcTslConfig:{"sslProvider":"OPENSSL","enableTls":false,"mutualAuthEnable":false,"trustAll":false}
+2026-02-06 12:18:19.315 [main] INFO  c.alibaba.nacos.common.remote.client - [3aa1f2e2-148f-4924-b18a-370f78c6799e_config-0] Success to connect to server [127.0.0.1:8848] on start up, connectionId = 1770351499142_172.17.0.1_38152
+2026-02-06 12:18:19.316 [com.alibaba.nacos.client.remote.worker] INFO  c.alibaba.nacos.common.remote.client - [3aa1f2e2-148f-4924-b18a-370f78c6799e_config-0] Notify connected event to listeners.
+2026-02-06 12:18:19.316 [main] INFO  c.alibaba.nacos.common.remote.client - [3aa1f2e2-148f-4924-b18a-370f78c6799e_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$ConnectResetRequestHandler
+2026-02-06 12:18:19.316 [com.alibaba.nacos.client.remote.worker] INFO  c.a.n.c.config.impl.ClientWorker - [3aa1f2e2-148f-4924-b18a-370f78c6799e_config-0] Connected,notify listen context...
+2026-02-06 12:18:19.316 [main] INFO  c.alibaba.nacos.common.remote.client - [3aa1f2e2-148f-4924-b18a-370f78c6799e_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$$Lambda$952/0x00000008011d8228
+2026-02-06 12:18:19.359 [main] INFO  c.a.nacos.client.config.impl.Limiter - limitTime:5.0
+2026-02-06 12:18:19.375 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[communitysharing-user] & group[DEFAULT_GROUP]
+2026-02-06 12:18:19.381 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[communitysharing-user.yaml] & group[DEFAULT_GROUP]
+2026-02-06 12:18:19.388 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[communitysharing-user-dev.yaml] & group[DEFAULT_GROUP]
+2026-02-06 12:18:19.389 [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: [BootstrapPropertySource {name='bootstrapProperties-communitysharing-user-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-communitysharing-user.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-communitysharing-user,DEFAULT_GROUP'}]
+2026-02-06 12:18:19.420 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-02-06 12:18:19.421 [main] INFO  c.c.user.business.DruidTest - The following 1 profile is active: "dev"
+2026-02-06 12:18:19.914 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-02-06 12:18:19.916 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-02-06 12:18:19.933 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 7 ms. Found 0 Redis repository interfaces.
+2026-02-06 12:18:20.116 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=642dba68-528e-3370-a58b-57b779654941
+2026-02-06 12:18:20.163 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'api.constructor.id.distributed.com.taoxin.communitysharing.search.IdConstructorFeignApi' of type [org.springframework.cloud.openfeign.FeignClientFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-02-06 12:18:20.165 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'api.user.com.taoxin.communitysharing.search.UserFeignApi' of type [org.springframework.cloud.openfeign.FeignClientFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-02-06 12:18:20.166 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'com.taoxin.communitysharing.oss.api.FileFeignApi' of type [org.springframework.cloud.openfeign.FeignClientFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-02-06 12:18:20.435 [main] INFO  c.a.d.s.b.a.DruidDataSourceAutoConfigure - Init DruidDataSource
+2026-02-06 12:18:20.873 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2026-02-06 12:18:21.426 [main] INFO  o.s.c.o.FeignClientFactoryBean - For 'communitysharing-oss' URL not provided. Will try picking an instance via load-balancing.
+2026-02-06 12:18:21.809 [main] INFO  o.s.c.o.FeignClientFactoryBean - For 'communitysharing-distributed-id-constructor' URL not provided. Will try picking an instance via load-balancing.
+2026-02-06 12:18:23.244 [main] INFO  c.c.user.business.DruidTest - Started DruidTest in 5.833 seconds (process running for 6.855)
+2026-02-06 12:18:23.245 [main] INFO  c.c.u.b.r.PushRolePermissionToRedisByRunning - == 项目启动 ==> 将数据库角色权限关系推送到Redis中
+2026-02-06 12:18:23.755 [main] INFO  c.c.u.b.r.PushRolePermissionToRedisByRunning - == 项目启动 ==> 锁已存在，正在等待锁释放
+2026-02-06 12:18:23.758 [main] INFO  c.a.n.client.config.impl.CacheData - nacos.cache.data.init.snapshot = true 
+2026-02-06 12:18:23.759 [main] INFO  c.a.n.c.config.impl.ClientWorker - [fixed-2e254952-9803-4eae-8771-b086042c797f-127.0.0.1_8848] [subscribe] communitysharing-user.yaml+DEFAULT_GROUP+2e254952-9803-4eae-8771-b086042c797f
+2026-02-06 12:18:23.764 [main] INFO  c.a.n.client.config.impl.CacheData - [fixed-2e254952-9803-4eae-8771-b086042c797f-127.0.0.1_8848] [add-listener] ok, tenant=2e254952-9803-4eae-8771-b086042c797f, dataId=communitysharing-user.yaml, group=DEFAULT_GROUP, cnt=1
+2026-02-06 12:18:23.765 [main] INFO  c.a.c.n.r.NacosContextRefresher - [Nacos Config] Listening config: dataId=communitysharing-user.yaml, group=DEFAULT_GROUP
+2026-02-06 12:18:23.765 [main] INFO  c.a.n.c.config.impl.ClientWorker - [fixed-2e254952-9803-4eae-8771-b086042c797f-127.0.0.1_8848] [subscribe] communitysharing-user+DEFAULT_GROUP+2e254952-9803-4eae-8771-b086042c797f
+2026-02-06 12:18:23.765 [main] INFO  c.a.n.client.config.impl.CacheData - [fixed-2e254952-9803-4eae-8771-b086042c797f-127.0.0.1_8848] [add-listener] ok, tenant=2e254952-9803-4eae-8771-b086042c797f, dataId=communitysharing-user, group=DEFAULT_GROUP, cnt=1
+2026-02-06 12:18:23.765 [main] INFO  c.a.c.n.r.NacosContextRefresher - [Nacos Config] Listening config: dataId=communitysharing-user, group=DEFAULT_GROUP
+2026-02-06 12:18:23.766 [main] INFO  c.a.n.c.config.impl.ClientWorker - [fixed-2e254952-9803-4eae-8771-b086042c797f-127.0.0.1_8848] [subscribe] communitysharing-user-dev.yaml+DEFAULT_GROUP+2e254952-9803-4eae-8771-b086042c797f
+2026-02-06 12:18:23.766 [main] INFO  c.a.n.client.config.impl.CacheData - [fixed-2e254952-9803-4eae-8771-b086042c797f-127.0.0.1_8848] [add-listener] ok, tenant=2e254952-9803-4eae-8771-b086042c797f, dataId=communitysharing-user-dev.yaml, group=DEFAULT_GROUP, cnt=1
+2026-02-06 12:18:23.766 [main] INFO  c.a.c.n.r.NacosContextRefresher - [Nacos Config] Listening config: dataId=communitysharing-user-dev.yaml, group=DEFAULT_GROUP
+2026-02-06 12:18:24.027 [main] INFO  c.c.user.business.DruidTest - 集合不会空：[]
+2026-02-06 12:18:24.035 [Thread-1] WARN  c.a.n.c.http.HttpClientBeanHolder - [HttpClientBeanHolder] Start destroying common HttpClient
+2026-02-06 12:18:24.035 [Thread-7] WARN  c.a.nacos.common.notify.NotifyCenter - [NotifyCenter] Start destroying Publisher
+2026-02-06 12:18:24.036 [Thread-7] WARN  c.a.nacos.common.notify.NotifyCenter - [NotifyCenter] Destruction of the end
+2026-02-06 12:18:24.036 [Thread-1] WARN  c.a.n.c.http.HttpClientBeanHolder - [HttpClientBeanHolder] Destruction of the end
+2026-02-06 12:18:24.172 [SpringApplicationShutdownHook] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
+2026-02-06 12:18:24.178 [SpringApplicationShutdownHook] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed
+2026-02-06 12:19:30.681 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-02-06 12:19:30.727 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-02-06 12:19:30.897 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-02-06 12:19:30.898 [main] INFO  c.a.nacos.client.utils.ParamUtil - [settings] [req-serv] nacos-server port:8848
+2026-02-06 12:19:30.899 [main] INFO  c.a.nacos.client.utils.ParamUtil - [settings] [http-client] connect timeout:1000
+2026-02-06 12:19:30.900 [main] INFO  c.a.nacos.client.utils.ParamUtil - PER_TASK_CONFIG_SIZE: 3000.0
+2026-02-06 12:19:30.930 [main] INFO  c.a.n.p.a.s.c.ClientAuthPluginManager - [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.impl.NacosClientAuthServiceImpl success.
+2026-02-06 12:19:30.931 [main] INFO  c.a.n.p.a.s.c.ClientAuthPluginManager - [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.ram.RamClientAuthServiceImpl success.
+2026-02-06 12:19:30.933 [main] INFO  c.a.n.c.a.r.i.CredentialWatcher - null No credential found
+2026-02-06 12:19:31.263 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-02-06 12:19:31.277 [main] INFO  c.a.n.c.c.i.LocalConfigInfoProcessor - LOCAL_SNAPSHOT_PATH:C:\Users\moonth\nacos\config
+2026-02-06 12:19:31.282 [main] INFO  c.alibaba.nacos.common.remote.client - [RpcClientFactory] create a new rpc client of ed112d46-9208-411a-9e7d-cce7a993400d_config-0
+2026-02-06 12:19:31.299 [main] INFO  c.alibaba.nacos.common.remote.client - [ed112d46-9208-411a-9e7d-cce7a993400d_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$932/0x000000080106f5a8
+2026-02-06 12:19:31.300 [main] INFO  c.alibaba.nacos.common.remote.client - [ed112d46-9208-411a-9e7d-cce7a993400d_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$933/0x000000080106f9c8
+2026-02-06 12:19:31.300 [main] INFO  c.alibaba.nacos.common.remote.client - [ed112d46-9208-411a-9e7d-cce7a993400d_config-0] Registry connection listener to current client:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$1
+2026-02-06 12:19:31.301 [main] INFO  c.alibaba.nacos.common.remote.client - [ed112d46-9208-411a-9e7d-cce7a993400d_config-0] RpcClient init, ServerListFactory = com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$2
+2026-02-06 12:19:31.308 [main] INFO  c.alibaba.nacos.common.remote.client - [ed112d46-9208-411a-9e7d-cce7a993400d_config-0] Try to connect to server on start up, server: {serverIp = '127.0.0.1', server main port = 8848}
+2026-02-06 12:19:31.342 [main] INFO  c.a.n.c.r.client.grpc.GrpcClient - grpc client connection server:127.0.0.1 ip,serverPort:9848,grpcTslConfig:{"sslProvider":"OPENSSL","enableTls":false,"mutualAuthEnable":false,"trustAll":false}
+2026-02-06 12:19:32.111 [main] INFO  c.alibaba.nacos.common.remote.client - [ed112d46-9208-411a-9e7d-cce7a993400d_config-0] Success to connect to server [127.0.0.1:8848] on start up, connectionId = 1770351571942_172.17.0.1_59220
+2026-02-06 12:19:32.112 [com.alibaba.nacos.client.remote.worker] INFO  c.alibaba.nacos.common.remote.client - [ed112d46-9208-411a-9e7d-cce7a993400d_config-0] Notify connected event to listeners.
+2026-02-06 12:19:32.112 [main] INFO  c.alibaba.nacos.common.remote.client - [ed112d46-9208-411a-9e7d-cce7a993400d_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$ConnectResetRequestHandler
+2026-02-06 12:19:32.113 [com.alibaba.nacos.client.remote.worker] INFO  c.a.n.c.config.impl.ClientWorker - [ed112d46-9208-411a-9e7d-cce7a993400d_config-0] Connected,notify listen context...
+2026-02-06 12:19:32.113 [main] INFO  c.alibaba.nacos.common.remote.client - [ed112d46-9208-411a-9e7d-cce7a993400d_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$$Lambda$952/0x00000008011d76d0
+2026-02-06 12:19:32.140 [main] INFO  c.a.nacos.client.config.impl.Limiter - limitTime:5.0
+2026-02-06 12:19:32.155 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[communitysharing-user] & group[DEFAULT_GROUP]
+2026-02-06 12:19:32.161 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[communitysharing-user.yaml] & group[DEFAULT_GROUP]
+2026-02-06 12:19:32.166 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[communitysharing-user-dev.yaml] & group[DEFAULT_GROUP]
+2026-02-06 12:19:32.167 [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: [BootstrapPropertySource {name='bootstrapProperties-communitysharing-user-dev.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-communitysharing-user.yaml,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-communitysharing-user,DEFAULT_GROUP'}]
+2026-02-06 12:19:32.203 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-02-06 12:19:32.204 [main] INFO  c.c.user.business.DruidTest - The following 1 profile is active: "dev"
+2026-02-06 12:19:32.852 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2026-02-06 12:19:32.855 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-02-06 12:19:32.876 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 10 ms. Found 0 Redis repository interfaces.
+2026-02-06 12:19:33.112 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=642dba68-528e-3370-a58b-57b779654941
+2026-02-06 12:19:33.165 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'api.constructor.id.distributed.com.taoxin.communitysharing.search.IdConstructorFeignApi' of type [org.springframework.cloud.openfeign.FeignClientFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-02-06 12:19:33.167 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'api.user.com.taoxin.communitysharing.search.UserFeignApi' of type [org.springframework.cloud.openfeign.FeignClientFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-02-06 12:19:33.168 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'com.taoxin.communitysharing.oss.api.FileFeignApi' of type [org.springframework.cloud.openfeign.FeignClientFactoryBean] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2026-02-06 12:19:33.457 [main] INFO  c.a.d.s.b.a.DruidDataSourceAutoConfigure - Init DruidDataSource
+2026-02-06 12:19:33.900 [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+2026-02-06 12:19:34.487 [main] INFO  o.s.c.o.FeignClientFactoryBean - For 'communitysharing-oss' URL not provided. Will try picking an instance via load-balancing.
+2026-02-06 12:19:34.870 [main] INFO  o.s.c.o.FeignClientFactoryBean - For 'communitysharing-distributed-id-constructor' URL not provided. Will try picking an instance via load-balancing.
+2026-02-06 12:19:36.126 [main] INFO  c.c.user.business.DruidTest - Started DruidTest in 5.9 seconds (process running for 6.937)
+2026-02-06 12:19:36.127 [main] INFO  c.c.u.b.r.PushRolePermissionToRedisByRunning - == 项目启动 ==> 将数据库角色权限关系推送到Redis中
+2026-02-06 12:19:36.502 [main] INFO  c.c.u.b.r.PushRolePermissionToRedisByRunning - == 项目启动 ==> 锁已存在，正在等待锁释放
+2026-02-06 12:19:36.505 [main] INFO  c.a.n.client.config.impl.CacheData - nacos.cache.data.init.snapshot = true 
+2026-02-06 12:19:36.506 [main] INFO  c.a.n.c.config.impl.ClientWorker - [fixed-2e254952-9803-4eae-8771-b086042c797f-127.0.0.1_8848] [subscribe] communitysharing-user.yaml+DEFAULT_GROUP+2e254952-9803-4eae-8771-b086042c797f
+2026-02-06 12:19:36.511 [main] INFO  c.a.n.client.config.impl.CacheData - [fixed-2e254952-9803-4eae-8771-b086042c797f-127.0.0.1_8848] [add-listener] ok, tenant=2e254952-9803-4eae-8771-b086042c797f, dataId=communitysharing-user.yaml, group=DEFAULT_GROUP, cnt=1
+2026-02-06 12:19:36.512 [main] INFO  c.a.c.n.r.NacosContextRefresher - [Nacos Config] Listening config: dataId=communitysharing-user.yaml, group=DEFAULT_GROUP
+2026-02-06 12:19:36.512 [main] INFO  c.a.n.c.config.impl.ClientWorker - [fixed-2e254952-9803-4eae-8771-b086042c797f-127.0.0.1_8848] [subscribe] communitysharing-user+DEFAULT_GROUP+2e254952-9803-4eae-8771-b086042c797f
+2026-02-06 12:19:36.512 [main] INFO  c.a.n.client.config.impl.CacheData - [fixed-2e254952-9803-4eae-8771-b086042c797f-127.0.0.1_8848] [add-listener] ok, tenant=2e254952-9803-4eae-8771-b086042c797f, dataId=communitysharing-user, group=DEFAULT_GROUP, cnt=1
+2026-02-06 12:19:36.512 [main] INFO  c.a.c.n.r.NacosContextRefresher - [Nacos Config] Listening config: dataId=communitysharing-user, group=DEFAULT_GROUP
+2026-02-06 12:19:36.512 [main] INFO  c.a.n.c.config.impl.ClientWorker - [fixed-2e254952-9803-4eae-8771-b086042c797f-127.0.0.1_8848] [subscribe] communitysharing-user-dev.yaml+DEFAULT_GROUP+2e254952-9803-4eae-8771-b086042c797f
+2026-02-06 12:19:36.513 [main] INFO  c.a.n.client.config.impl.CacheData - [fixed-2e254952-9803-4eae-8771-b086042c797f-127.0.0.1_8848] [add-listener] ok, tenant=2e254952-9803-4eae-8771-b086042c797f, dataId=communitysharing-user-dev.yaml, group=DEFAULT_GROUP, cnt=1
+2026-02-06 12:19:36.513 [main] INFO  c.a.c.n.r.NacosContextRefresher - [Nacos Config] Listening config: dataId=communitysharing-user-dev.yaml, group=DEFAULT_GROUP
+2026-02-06 12:19:36.767 [main] INFO  c.c.user.business.DruidTest - 集合不会空：[null, null, null]
+2026-02-06 12:19:36.767 [main] INFO  c.c.user.business.DruidTest - (过滤后)集合为空：[]
+2026-02-06 12:19:36.780 [Thread-7] WARN  c.a.nacos.common.notify.NotifyCenter - [NotifyCenter] Start destroying Publisher
+2026-02-06 12:19:36.780 [Thread-1] WARN  c.a.n.c.http.HttpClientBeanHolder - [HttpClientBeanHolder] Start destroying common HttpClient
+2026-02-06 12:19:36.780 [Thread-7] WARN  c.a.nacos.common.notify.NotifyCenter - [NotifyCenter] Destruction of the end
+2026-02-06 12:19:36.780 [Thread-1] WARN  c.a.n.c.http.HttpClientBeanHolder - [HttpClientBeanHolder] Destruction of the end
+2026-02-06 12:19:36.902 [SpringApplicationShutdownHook] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closing ...
+2026-02-06 12:19:36.908 [SpringApplicationShutdownHook] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} closed

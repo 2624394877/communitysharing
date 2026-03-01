@@ -1,0 +1,2 @@
+com.taoxin.communitysharing.framework.business.context.config.ContextAutoConfiguration
+com.taoxin.communitysharing.framework.business.context.config.FeignRequestAutoConfiguration

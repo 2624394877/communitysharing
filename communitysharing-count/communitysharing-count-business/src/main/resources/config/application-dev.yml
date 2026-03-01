@@ -1,0 +1,68 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 数据库连接信息
+    url: jdbc:mysql://localhost:3306/communitysharing?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: VJ6H6FjreczZiecFzeMpT1fsSpwDbvfSiiKfOAWh8TIOm4+n8Rt+jFBQrh1eep/ddyXc/ddf3D6SVZ9TfY/1IG/DT+qwLcFOGQ0j+UU8G6j2RZE9Kf/cR4O6UhQrgg0fdTqfndBVltlH4NTSBcvaWDbkFyA5C7Le98NJ86dfkUs=
+    type: com.alibaba.druid.pool.DruidDataSource # druid数据源
+    druid:
+      initial-size: 5 # druid连接池配置
+      min-idle: 5 # 最小连接数
+      max-active: 20 # 最大连接数
+      max-wait: 60000 # 获取连接最大等待时间
+      time-between-eviction-runs-millis: 60000 # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      min-evictable-idle-time-millis: 300000 # 配置一个连接在池中最小生存的时间，单位是毫秒
+      validation-query: SELECT 1 FROM DUAL # 配置检测连接是否有效的查询语句
+      connection-properties: config.decrypt=true;config.decrypt.key=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCib7v8geFaVHYLVB2+onXe3cWexJjniebSd6vaZSTLzc3Vp7HRaYe7oGVEzoP2VW9kKdhgKHtWib7Kx25n2zv5yc7cbzETdYAS5USj7qknmKNF/b8YkLGNMzH19iEcVK2sPt5QPd0PZohDZ2O48AnKH8uKsFnmlhCIw/yOv1SdRwIDAQAB
+      test-on-borrow: false # 配置连接池中连接的检测方式
+      test-on-return: false # 配置连接池中连接的检测方式
+      pool-prepared-statements: false # 配置是否使用缓存Statement，即PSCache
+      web-stat-filter:
+        enabled: true # 启动过滤器
+      stat-view-servlet:
+        enabled: true # 启动servlet
+        url-pattern: /druid/* # 配置servlet的访问路径
+        login-username: admin # 配置用户名
+        login-password: admin
+      filter: # 配置过滤器
+        config:
+          enabled: true # 启动过滤器
+        stat:
+          enabled: true
+          log-slow-sql: true # 显示慢sql
+          slow-sql-millis: 2000 # 慢sql的毫秒数
+          merge-sql: true # 合并sql 作用： 配置多个sql
+        wall: # 配置防火墙
+          config:
+            multi-statement-allow: true # 配置是否允许执行多个sql
+
+  data:
+    redis:
+      database: 0
+      host: localhost
+      port: 6379
+      password: redispass123@
+      timeout: 5s # 配置超时时间
+      lettuce: # 配置lettuce
+        pool:
+          max-active: 200
+          max-idle: 10 # 配置连接池最大连接数
+          min-idle: 0 # 配置连接池最小连接数
+          max-wait: -1ms # 配置连接池最大等待时间
+
+logging:
+  level:
+    com.taoxin.communitysharing.count.business.domain.mapper: debug
+
+rocketmq:
+  name-server: 127.0.0.1:9876 # rocketmq的name-server（这里是docker的）
+  producer:
+    group: communitysharing_group # 生产者组
+    send-message-timeout: 3000 # 发送消息超时时间
+    retry-times-when-send-failed: 3 # 发送失败重试次数
+    retry-times-when-send-async-failed: 3 # 异步发送失败重试次数
+    max-message-size: 4096 # 最大消息大小 单位字节
+  consumer:
+    group: communitysharing_group # 消费者组
+    pull-batch-size: 5 # 拉取批量大小

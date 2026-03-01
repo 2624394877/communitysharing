@@ -1,0 +1,24 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.communitysharing</groupId>
+        <artifactId>communitysharing</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <packaging>pom</packaging>
+
+    <artifactId>communitysharing-count</artifactId>
+    <name>${project.artifactId}</name>
+    <description>计数模块，包含(用户发布的内容数，用户的关注数，用户的粉丝数，点赞收藏数，评论数。。。)</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <modules>
+        <module>communitysharing-count-api</module>
+        <module>communitysharing-count-business</module>
+    </modules>
+</project>

@@ -1,0 +1,19 @@
+package com.taoxin.communitysharing.gateway.rpc;
+
+import com.taoxin.communitysharing.notify.api.NotifyFeignApi;
+import com.taoxin.communitysharing.notify.dto.NotifyDTO;
+import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+@Service
+@Slf4j
+public class NotifyFeignService {
+    @Resource
+    private NotifyFeignApi notifyFeignApi;
+
+    public void sendNotify(NotifyDTO notifyDTO) {
+        log.info("==== 发送通知消息 ====> {}", notifyDTO);
+        notifyFeignApi.send(notifyDTO);
+    }
+}

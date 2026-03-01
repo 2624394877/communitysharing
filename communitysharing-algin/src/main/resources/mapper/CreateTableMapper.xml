@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taoxin.communitysharing.algin.domain.mapper.CreateTableMapper">
+    <insert id="createDataAlignFollowingCountTempTable" parameterType="map">
+        CREATE TABLE IF NOT EXISTS `t_data_align_following_count_temp_${tableNameSuffix}` (
+            `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+            `user_id` bigint unsigned NOT NULL COMMENT '用户ID',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_user_id` (`user_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='数据对齐日增量表：关注数';
+    </insert>
+    <insert id="createDataAlignFansCountTempTable" parameterType="map">
+        CREATE TABLE IF NOT EXISTS `t_data_align_fans_count_temp_${tableNameSuffix}` (
+            `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+            `user_id` bigint unsigned NOT NULL COMMENT '用户ID',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_user_id` (`user_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='数据对齐日增量表：粉丝数';
+    </insert>
+    <insert id="createDataAlignCollectCountTemTable" parameterType="map">
+        CREATE TABLE IF NOT EXISTS `t_data_align_content_collect_count_temp_${tableNameSuffix}` (
+            `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+            `content_id` bigint unsigned NOT NULL COMMENT '笔记ID',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_content_id` (`content_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='数据对齐日增量表：收藏数';
+    </insert>
+    <insert id="createDataAlignLikeCountTemTable" parameterType="map">
+        CREATE TABLE IF NOT EXISTS `t_data_align_content_like_count_temp_${tableNameSuffix}` (
+            `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+            `content_id` bigint unsigned NOT NULL COMMENT '内容ID',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_content_id` (`content_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='数据对齐日增量表：点赞数';
+    </insert>
+    <insert id="createDataAlignUserCollectCountTemTable" parameterType="map">
+        CREATE TABLE IF NOT EXISTS `t_data_align_user_collect_count_temp_${tableNameSuffix}` (
+            `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+            `user_id` bigint unsigned NOT NULL COMMENT '用户ID',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_user_id` (`user_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='数据对齐日增量表：用户获得收藏数';
+    </insert>
+    <insert id="createDataAlignUserLikeCountTemTable" parameterType="map">
+        CREATE TABLE IF NOT EXISTS `t_data_align_user_like_count_temp_${tableNameSuffix}` (
+            `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+            `user_id` bigint unsigned NOT NULL COMMENT '用户ID',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_user_id` (`user_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='数据对齐日增量表：用户获得点赞数';
+    </insert>
+    <insert id="createDataAlignUserPublishCountTemTable" parameterType="map">
+        CREATE TABLE IF NOT EXISTS `t_data_align_content_publish_count_temp_${tableNameSuffix}` (
+            `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+            `user_id` bigint unsigned NOT NULL COMMENT '用户ID',
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE KEY `uk_user_id` (`user_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='数据对齐日增量表：用户发布数';
+    </insert>
+</mapper>

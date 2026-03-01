@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.taoxin.communitysharing.algin.domain.mapper.InsertMapper">
+    <insert id="insertDataAlignContentLikeCountTempTable" parameterType="map">
+        insert into `t_data_align_content_like_count_temp_${tableNameSuffix}` (content_id) values (#{contentId})
+    </insert>
+    <insert id="insertDataAlignUserLikeCountTempTable" parameterType="map">
+        insert into `t_data_align_user_like_count_temp_${tableNameSuffix}` (user_id) values (#{userId})
+    </insert>
+    <insert id="insertDataAlignContentCollectCountTempTable" parameterType="map">
+        insert into  `t_data_align_content_collect_count_temp_${tableNameSuffix}` (content_id) values (#{contentId})
+    </insert>
+    <insert id="insertDataAlignUserCollectCountTempTable" parameterType="map">
+        insert into `t_data_align_user_collect_count_temp_${tableNameSuffix}` (user_id) values (#{userId})
+    </insert>
+    <insert id="insertDataAlignContentPublishCountTempTable" parameterType="map">
+        insert into `t_data_align_content_publish_count_temp_${tableNameSuffix}` (user_id) values (#{userId})
+    </insert>
+    <insert id="insertDataAlignContentFollowCountTempTable" parameterType="map">
+        insert into `t_data_align_following_count_temp_${tableNameSuffix}` (user_id) values (#{userId})
+    </insert>
+    <insert id="insertDataAlignContentFanCountTempTable" parameterType="map">
+        insert into `t_data_align_fans_count_temp_${tableNameSuffix}` (user_id) values (#{userId})
+    </insert>
+</mapper>

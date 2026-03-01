@@ -1,0 +1,12 @@
+server:
+  port: 8082
+spring:
+  profiles:
+    active: dev
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+storage:
+  type: minio # oss存储方式 minio / aliyun
