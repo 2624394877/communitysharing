@@ -171,10 +171,12 @@ public class Comment2DBConsumer {
                 });
                 if (Objects.nonNull(result) && result > 0) {
                     // 构建计数消息
-                    List<CountPublishCommentMqDTO> countPublishCommentMqDTOS = publishCommentMqDTOS.stream()
-                            .map(publishCommentMqDTO -> CountPublishCommentMqDTO.builder()
-                                    .contentId(publishCommentMqDTO.getContentId())
-                                    .commentId(publishCommentMqDTO.getCommentId())
+                    List<CountPublishCommentMqDTO> countPublishCommentMqDTOS = commentBOS.stream()
+                            .map(commentBo -> CountPublishCommentMqDTO.builder()
+                                    .contentId(commentBo.getContentId())
+                                    .commentId(commentBo.getId())
+                                    .level(commentBo.getLevel())
+                                    .parentId(commentBo.getParentId())
                                     .build()
                             )
                             .toList();

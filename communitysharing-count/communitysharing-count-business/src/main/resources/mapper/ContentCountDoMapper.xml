@@ -74,7 +74,12 @@
         values (#{contentId,jdbcType=BIGINT}, #{collectTotal,jdbcType=BIGINT})
         on duplicate key update collect_total = collect_total + (#{collectTotal,jdbcType=BIGINT})
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.taoxin.communitysharing.count.business.domain.databaseObject.ContentCountDo">
+  <insert id="insertOrUpdateCommentTotalByContentId" parameterType="map">
+    insert into t_content_count (content_id, comment_total)
+    values (#{contentId}, #{count})
+    on duplicate key update comment_total = comment_total + (#{count})
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.taoxin.communitysharing.count.business.domain.databaseObject.ContentCountDo">
     update t_content_count
     <set>
       <if test="contentId != null">

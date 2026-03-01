@@ -53,7 +53,7 @@
         <!-- 配置MyBatis-Generator的表映射规则
             禁用Example相关的功能（计数、更新、删除、查询）
          -->
-        <table tableName="t_content_count" domainObjectName="ContentCountDo"
+        <table tableName="t_comment" domainObjectName="CommentDo"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"

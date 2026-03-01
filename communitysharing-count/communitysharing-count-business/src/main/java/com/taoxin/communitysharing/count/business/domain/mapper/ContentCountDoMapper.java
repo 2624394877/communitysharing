@@ -19,4 +19,6 @@ public interface ContentCountDoMapper {
     void insertOrUpdateCollectTotalByContentId(@Param("contentId") Long contentId,@Param("collectTotal") Integer collectTotal);
 
     void insertOrUpdateLikeTotalByContentId(@Param("contentId") Long contentId, @Param("likeTotal") Integer likeTotal);
+
+    int insertOrUpdateCommentTotalByContentId(@Param("count") int count, @Param("contentId") Long contentId);
 }

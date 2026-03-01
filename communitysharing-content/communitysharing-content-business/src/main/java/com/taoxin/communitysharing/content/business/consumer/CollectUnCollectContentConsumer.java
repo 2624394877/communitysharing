@@ -8,7 +8,6 @@ import com.taoxin.communitysharing.content.business.constant.MQConstant;
 import com.taoxin.communitysharing.content.business.domain.databaseObject.ContentCollectionDo;
 import com.taoxin.communitysharing.content.business.domain.mapper.ContentCollectionDoMapper;
 import com.taoxin.communitysharing.content.business.model.dto.ContentCollectUnCollectMQDTO;
-import com.taoxin.communitysharing.content.business.model.dto.LikeUnlikeMQDTO;
 import jakarta.annotation.PreDestroy;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;

@@ -10,8 +10,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CountPublishCommentMqDTO {
-    // 内容id
+    /**
+     * 内容id
+     */
     private Long contentId;
-    // 评论id
+    /**
+     * 评论id
+     */
     private Long commentId;
+    /**
+     * 评论层级
+     */
+    private Integer level;
+    /**
+     * 父级评论id
+     */
+    private Long parentId;
 }

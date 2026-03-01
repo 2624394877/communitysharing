@@ -19,4 +19,14 @@ public class CountPublishCommentMqDTO {
      * 评论id
      */
     private Long commentId;
+
+    /**
+     * 评论层级
+     */
+    private Integer level;
+
+    /**
+     * 父级评论id
+     */
+    private Long parentId;
 }
