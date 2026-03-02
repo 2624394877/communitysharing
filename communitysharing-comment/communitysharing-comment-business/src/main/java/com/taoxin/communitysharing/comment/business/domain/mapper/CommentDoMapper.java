@@ -34,4 +34,8 @@ public interface CommentDoMapper {
     CommentDo selectEarliestByParentId(Long parentId);
 
     int updateFirstReplyCommentIdByPrimaryKey(@Param("firstReplyCommentId") Long firstReplyCommentId, @Param("commentId") Long commentId);
+
+    List<CommentDo> selectPageList(@Param("contentId") Long contentId,@Param("offset") long offset,@Param("pageSize") long pageSize);
+
+    List<CommentDo> selectTwoLevelCommentByIds(@Param("commentIds") List<Long> commentIds);
 }

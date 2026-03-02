@@ -3,6 +3,7 @@ package com.taoxin.communitysharing.comment.business.service;
 import com.taoxin.communitysharing.comment.business.model.vo.req.CommentPublishReqVo;
 import com.taoxin.communitysharing.comment.business.model.vo.req.FindCommentPageListReqVo;
 import com.taoxin.communitysharing.comment.business.model.vo.res.FindCommentItemRspVo;
+import com.taoxin.communitysharing.common.response.PageResponse;
 import com.taoxin.communitysharing.common.response.Response;
 
 public interface CommentServer {
@@ -13,5 +14,5 @@ public interface CommentServer {
      */
     Response<?> publishComtent(CommentPublishReqVo commentPublishReqVo);
 
-    Response<FindCommentItemRspVo> findCommentPageList(FindCommentPageListReqVo findCommentPageListReqVo);
+    PageResponse<FindCommentItemRspVo> findCommentPageList(FindCommentPageListReqVo findCommentPageListReqVo);
 }

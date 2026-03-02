@@ -12,6 +12,11 @@ public class PageResponse<T> extends Response<List<T>>{
 
     /**
      * 获取分页数据
+     * @param data 数据列表
+     * @param pageNo 当前页码
+     * @param totalCount 总数据量
+     * @return 响应
+     * @param <T> 数据类型
      */
     public static <T> PageResponse<T> success(List<T> data, long pageNo, long totalCount) {
         PageResponse<T> pageResponse = new PageResponse<>();
@@ -60,9 +65,9 @@ public class PageResponse<T> extends Response<List<T>>{
 
     /**
      * 计算分页查询的 offset
-     * @param pageNo
-     * @param pageSize
-     * @return
+     * @param pageNo 当前页码
+     * @param pageSize 每页展示的数据量
+     * @return  offset
      */
     public static long getOffset(long pageNo, long pageSize) {
         // 如果页码小于 1，默认返回第一页的 offset

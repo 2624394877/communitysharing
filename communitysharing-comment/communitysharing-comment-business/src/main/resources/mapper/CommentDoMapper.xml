@@ -40,6 +40,21 @@
   <select id="selectEarliestByParentId" resultType="com.taoxin.communitysharing.comment.business.domain.databaseObject.CommentDo" parameterType="map">
     select id from t_comment where parent_id = #{parentId} and `level` = 2 order by create_time asc limit 1
   </select>
+  <select id="selectPageList" parameterType="map" resultMap="BaseResultMap">
+    select id, user_id, content_uuid, is_content_empty, image_url, reply_total,
+    like_total, is_top, create_time, child_comment_total, first_reply_comment_id
+    from t_comment where content_id = #{contentId} and `level` = 1
+    order by heat desc, create_time desc
+    limit #{offset}, #{pageSize}
+  </select>
+  <select id="selectTwoLevelCommentByIds" resultMap="BaseResultMap" parameterType="map">
+    select id, user_id, content_uuid, is_content_empty, image_url,
+    like_total, create_time
+    from t_comment where id in
+    <foreach collection="commentIds" item="commentId" open="(" index="index" separator="," close=")">
+      #{commentId}
+    </foreach>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_comment
     where id = #{id,jdbcType=BIGINT}

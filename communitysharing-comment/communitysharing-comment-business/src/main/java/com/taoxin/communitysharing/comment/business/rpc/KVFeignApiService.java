@@ -27,7 +27,7 @@ public class KVFeignApiService {
     @Resource
     private KVFeignApi kvFeignApi;
 
-    public List<FindCommentContentRspDTO> saveCommentContent(Long contentId, List<FindCommentContentReqDTO> commentContentKeys) {
+    public List<FindCommentContentRspDTO> QueryCommentContentList(Long contentId, List<FindCommentContentReqDTO> commentContentKeys) {
         BatchFindCommentContentReqDTO batchFindCommentContentReqDTO = BatchFindCommentContentReqDTO.builder()
                 .contentId(contentId)
                 .commentContentKeys(commentContentKeys)
