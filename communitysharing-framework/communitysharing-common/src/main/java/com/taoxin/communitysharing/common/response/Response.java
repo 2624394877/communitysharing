@@ -10,7 +10,7 @@ import java.io.Serializable;
  * 统一响应类，封装了请求响应的数据格式，包括响应状态、错误码、错误信息和响应数据
  * 支持泛型，可以灵活处理各种类型的响应数据
  * 提供了静态方法用于创建成功和失败的响应实例
- * Serializable:
+ * Serializable: 该类实现了Serializable接口，表示该类可以进行序列化，以便在网络传输中传输对象。
  */
 @Data //  添加getter和setter方法
 public class Response<T> implements Serializable {

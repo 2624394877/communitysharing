@@ -1,16 +1,16 @@
 package com.taoxin.communitysharing.KV.api;
 
-import com.taoxin.communitysharing.KV.dto.request.AddBatchCommentContentReqDTO;
+import com.taoxin.communitysharing.KV.dto.request.*;
+import com.taoxin.communitysharing.KV.dto.response.FindCommentContentRspDTO;
 import com.taoxin.communitysharing.common.response.Response;
 import com.taoxin.communitysharing.KV.constant.ApiConstant;
-import com.taoxin.communitysharing.KV.dto.request.AddSharingContentRequestDTO;
-import com.taoxin.communitysharing.KV.dto.request.DeleteSharingContentRequestDTO;
-import com.taoxin.communitysharing.KV.dto.request.FindSharingContentRequestDTO;
 import com.taoxin.communitysharing.KV.dto.response.FindSharingContentResponseDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.List;
 
 @FeignClient(name = ApiConstant.SERVICE_NAME)
 public interface KVFeignApi {
@@ -26,4 +26,7 @@ public interface KVFeignApi {
 
     @PostMapping(value = PREFIX + "/sharing/content/addBatchComment")
     Response<?> addBatchComment(@Validated @RequestBody AddBatchCommentContentReqDTO requestDTO);
+
+    @PostMapping(value = PREFIX + "/sharing/content/batch/query")
+    Response<List<FindCommentContentRspDTO>> batchQuery(@Validated @RequestBody BatchFindCommentContentReqDTO requestDTO);
 }

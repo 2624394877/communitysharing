@@ -123,6 +123,11 @@
 
         <dependency>
             <groupId>com.communitysharing</groupId>
+            <artifactId>communitysharing-user-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.communitysharing</groupId>
             <artifactId>communitysharing-distributed-id-constructor-api</artifactId>
         </dependency>
 

@@ -167,3 +167,610 @@
 2026-03-02 16:06:05.683 [SpringApplicationShutdownHook] INFO  c.a.n.c.a.r.i.CredentialService - [null] CredentialService is freed
 2026-03-02 16:06:05.683 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - com.alibaba.nacos.client.naming.remote.NamingClientProxyDelegate do shutdown stop
 2026-03-02 16:06:05.692 [com.alibaba.nacos.client.Worker] INFO  c.a.n.c.a.r.i.CredentialWatcher - null No credential found
+2026-03-02 16:14:44.361 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-03-02 16:14:44.427 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-03-02 16:14:44.605 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-03-02 16:14:44.607 [main] INFO  c.a.nacos.client.utils.ParamUtil - [settings] [req-serv] nacos-server port:8848
+2026-03-02 16:14:44.607 [main] INFO  c.a.nacos.client.utils.ParamUtil - [settings] [http-client] connect timeout:1000
+2026-03-02 16:14:44.608 [main] INFO  c.a.nacos.client.utils.ParamUtil - PER_TASK_CONFIG_SIZE: 3000.0
+2026-03-02 16:14:44.637 [main] INFO  c.a.n.p.a.s.c.ClientAuthPluginManager - [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.impl.NacosClientAuthServiceImpl success.
+2026-03-02 16:14:44.638 [main] INFO  c.a.n.p.a.s.c.ClientAuthPluginManager - [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.ram.RamClientAuthServiceImpl success.
+2026-03-02 16:14:44.642 [main] INFO  c.a.n.c.a.r.i.CredentialWatcher - null No credential found
+2026-03-02 16:14:44.974 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-03-02 16:14:44.986 [main] INFO  c.a.n.c.c.i.LocalConfigInfoProcessor - LOCAL_SNAPSHOT_PATH:C:\Users\moonth\nacos\config
+2026-03-02 16:14:44.990 [main] INFO  c.alibaba.nacos.common.remote.client - [RpcClientFactory] create a new rpc client of 744dcf2b-0ffd-4082-8806-be558580292d_config-0
+2026-03-02 16:14:45.005 [main] INFO  c.alibaba.nacos.common.remote.client - [744dcf2b-0ffd-4082-8806-be558580292d_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$584/0x0000000800f8e1d0
+2026-03-02 16:14:45.006 [main] INFO  c.alibaba.nacos.common.remote.client - [744dcf2b-0ffd-4082-8806-be558580292d_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$585/0x0000000800f8e5f0
+2026-03-02 16:14:45.006 [main] INFO  c.alibaba.nacos.common.remote.client - [744dcf2b-0ffd-4082-8806-be558580292d_config-0] Registry connection listener to current client:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$1
+2026-03-02 16:14:45.007 [main] INFO  c.alibaba.nacos.common.remote.client - [744dcf2b-0ffd-4082-8806-be558580292d_config-0] RpcClient init, ServerListFactory = com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$2
+2026-03-02 16:14:45.014 [main] INFO  c.alibaba.nacos.common.remote.client - [744dcf2b-0ffd-4082-8806-be558580292d_config-0] Try to connect to server on start up, server: {serverIp = '127.0.0.1', server main port = 8848}
+2026-03-02 16:14:45.053 [main] INFO  c.a.n.c.r.client.grpc.GrpcClient - grpc client connection server:127.0.0.1 ip,serverPort:9848,grpcTslConfig:{"sslProvider":"OPENSSL","enableTls":false,"mutualAuthEnable":false,"trustAll":false}
+2026-03-02 16:14:45.808 [main] INFO  c.alibaba.nacos.common.remote.client - [744dcf2b-0ffd-4082-8806-be558580292d_config-0] Success to connect to server [127.0.0.1:8848] on start up, connectionId = 1772439285650_172.17.0.1_51186
+2026-03-02 16:14:45.809 [com.alibaba.nacos.client.remote.worker] INFO  c.alibaba.nacos.common.remote.client - [744dcf2b-0ffd-4082-8806-be558580292d_config-0] Notify connected event to listeners.
+2026-03-02 16:14:45.809 [main] INFO  c.alibaba.nacos.common.remote.client - [744dcf2b-0ffd-4082-8806-be558580292d_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$ConnectResetRequestHandler
+2026-03-02 16:14:45.809 [com.alibaba.nacos.client.remote.worker] INFO  c.a.n.c.config.impl.ClientWorker - [744dcf2b-0ffd-4082-8806-be558580292d_config-0] Connected,notify listen context...
+2026-03-02 16:14:45.809 [main] INFO  c.alibaba.nacos.common.remote.client - [744dcf2b-0ffd-4082-8806-be558580292d_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$$Lambda$605/0x00000008010d79c8
+2026-03-02 16:14:45.845 [main] INFO  c.a.nacos.client.config.impl.Limiter - limitTime:5.0
+2026-03-02 16:14:45.857 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[communitysharing-kv] & group[DEFAULT_GROUP]
+2026-03-02 16:14:45.866 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[communitysharing-kv.properties] & group[DEFAULT_GROUP]
+2026-03-02 16:14:45.872 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[communitysharing-kv-dev.properties] & group[DEFAULT_GROUP]
+2026-03-02 16:14:45.873 [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: [BootstrapPropertySource {name='bootstrapProperties-communitysharing-kv-dev.properties,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-communitysharing-kv.properties,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-communitysharing-kv,DEFAULT_GROUP'}]
+2026-03-02 16:14:45.876 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-03-02 16:14:45.877 [main] INFO  c.t.c.K.CommunitysharingKVBusinessApplication - The following 1 profile is active: "dev"
+2026-03-02 16:14:46.242 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Reactive Cassandra repositories in DEFAULT mode.
+2026-03-02 16:14:46.311 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 65 ms. Found 0 Reactive Cassandra repository interfaces.
+2026-03-02 16:14:46.315 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Cassandra repositories in DEFAULT mode.
+2026-03-02 16:14:46.330 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 15 ms. Found 1 Cassandra repository interfaces.
+2026-03-02 16:14:46.455 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=47dfe372-ea59-3421-b77f-182b87c0c62c
+2026-03-02 16:14:46.855 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8084 (http)
+2026-03-02 16:14:46.864 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-03-02 16:14:46.864 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.5]
+2026-03-02 16:14:46.952 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-03-02 16:14:46.953 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1068 ms
+2026-03-02 16:14:47.194 [main] INFO  c.d.o.d.i.c.DefaultMavenCoordinates - DataStax Java driver for Apache Cassandra(R) (com.datastax.oss:java-driver-core) version 4.15.0
+2026-03-02 16:14:47.584 [s0-admin-0] INFO  c.d.o.d.internal.core.time.Clock - Using native clock for microsecond precision
+2026-03-02 16:14:48.138 [s1-admin-0] INFO  c.d.o.d.internal.core.time.Clock - Using native clock for microsecond precision
+2026-03-02 16:14:49.232 [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2026-03-02 16:14:49.314 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8084 (http) with context path ''
+2026-03-02 16:14:49.327 [main] INFO  com.alibaba.nacos.client.naming - initializer namespace from ans.namespace attribute : null
+2026-03-02 16:14:49.328 [main] INFO  com.alibaba.nacos.client.naming - initializer namespace from ALIBABA_ALIWARE_NAMESPACE attribute :null
+2026-03-02 16:14:49.329 [main] INFO  com.alibaba.nacos.client.naming - initializer namespace from namespace attribute :null
+2026-03-02 16:14:49.342 [main] INFO  c.a.n.p.a.s.c.ClientAuthPluginManager - [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.impl.NacosClientAuthServiceImpl success.
+2026-03-02 16:14:49.342 [main] INFO  c.a.n.p.a.s.c.ClientAuthPluginManager - [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.ram.RamClientAuthServiceImpl success.
+2026-03-02 16:14:49.347 [main] INFO  c.alibaba.nacos.common.remote.client - [RpcClientFactory] create a new rpc client of 72d94d81-e2b2-4c65-ac43-ff3c01667a9d
+2026-03-02 16:14:49.350 [main] INFO  c.alibaba.nacos.common.remote.client - [72d94d81-e2b2-4c65-ac43-ff3c01667a9d] RpcClient init, ServerListFactory = com.alibaba.nacos.client.naming.core.ServerListManager
+2026-03-02 16:14:49.350 [main] INFO  c.alibaba.nacos.common.remote.client - [72d94d81-e2b2-4c65-ac43-ff3c01667a9d] Registry connection listener to current client:com.alibaba.nacos.client.naming.remote.gprc.redo.NamingGrpcRedoService
+2026-03-02 16:14:49.350 [main] INFO  c.alibaba.nacos.common.remote.client - [72d94d81-e2b2-4c65-ac43-ff3c01667a9d] Register server push request handler:com.alibaba.nacos.client.naming.remote.gprc.NamingPushRequestHandler
+2026-03-02 16:14:49.351 [main] INFO  c.alibaba.nacos.common.remote.client - [72d94d81-e2b2-4c65-ac43-ff3c01667a9d] Try to connect to server on start up, server: {serverIp = '127.0.0.1', server main port = 8848}
+2026-03-02 16:14:49.352 [main] INFO  c.a.n.c.r.client.grpc.GrpcClient - grpc client connection server:127.0.0.1 ip,serverPort:9848,grpcTslConfig:{"sslProvider":"OPENSSL","enableTls":false,"mutualAuthEnable":false,"trustAll":false}
+2026-03-02 16:14:49.648 [main] INFO  c.alibaba.nacos.common.remote.client - [72d94d81-e2b2-4c65-ac43-ff3c01667a9d] Success to connect to server [127.0.0.1:8848] on start up, connectionId = 1772439289401_172.17.0.1_44990
+2026-03-02 16:14:49.648 [main] INFO  c.alibaba.nacos.common.remote.client - [72d94d81-e2b2-4c65-ac43-ff3c01667a9d] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$ConnectResetRequestHandler
+2026-03-02 16:14:49.648 [com.alibaba.nacos.client.remote.worker] INFO  c.alibaba.nacos.common.remote.client - [72d94d81-e2b2-4c65-ac43-ff3c01667a9d] Notify connected event to listeners.
+2026-03-02 16:14:49.648 [main] INFO  c.alibaba.nacos.common.remote.client - [72d94d81-e2b2-4c65-ac43-ff3c01667a9d] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$$Lambda$605/0x00000008010d79c8
+2026-03-02 16:14:49.648 [com.alibaba.nacos.client.remote.worker] INFO  com.alibaba.nacos.client.naming - Grpc connection connect
+2026-03-02 16:14:49.650 [main] INFO  com.alibaba.nacos.client.naming - [REGISTER-SERVICE] 2e254952-9803-4eae-8771-b086042c797f registering service communitysharing-kv with instance Instance{instanceId='null', ip='26.26.26.1', port=8084, weight=1.0, healthy=true, enabled=true, ephemeral=true, clusterName='DEFAULT', serviceName='null', metadata={IPv6=null, preserved.register.source=SPRING_CLOUD}}
+2026-03-02 16:14:49.660 [main] INFO  c.a.c.n.r.NacosServiceRegistry - nacos registry, DEFAULT_GROUP communitysharing-kv 26.26.26.1:8084 register finished
+2026-03-02 16:14:49.812 [main] INFO  c.t.c.K.CommunitysharingKVBusinessApplication - Started CommunitysharingKVBusinessApplication in 6.177 seconds (process running for 6.834)
+2026-03-02 16:14:49.815 [main] INFO  c.a.n.client.config.impl.CacheData - nacos.cache.data.init.snapshot = true 
+2026-03-02 16:14:49.816 [main] INFO  c.a.n.c.config.impl.ClientWorker - [fixed-127.0.0.1_8848] [subscribe] communitysharing-kv-dev.properties+DEFAULT_GROUP
+2026-03-02 16:14:49.823 [main] INFO  c.a.n.client.config.impl.CacheData - [fixed-127.0.0.1_8848] [add-listener] ok, tenant=, dataId=communitysharing-kv-dev.properties, group=DEFAULT_GROUP, cnt=1
+2026-03-02 16:14:49.823 [main] INFO  c.a.c.n.r.NacosContextRefresher - [Nacos Config] Listening config: dataId=communitysharing-kv-dev.properties, group=DEFAULT_GROUP
+2026-03-02 16:14:49.823 [main] INFO  c.a.n.c.config.impl.ClientWorker - [fixed-127.0.0.1_8848] [subscribe] communitysharing-kv.properties+DEFAULT_GROUP
+2026-03-02 16:14:49.823 [main] INFO  c.a.n.client.config.impl.CacheData - [fixed-127.0.0.1_8848] [add-listener] ok, tenant=, dataId=communitysharing-kv.properties, group=DEFAULT_GROUP, cnt=1
+2026-03-02 16:14:49.824 [main] INFO  c.a.c.n.r.NacosContextRefresher - [Nacos Config] Listening config: dataId=communitysharing-kv.properties, group=DEFAULT_GROUP
+2026-03-02 16:14:49.824 [main] INFO  c.a.n.c.config.impl.ClientWorker - [fixed-127.0.0.1_8848] [subscribe] communitysharing-kv+DEFAULT_GROUP
+2026-03-02 16:14:49.824 [main] INFO  c.a.n.client.config.impl.CacheData - [fixed-127.0.0.1_8848] [add-listener] ok, tenant=, dataId=communitysharing-kv, group=DEFAULT_GROUP, cnt=1
+2026-03-02 16:14:49.824 [main] INFO  c.a.c.n.r.NacosContextRefresher - [Nacos Config] Listening config: dataId=communitysharing-kv, group=DEFAULT_GROUP
+2026-03-02 17:16:59.965 [Thread-7] WARN  c.a.nacos.common.notify.NotifyCenter - [NotifyCenter] Start destroying Publisher
+2026-03-02 17:16:59.965 [Thread-1] WARN  c.a.n.c.http.HttpClientBeanHolder - [HttpClientBeanHolder] Start destroying common HttpClient
+2026-03-02 17:16:59.967 [Thread-7] WARN  c.a.nacos.common.notify.NotifyCenter - [NotifyCenter] Destruction of the end
+2026-03-02 17:16:59.968 [Thread-1] WARN  c.a.n.c.http.HttpClientBeanHolder - [HttpClientBeanHolder] Destruction of the end
+2026-03-02 17:17:02.147 [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry - De-registering from Nacos Server now...
+2026-03-02 17:17:02.147 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - [DEREGISTER-SERVICE] 2e254952-9803-4eae-8771-b086042c797f deregistering service communitysharing-kv with instance: Instance{instanceId='null', ip='26.26.26.1', port=8084, weight=1.0, healthy=true, enabled=true, ephemeral=true, clusterName='DEFAULT', serviceName='null', metadata={}}
+2026-03-02 17:17:02.152 [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry - De-registration finished.
+2026-03-02 17:17:02.153 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - com.alibaba.nacos.client.naming.cache.ServiceInfoHolder do shutdown begin
+2026-03-02 17:17:02.153 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - com.alibaba.nacos.client.naming.backups.FailoverReactor do shutdown begin
+2026-03-02 17:17:02.153 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - com.alibaba.nacos.client.naming.backups.FailoverReactor do shutdown stop
+2026-03-02 17:17:02.153 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - com.alibaba.nacos.client.naming.cache.ServiceInfoHolder do shutdown stop
+2026-03-02 17:17:02.154 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - com.alibaba.nacos.client.naming.remote.NamingClientProxyDelegate do shutdown begin
+2026-03-02 17:17:02.154 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - com.alibaba.nacos.client.naming.core.ServiceInfoUpdateService do shutdown begin
+2026-03-02 17:17:02.154 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - com.alibaba.nacos.client.naming.core.ServiceInfoUpdateService do shutdown stop
+2026-03-02 17:17:02.154 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - com.alibaba.nacos.client.naming.core.ServerListManager do shutdown begin
+2026-03-02 17:17:02.154 [SpringApplicationShutdownHook] WARN  com.alibaba.nacos.client.naming - [NamingHttpClientManager] Start destroying NacosRestTemplate
+2026-03-02 17:17:02.154 [SpringApplicationShutdownHook] WARN  com.alibaba.nacos.client.naming - [NamingHttpClientManager] Destruction of the end
+2026-03-02 17:17:02.154 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - com.alibaba.nacos.client.naming.core.ServerListManager do shutdown stop
+2026-03-02 17:17:02.154 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - com.alibaba.nacos.client.naming.remote.http.NamingHttpClientProxy do shutdown begin
+2026-03-02 17:17:02.154 [SpringApplicationShutdownHook] WARN  com.alibaba.nacos.client.naming - [NamingHttpClientManager] Start destroying NacosRestTemplate
+2026-03-02 17:17:02.154 [SpringApplicationShutdownHook] WARN  com.alibaba.nacos.client.naming - [NamingHttpClientManager] Destruction of the end
+2026-03-02 17:17:02.154 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - com.alibaba.nacos.client.naming.remote.http.NamingHttpClientProxy do shutdown stop
+2026-03-02 17:17:02.154 [SpringApplicationShutdownHook] INFO  c.alibaba.nacos.common.remote.client - Shutdown rpc client, set status to shutdown
+2026-03-02 17:17:02.154 [SpringApplicationShutdownHook] INFO  c.alibaba.nacos.common.remote.client - Shutdown client event executor java.util.concurrent.ScheduledThreadPoolExecutor@2f46ae12[Running, pool size = 2, active threads = 2, queued tasks = 0, completed tasks = 0]
+2026-03-02 17:17:02.154 [SpringApplicationShutdownHook] INFO  c.alibaba.nacos.common.remote.client - Close current connection 1772439289401_172.17.0.1_44990
+2026-03-02 17:17:02.160 [nacos-grpc-client-executor-127.0.0.1-755] INFO  c.a.n.c.r.client.grpc.GrpcClient - [1772439289401_172.17.0.1_44990]Ignore complete event,isRunning:false,isAbandon=false
+2026-03-02 17:17:02.162 [SpringApplicationShutdownHook] INFO  c.a.n.c.r.client.grpc.GrpcClient - Shutdown grpc executor java.util.concurrent.ThreadPoolExecutor@154f924e[Running, pool size = 4, active threads = 0, queued tasks = 0, completed tasks = 756]
+2026-03-02 17:17:02.162 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - Shutdown grpc redo service executor java.util.concurrent.ScheduledThreadPoolExecutor@608d8cea[Running, pool size = 1, active threads = 0, queued tasks = 1, completed tasks = 1240]
+2026-03-02 17:17:02.163 [SpringApplicationShutdownHook] INFO  c.a.n.c.a.r.i.CredentialWatcher - [null] CredentialWatcher is stopped
+2026-03-02 17:17:02.163 [SpringApplicationShutdownHook] INFO  c.a.n.c.a.r.i.CredentialService - [null] CredentialService is freed
+2026-03-02 17:17:02.163 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - com.alibaba.nacos.client.naming.remote.NamingClientProxyDelegate do shutdown stop
+2026-03-02 17:17:09.962 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-03-02 17:17:10.016 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-03-02 17:17:10.198 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-03-02 17:17:10.200 [main] INFO  c.a.nacos.client.utils.ParamUtil - [settings] [req-serv] nacos-server port:8848
+2026-03-02 17:17:10.200 [main] INFO  c.a.nacos.client.utils.ParamUtil - [settings] [http-client] connect timeout:1000
+2026-03-02 17:17:10.201 [main] INFO  c.a.nacos.client.utils.ParamUtil - PER_TASK_CONFIG_SIZE: 3000.0
+2026-03-02 17:17:10.238 [main] INFO  c.a.n.p.a.s.c.ClientAuthPluginManager - [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.impl.NacosClientAuthServiceImpl success.
+2026-03-02 17:17:10.239 [main] INFO  c.a.n.p.a.s.c.ClientAuthPluginManager - [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.ram.RamClientAuthServiceImpl success.
+2026-03-02 17:17:10.243 [main] INFO  c.a.n.c.a.r.i.CredentialWatcher - null No credential found
+2026-03-02 17:17:10.516 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-03-02 17:17:10.529 [main] INFO  c.a.n.c.c.i.LocalConfigInfoProcessor - LOCAL_SNAPSHOT_PATH:C:\Users\moonth\nacos\config
+2026-03-02 17:17:10.531 [main] INFO  c.alibaba.nacos.common.remote.client - [RpcClientFactory] create a new rpc client of fea06eb8-d817-4450-9666-725126a208d3_config-0
+2026-03-02 17:17:10.544 [main] INFO  c.alibaba.nacos.common.remote.client - [fea06eb8-d817-4450-9666-725126a208d3_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$583/0x0000000800f8e908
+2026-03-02 17:17:10.545 [main] INFO  c.alibaba.nacos.common.remote.client - [fea06eb8-d817-4450-9666-725126a208d3_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$584/0x0000000800f8ed28
+2026-03-02 17:17:10.545 [main] INFO  c.alibaba.nacos.common.remote.client - [fea06eb8-d817-4450-9666-725126a208d3_config-0] Registry connection listener to current client:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$1
+2026-03-02 17:17:10.545 [main] INFO  c.alibaba.nacos.common.remote.client - [fea06eb8-d817-4450-9666-725126a208d3_config-0] RpcClient init, ServerListFactory = com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$2
+2026-03-02 17:17:10.551 [main] INFO  c.alibaba.nacos.common.remote.client - [fea06eb8-d817-4450-9666-725126a208d3_config-0] Try to connect to server on start up, server: {serverIp = '127.0.0.1', server main port = 8848}
+2026-03-02 17:17:10.580 [main] INFO  c.a.n.c.r.client.grpc.GrpcClient - grpc client connection server:127.0.0.1 ip,serverPort:9848,grpcTslConfig:{"sslProvider":"OPENSSL","enableTls":false,"mutualAuthEnable":false,"trustAll":false}
+2026-03-02 17:17:11.380 [main] INFO  c.alibaba.nacos.common.remote.client - [fea06eb8-d817-4450-9666-725126a208d3_config-0] Success to connect to server [127.0.0.1:8848] on start up, connectionId = 1772443031198_172.17.0.1_44306
+2026-03-02 17:17:11.381 [com.alibaba.nacos.client.remote.worker] INFO  c.alibaba.nacos.common.remote.client - [fea06eb8-d817-4450-9666-725126a208d3_config-0] Notify connected event to listeners.
+2026-03-02 17:17:11.381 [com.alibaba.nacos.client.remote.worker] INFO  c.a.n.c.config.impl.ClientWorker - [fea06eb8-d817-4450-9666-725126a208d3_config-0] Connected,notify listen context...
+2026-03-02 17:17:11.381 [main] INFO  c.alibaba.nacos.common.remote.client - [fea06eb8-d817-4450-9666-725126a208d3_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$ConnectResetRequestHandler
+2026-03-02 17:17:11.381 [main] INFO  c.alibaba.nacos.common.remote.client - [fea06eb8-d817-4450-9666-725126a208d3_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$$Lambda$604/0x00000008010d6c28
+2026-03-02 17:17:11.411 [main] INFO  c.a.nacos.client.config.impl.Limiter - limitTime:5.0
+2026-03-02 17:17:11.428 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[communitysharing-kv] & group[DEFAULT_GROUP]
+2026-03-02 17:17:11.435 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[communitysharing-kv.properties] & group[DEFAULT_GROUP]
+2026-03-02 17:17:11.439 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[communitysharing-kv-dev.properties] & group[DEFAULT_GROUP]
+2026-03-02 17:17:11.440 [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: [BootstrapPropertySource {name='bootstrapProperties-communitysharing-kv-dev.properties,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-communitysharing-kv.properties,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-communitysharing-kv,DEFAULT_GROUP'}]
+2026-03-02 17:17:11.443 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-03-02 17:17:11.444 [main] INFO  c.t.c.K.CommunitysharingKVBusinessApplication - The following 1 profile is active: "dev"
+2026-03-02 17:17:11.816 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Reactive Cassandra repositories in DEFAULT mode.
+2026-03-02 17:17:11.907 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 87 ms. Found 0 Reactive Cassandra repository interfaces.
+2026-03-02 17:17:11.910 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Cassandra repositories in DEFAULT mode.
+2026-03-02 17:17:11.922 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 12 ms. Found 2 Cassandra repository interfaces.
+2026-03-02 17:17:12.030 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=81449b8c-0b38-379d-b80a-495be641aea9
+2026-03-02 17:17:12.354 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8084 (http)
+2026-03-02 17:17:12.364 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-03-02 17:17:12.365 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.5]
+2026-03-02 17:17:12.458 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-03-02 17:17:12.458 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1007 ms
+2026-03-02 17:17:12.661 [main] INFO  c.d.o.d.i.c.DefaultMavenCoordinates - DataStax Java driver for Apache Cassandra(R) (com.datastax.oss:java-driver-core) version 4.15.0
+2026-03-02 17:17:12.980 [s0-admin-0] INFO  c.d.o.d.internal.core.time.Clock - Using native clock for microsecond precision
+2026-03-02 17:17:13.311 [s1-admin-0] INFO  c.d.o.d.internal.core.time.Clock - Using native clock for microsecond precision
+2026-03-02 17:17:13.583 [main] WARN  o.s.c.LocalVariableTableParameterNameDiscoverer - Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: com.taoxin.communitysharing.KV.domian.repository.CommentContentRepository
+2026-03-02 17:17:13.596 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sharingContentController': Injection of resource dependencies failed
+2026-03-02 17:17:17.745 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-03-02 17:17:17.753 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-03-02 17:17:17.767 [main] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sharingContentController': Injection of resource dependencies failed
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessProperties(CommonAnnotationBeanPostProcessor.java:303)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1397)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:598)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:521)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:961)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:915)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:584)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:730)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:432)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:308)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1302)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1291)
+	at com.taoxin.communitysharing.KV.CommunitysharingKVBusinessApplication.main(CommunitysharingKVBusinessApplication.java:10)
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'commentContentServiceImplement': Injection of resource dependencies failed
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessProperties(CommonAnnotationBeanPostProcessor.java:303)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1397)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:598)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:521)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1405)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1325)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.autowireResource(CommonAnnotationBeanPostProcessor.java:490)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.getResource(CommonAnnotationBeanPostProcessor.java:467)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor$ResourceElement.getResourceToInject(CommonAnnotationBeanPostProcessor.java:618)
+	at org.springframework.beans.factory.annotation.InjectionMetadata$InjectedElement.inject(InjectionMetadata.java:242)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:133)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessProperties(CommonAnnotationBeanPostProcessor.java:300)
+	... 17 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'commentContentRepository' defined in com.taoxin.communitysharing.KV.domian.repository.CommentContentRepository defined in @EnableCassandraRepositories declared on CassandraRepositoriesRegistrar.EnableCassandraRepositoriesConfiguration: Could not create query for public abstract java.util.List com.taoxin.communitysharing.KV.domian.repository.CommentContentRepository.findByPrimaryKeyContentIdAndCommentContentPrimaryKey(java.lang.Long,java.util.List,java.util.List); Reason: No property 'primaryKeyContentId' found for type 'CommentContentDO'
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1751)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:599)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:521)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:205)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.resolveBeanByName(AbstractAutowireCapableBeanFactory.java:458)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.autowireResource(CommonAnnotationBeanPostProcessor.java:496)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.getResource(CommonAnnotationBeanPostProcessor.java:467)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor$ResourceElement.getResourceToInject(CommonAnnotationBeanPostProcessor.java:618)
+	at org.springframework.beans.factory.annotation.InjectionMetadata$InjectedElement.inject(InjectionMetadata.java:242)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:133)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessProperties(CommonAnnotationBeanPostProcessor.java:300)
+	... 33 common frames omitted
+Caused by: org.springframework.data.repository.query.QueryCreationException: Could not create query for public abstract java.util.List com.taoxin.communitysharing.KV.domian.repository.CommentContentRepository.findByPrimaryKeyContentIdAndCommentContentPrimaryKey(java.lang.Long,java.util.List,java.util.List); Reason: No property 'primaryKeyContentId' found for type 'CommentContentDO'
+	at org.springframework.data.repository.query.QueryCreationException.create(QueryCreationException.java:101)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lookupQuery(QueryExecutorMethodInterceptor.java:115)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.mapMethodsToQuery(QueryExecutorMethodInterceptor.java:99)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lambda$new$0(QueryExecutorMethodInterceptor.java:88)
+	at java.base/java.util.Optional.map(Optional.java:260)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.<init>(QueryExecutorMethodInterceptor.java:88)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport.getRepository(RepositoryFactorySupport.java:357)
+	at org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport.lambda$afterPropertiesSet$5(RepositoryFactoryBeanSupport.java:279)
+	at org.springframework.data.util.Lazy.getNullable(Lazy.java:245)
+	at org.springframework.data.util.Lazy.get(Lazy.java:114)
+	at org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport.afterPropertiesSet(RepositoryFactoryBeanSupport.java:285)
+	at org.springframework.data.cassandra.repository.support.CassandraRepositoryFactoryBean.afterPropertiesSet(CassandraRepositoryFactoryBean.java:72)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1797)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1747)
+	... 46 common frames omitted
+Caused by: org.springframework.data.mapping.PropertyReferenceException: No property 'primaryKeyContentId' found for type 'CommentContentDO'
+	at org.springframework.data.mapping.PropertyPath.<init>(PropertyPath.java:90)
+	at org.springframework.data.mapping.PropertyPath.create(PropertyPath.java:423)
+	at org.springframework.data.mapping.PropertyPath.create(PropertyPath.java:399)
+	at org.springframework.data.mapping.PropertyPath.lambda$from$0(PropertyPath.java:352)
+	at java.base/java.util.concurrent.ConcurrentMap.computeIfAbsent(ConcurrentMap.java:330)
+	at org.springframework.data.mapping.PropertyPath.from(PropertyPath.java:334)
+	at org.springframework.data.mapping.PropertyPath.from(PropertyPath.java:317)
+	at org.springframework.data.repository.query.parser.Part.<init>(Part.java:81)
+	at org.springframework.data.repository.query.parser.PartTree$OrPart.lambda$new$0(PartTree.java:242)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:921)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:682)
+	at org.springframework.data.repository.query.parser.PartTree$OrPart.<init>(PartTree.java:243)
+	at org.springframework.data.repository.query.parser.PartTree$Predicate.lambda$new$0(PartTree.java:372)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:921)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:682)
+	at org.springframework.data.repository.query.parser.PartTree$Predicate.<init>(PartTree.java:373)
+	at org.springframework.data.repository.query.parser.PartTree.<init>(PartTree.java:96)
+	at org.springframework.data.cassandra.repository.query.PartTreeCassandraQuery.<init>(PartTreeCassandraQuery.java:57)
+	at org.springframework.data.cassandra.repository.support.CassandraRepositoryFactory$CassandraQueryLookupStrategy.resolveQuery(CassandraRepositoryFactory.java:142)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lookupQuery(QueryExecutorMethodInterceptor.java:111)
+	... 58 common frames omitted
+2026-03-02 17:17:17.769 [Thread-7] WARN  c.a.nacos.common.notify.NotifyCenter - [NotifyCenter] Start destroying Publisher
+2026-03-02 17:17:17.769 [Thread-1] WARN  c.a.n.c.http.HttpClientBeanHolder - [HttpClientBeanHolder] Start destroying common HttpClient
+2026-03-02 17:17:17.769 [Thread-7] WARN  c.a.nacos.common.notify.NotifyCenter - [NotifyCenter] Destruction of the end
+2026-03-02 17:24:20.693 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-03-02 17:24:20.737 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-03-02 17:24:20.920 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-03-02 17:24:20.921 [main] INFO  c.a.nacos.client.utils.ParamUtil - [settings] [req-serv] nacos-server port:8848
+2026-03-02 17:24:20.922 [main] INFO  c.a.nacos.client.utils.ParamUtil - [settings] [http-client] connect timeout:1000
+2026-03-02 17:24:20.922 [main] INFO  c.a.nacos.client.utils.ParamUtil - PER_TASK_CONFIG_SIZE: 3000.0
+2026-03-02 17:24:20.953 [main] INFO  c.a.n.p.a.s.c.ClientAuthPluginManager - [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.impl.NacosClientAuthServiceImpl success.
+2026-03-02 17:24:20.953 [main] INFO  c.a.n.p.a.s.c.ClientAuthPluginManager - [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.ram.RamClientAuthServiceImpl success.
+2026-03-02 17:24:20.955 [main] INFO  c.a.n.c.a.r.i.CredentialWatcher - null No credential found
+2026-03-02 17:24:21.258 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-03-02 17:24:21.273 [main] INFO  c.a.n.c.c.i.LocalConfigInfoProcessor - LOCAL_SNAPSHOT_PATH:C:\Users\moonth\nacos\config
+2026-03-02 17:24:21.277 [main] INFO  c.alibaba.nacos.common.remote.client - [RpcClientFactory] create a new rpc client of 12265670-a41f-4d2c-ae86-e559aef7c0ef_config-0
+2026-03-02 17:24:21.291 [main] INFO  c.alibaba.nacos.common.remote.client - [12265670-a41f-4d2c-ae86-e559aef7c0ef_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$583/0x0000000800f8e698
+2026-03-02 17:24:21.292 [main] INFO  c.alibaba.nacos.common.remote.client - [12265670-a41f-4d2c-ae86-e559aef7c0ef_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$584/0x0000000800f8eab8
+2026-03-02 17:24:21.293 [main] INFO  c.alibaba.nacos.common.remote.client - [12265670-a41f-4d2c-ae86-e559aef7c0ef_config-0] Registry connection listener to current client:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$1
+2026-03-02 17:24:21.293 [main] INFO  c.alibaba.nacos.common.remote.client - [12265670-a41f-4d2c-ae86-e559aef7c0ef_config-0] RpcClient init, ServerListFactory = com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$2
+2026-03-02 17:24:21.299 [main] INFO  c.alibaba.nacos.common.remote.client - [12265670-a41f-4d2c-ae86-e559aef7c0ef_config-0] Try to connect to server on start up, server: {serverIp = '127.0.0.1', server main port = 8848}
+2026-03-02 17:24:21.329 [main] INFO  c.a.n.c.r.client.grpc.GrpcClient - grpc client connection server:127.0.0.1 ip,serverPort:9848,grpcTslConfig:{"sslProvider":"OPENSSL","enableTls":false,"mutualAuthEnable":false,"trustAll":false}
+2026-03-02 17:24:21.976 [main] INFO  c.alibaba.nacos.common.remote.client - [12265670-a41f-4d2c-ae86-e559aef7c0ef_config-0] Success to connect to server [127.0.0.1:8848] on start up, connectionId = 1772443461817_172.17.0.1_39642
+2026-03-02 17:24:21.977 [main] INFO  c.alibaba.nacos.common.remote.client - [12265670-a41f-4d2c-ae86-e559aef7c0ef_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$ConnectResetRequestHandler
+2026-03-02 17:24:21.977 [com.alibaba.nacos.client.remote.worker] INFO  c.alibaba.nacos.common.remote.client - [12265670-a41f-4d2c-ae86-e559aef7c0ef_config-0] Notify connected event to listeners.
+2026-03-02 17:24:21.977 [com.alibaba.nacos.client.remote.worker] INFO  c.a.n.c.config.impl.ClientWorker - [12265670-a41f-4d2c-ae86-e559aef7c0ef_config-0] Connected,notify listen context...
+2026-03-02 17:24:21.977 [main] INFO  c.alibaba.nacos.common.remote.client - [12265670-a41f-4d2c-ae86-e559aef7c0ef_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$$Lambda$604/0x00000008010d6c40
+2026-03-02 17:24:22.002 [main] INFO  c.a.nacos.client.config.impl.Limiter - limitTime:5.0
+2026-03-02 17:24:22.210 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[communitysharing-kv] & group[DEFAULT_GROUP]
+2026-03-02 17:24:22.219 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[communitysharing-kv.properties] & group[DEFAULT_GROUP]
+2026-03-02 17:24:22.227 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[communitysharing-kv-dev.properties] & group[DEFAULT_GROUP]
+2026-03-02 17:24:22.228 [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: [BootstrapPropertySource {name='bootstrapProperties-communitysharing-kv-dev.properties,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-communitysharing-kv.properties,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-communitysharing-kv,DEFAULT_GROUP'}]
+2026-03-02 17:24:22.232 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-03-02 17:24:22.233 [main] INFO  c.t.c.K.CommunitysharingKVBusinessApplication - The following 1 profile is active: "dev"
+2026-03-02 17:24:22.549 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Reactive Cassandra repositories in DEFAULT mode.
+2026-03-02 17:24:22.620 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 68 ms. Found 0 Reactive Cassandra repository interfaces.
+2026-03-02 17:24:22.623 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Cassandra repositories in DEFAULT mode.
+2026-03-02 17:24:22.638 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 14 ms. Found 2 Cassandra repository interfaces.
+2026-03-02 17:24:22.757 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=81449b8c-0b38-379d-b80a-495be641aea9
+2026-03-02 17:24:23.073 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8084 (http)
+2026-03-02 17:24:23.084 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-03-02 17:24:23.084 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.5]
+2026-03-02 17:24:23.165 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-03-02 17:24:23.165 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 919 ms
+2026-03-02 17:24:23.348 [main] INFO  c.d.o.d.i.c.DefaultMavenCoordinates - DataStax Java driver for Apache Cassandra(R) (com.datastax.oss:java-driver-core) version 4.15.0
+2026-03-02 17:24:23.609 [s0-admin-0] INFO  c.d.o.d.internal.core.time.Clock - Using native clock for microsecond precision
+2026-03-02 17:24:23.927 [s1-admin-0] INFO  c.d.o.d.internal.core.time.Clock - Using native clock for microsecond precision
+2026-03-02 17:24:24.187 [main] WARN  o.s.c.LocalVariableTableParameterNameDiscoverer - Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: com.taoxin.communitysharing.KV.domian.repository.CommentContentRepository
+2026-03-02 17:24:24.198 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sharingContentController': Injection of resource dependencies failed
+2026-03-02 17:24:28.316 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2026-03-02 17:24:28.328 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-03-02 17:24:28.339 [main] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sharingContentController': Injection of resource dependencies failed
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessProperties(CommonAnnotationBeanPostProcessor.java:303)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1397)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:598)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:521)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:961)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:915)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:584)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:730)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:432)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:308)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1302)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1291)
+	at com.taoxin.communitysharing.KV.CommunitysharingKVBusinessApplication.main(CommunitysharingKVBusinessApplication.java:10)
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'commentContentServiceImplement': Injection of resource dependencies failed
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessProperties(CommonAnnotationBeanPostProcessor.java:303)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1397)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:598)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:521)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1405)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1325)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.autowireResource(CommonAnnotationBeanPostProcessor.java:490)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.getResource(CommonAnnotationBeanPostProcessor.java:467)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor$ResourceElement.getResourceToInject(CommonAnnotationBeanPostProcessor.java:618)
+	at org.springframework.beans.factory.annotation.InjectionMetadata$InjectedElement.inject(InjectionMetadata.java:242)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:133)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessProperties(CommonAnnotationBeanPostProcessor.java:300)
+	... 17 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'commentContentRepository' defined in com.taoxin.communitysharing.KV.domian.repository.CommentContentRepository defined in @EnableCassandraRepositories declared on CassandraRepositoriesRegistrar.EnableCassandraRepositoriesConfiguration: Could not create query for public abstract java.util.List com.taoxin.communitysharing.KV.domian.repository.CommentContentRepository.findByPrimaryKeyContentIdAndPrimaryKeyYearMonthAndPrimaryKeyCommentIdIn(java.lang.Long,java.util.List,java.util.List); Reason: No property 'primaryKeyContentId' found for type 'CommentContentDO'
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1751)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:599)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:521)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:326)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:324)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:205)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.resolveBeanByName(AbstractAutowireCapableBeanFactory.java:458)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.autowireResource(CommonAnnotationBeanPostProcessor.java:496)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.getResource(CommonAnnotationBeanPostProcessor.java:467)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor$ResourceElement.getResourceToInject(CommonAnnotationBeanPostProcessor.java:618)
+	at org.springframework.beans.factory.annotation.InjectionMetadata$InjectedElement.inject(InjectionMetadata.java:242)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:133)
+	at org.springframework.context.annotation.CommonAnnotationBeanPostProcessor.postProcessProperties(CommonAnnotationBeanPostProcessor.java:300)
+	... 33 common frames omitted
+Caused by: org.springframework.data.repository.query.QueryCreationException: Could not create query for public abstract java.util.List com.taoxin.communitysharing.KV.domian.repository.CommentContentRepository.findByPrimaryKeyContentIdAndPrimaryKeyYearMonthAndPrimaryKeyCommentIdIn(java.lang.Long,java.util.List,java.util.List); Reason: No property 'primaryKeyContentId' found for type 'CommentContentDO'
+	at org.springframework.data.repository.query.QueryCreationException.create(QueryCreationException.java:101)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lookupQuery(QueryExecutorMethodInterceptor.java:115)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.mapMethodsToQuery(QueryExecutorMethodInterceptor.java:99)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lambda$new$0(QueryExecutorMethodInterceptor.java:88)
+	at java.base/java.util.Optional.map(Optional.java:260)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.<init>(QueryExecutorMethodInterceptor.java:88)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport.getRepository(RepositoryFactorySupport.java:357)
+	at org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport.lambda$afterPropertiesSet$5(RepositoryFactoryBeanSupport.java:279)
+	at org.springframework.data.util.Lazy.getNullable(Lazy.java:245)
+	at org.springframework.data.util.Lazy.get(Lazy.java:114)
+	at org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport.afterPropertiesSet(RepositoryFactoryBeanSupport.java:285)
+	at org.springframework.data.cassandra.repository.support.CassandraRepositoryFactoryBean.afterPropertiesSet(CassandraRepositoryFactoryBean.java:72)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1797)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1747)
+	... 46 common frames omitted
+Caused by: org.springframework.data.mapping.PropertyReferenceException: No property 'primaryKeyContentId' found for type 'CommentContentDO'
+	at org.springframework.data.mapping.PropertyPath.<init>(PropertyPath.java:90)
+	at org.springframework.data.mapping.PropertyPath.create(PropertyPath.java:423)
+	at org.springframework.data.mapping.PropertyPath.create(PropertyPath.java:399)
+	at org.springframework.data.mapping.PropertyPath.lambda$from$0(PropertyPath.java:352)
+	at java.base/java.util.concurrent.ConcurrentMap.computeIfAbsent(ConcurrentMap.java:330)
+	at org.springframework.data.mapping.PropertyPath.from(PropertyPath.java:334)
+	at org.springframework.data.mapping.PropertyPath.from(PropertyPath.java:317)
+	at org.springframework.data.repository.query.parser.Part.<init>(Part.java:81)
+	at org.springframework.data.repository.query.parser.PartTree$OrPart.lambda$new$0(PartTree.java:242)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:921)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:682)
+	at org.springframework.data.repository.query.parser.PartTree$OrPart.<init>(PartTree.java:243)
+	at org.springframework.data.repository.query.parser.PartTree$Predicate.lambda$new$0(PartTree.java:372)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:921)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:682)
+	at org.springframework.data.repository.query.parser.PartTree$Predicate.<init>(PartTree.java:373)
+	at org.springframework.data.repository.query.parser.PartTree.<init>(PartTree.java:96)
+	at org.springframework.data.cassandra.repository.query.PartTreeCassandraQuery.<init>(PartTreeCassandraQuery.java:57)
+	at org.springframework.data.cassandra.repository.support.CassandraRepositoryFactory$CassandraQueryLookupStrategy.resolveQuery(CassandraRepositoryFactory.java:142)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lookupQuery(QueryExecutorMethodInterceptor.java:111)
+	... 58 common frames omitted
+2026-03-02 17:24:28.342 [Thread-7] WARN  c.a.nacos.common.notify.NotifyCenter - [NotifyCenter] Start destroying Publisher
+2026-03-02 17:24:28.342 [Thread-7] WARN  c.a.nacos.common.notify.NotifyCenter - [NotifyCenter] Destruction of the end
+2026-03-02 17:24:28.342 [Thread-1] WARN  c.a.n.c.http.HttpClientBeanHolder - [HttpClientBeanHolder] Start destroying common HttpClient
+2026-03-02 17:24:28.342 [Thread-1] WARN  c.a.n.c.http.HttpClientBeanHolder - [HttpClientBeanHolder] Destruction of the end
+2026-03-02 17:26:28.642 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-03-02 17:26:28.686 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-03-02 17:26:28.849 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-03-02 17:26:28.851 [main] INFO  c.a.nacos.client.utils.ParamUtil - [settings] [req-serv] nacos-server port:8848
+2026-03-02 17:26:28.851 [main] INFO  c.a.nacos.client.utils.ParamUtil - [settings] [http-client] connect timeout:1000
+2026-03-02 17:26:28.853 [main] INFO  c.a.nacos.client.utils.ParamUtil - PER_TASK_CONFIG_SIZE: 3000.0
+2026-03-02 17:26:28.887 [main] INFO  c.a.n.p.a.s.c.ClientAuthPluginManager - [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.impl.NacosClientAuthServiceImpl success.
+2026-03-02 17:26:28.887 [main] INFO  c.a.n.p.a.s.c.ClientAuthPluginManager - [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.ram.RamClientAuthServiceImpl success.
+2026-03-02 17:26:28.892 [main] INFO  c.a.n.c.a.r.i.CredentialWatcher - null No credential found
+2026-03-02 17:26:29.160 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-03-02 17:26:29.173 [main] INFO  c.a.n.c.c.i.LocalConfigInfoProcessor - LOCAL_SNAPSHOT_PATH:C:\Users\moonth\nacos\config
+2026-03-02 17:26:29.176 [main] INFO  c.alibaba.nacos.common.remote.client - [RpcClientFactory] create a new rpc client of 4cfbf9a8-0bd4-4f8a-b66e-5d78fd910a7b_config-0
+2026-03-02 17:26:29.190 [main] INFO  c.alibaba.nacos.common.remote.client - [4cfbf9a8-0bd4-4f8a-b66e-5d78fd910a7b_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$583/0x0000000800f8e908
+2026-03-02 17:26:29.190 [main] INFO  c.alibaba.nacos.common.remote.client - [4cfbf9a8-0bd4-4f8a-b66e-5d78fd910a7b_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$584/0x0000000800f8ed28
+2026-03-02 17:26:29.191 [main] INFO  c.alibaba.nacos.common.remote.client - [4cfbf9a8-0bd4-4f8a-b66e-5d78fd910a7b_config-0] Registry connection listener to current client:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$1
+2026-03-02 17:26:29.191 [main] INFO  c.alibaba.nacos.common.remote.client - [4cfbf9a8-0bd4-4f8a-b66e-5d78fd910a7b_config-0] RpcClient init, ServerListFactory = com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$2
+2026-03-02 17:26:29.198 [main] INFO  c.alibaba.nacos.common.remote.client - [4cfbf9a8-0bd4-4f8a-b66e-5d78fd910a7b_config-0] Try to connect to server on start up, server: {serverIp = '127.0.0.1', server main port = 8848}
+2026-03-02 17:26:29.227 [main] INFO  c.a.n.c.r.client.grpc.GrpcClient - grpc client connection server:127.0.0.1 ip,serverPort:9848,grpcTslConfig:{"sslProvider":"OPENSSL","enableTls":false,"mutualAuthEnable":false,"trustAll":false}
+2026-03-02 17:26:29.908 [main] INFO  c.alibaba.nacos.common.remote.client - [4cfbf9a8-0bd4-4f8a-b66e-5d78fd910a7b_config-0] Success to connect to server [127.0.0.1:8848] on start up, connectionId = 1772443589735_172.17.0.1_52894
+2026-03-02 17:26:29.909 [com.alibaba.nacos.client.remote.worker] INFO  c.alibaba.nacos.common.remote.client - [4cfbf9a8-0bd4-4f8a-b66e-5d78fd910a7b_config-0] Notify connected event to listeners.
+2026-03-02 17:26:29.909 [main] INFO  c.alibaba.nacos.common.remote.client - [4cfbf9a8-0bd4-4f8a-b66e-5d78fd910a7b_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$ConnectResetRequestHandler
+2026-03-02 17:26:29.909 [com.alibaba.nacos.client.remote.worker] INFO  c.a.n.c.config.impl.ClientWorker - [4cfbf9a8-0bd4-4f8a-b66e-5d78fd910a7b_config-0] Connected,notify listen context...
+2026-03-02 17:26:29.909 [main] INFO  c.alibaba.nacos.common.remote.client - [4cfbf9a8-0bd4-4f8a-b66e-5d78fd910a7b_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$$Lambda$604/0x00000008010d61c8
+2026-03-02 17:26:29.928 [main] INFO  c.a.nacos.client.config.impl.Limiter - limitTime:5.0
+2026-03-02 17:26:30.013 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[communitysharing-kv] & group[DEFAULT_GROUP]
+2026-03-02 17:26:30.165 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[communitysharing-kv.properties] & group[DEFAULT_GROUP]
+2026-03-02 17:26:30.172 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[communitysharing-kv-dev.properties] & group[DEFAULT_GROUP]
+2026-03-02 17:26:30.173 [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: [BootstrapPropertySource {name='bootstrapProperties-communitysharing-kv-dev.properties,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-communitysharing-kv.properties,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-communitysharing-kv,DEFAULT_GROUP'}]
+2026-03-02 17:26:30.177 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-03-02 17:26:30.177 [main] INFO  c.t.c.K.CommunitysharingKVBusinessApplication - The following 1 profile is active: "dev"
+2026-03-02 17:26:30.484 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Reactive Cassandra repositories in DEFAULT mode.
+2026-03-02 17:26:30.561 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 73 ms. Found 0 Reactive Cassandra repository interfaces.
+2026-03-02 17:26:30.569 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Cassandra repositories in DEFAULT mode.
+2026-03-02 17:26:30.582 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 12 ms. Found 2 Cassandra repository interfaces.
+2026-03-02 17:26:30.680 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=81449b8c-0b38-379d-b80a-495be641aea9
+2026-03-02 17:26:30.976 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8084 (http)
+2026-03-02 17:26:30.982 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-03-02 17:26:30.984 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.5]
+2026-03-02 17:26:31.057 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-03-02 17:26:31.058 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 872 ms
+2026-03-02 17:26:31.269 [main] INFO  c.d.o.d.i.c.DefaultMavenCoordinates - DataStax Java driver for Apache Cassandra(R) (com.datastax.oss:java-driver-core) version 4.15.0
+2026-03-02 17:26:31.552 [s0-admin-0] INFO  c.d.o.d.internal.core.time.Clock - Using native clock for microsecond precision
+2026-03-02 17:26:31.858 [s1-admin-0] INFO  c.d.o.d.internal.core.time.Clock - Using native clock for microsecond precision
+2026-03-02 17:26:32.096 [main] WARN  o.s.c.LocalVariableTableParameterNameDiscoverer - Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: com.taoxin.communitysharing.KV.domian.repository.CommentContentRepository
+2026-03-02 17:26:32.822 [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2026-03-02 17:26:32.873 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8084 (http) with context path ''
+2026-03-02 17:26:32.875 [main] INFO  com.alibaba.nacos.client.naming - initializer namespace from ans.namespace attribute : null
+2026-03-02 17:26:32.875 [main] INFO  com.alibaba.nacos.client.naming - initializer namespace from ALIBABA_ALIWARE_NAMESPACE attribute :null
+2026-03-02 17:26:32.875 [main] INFO  com.alibaba.nacos.client.naming - initializer namespace from namespace attribute :null
+2026-03-02 17:26:32.881 [main] INFO  c.a.n.p.a.s.c.ClientAuthPluginManager - [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.impl.NacosClientAuthServiceImpl success.
+2026-03-02 17:26:32.881 [main] INFO  c.a.n.p.a.s.c.ClientAuthPluginManager - [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.ram.RamClientAuthServiceImpl success.
+2026-03-02 17:26:32.884 [main] INFO  c.alibaba.nacos.common.remote.client - [RpcClientFactory] create a new rpc client of 11e0e81c-b32c-4fbd-87ae-c700d3525075
+2026-03-02 17:26:32.885 [main] INFO  c.alibaba.nacos.common.remote.client - [11e0e81c-b32c-4fbd-87ae-c700d3525075] RpcClient init, ServerListFactory = com.alibaba.nacos.client.naming.core.ServerListManager
+2026-03-02 17:26:32.885 [main] INFO  c.alibaba.nacos.common.remote.client - [11e0e81c-b32c-4fbd-87ae-c700d3525075] Registry connection listener to current client:com.alibaba.nacos.client.naming.remote.gprc.redo.NamingGrpcRedoService
+2026-03-02 17:26:32.885 [main] INFO  c.alibaba.nacos.common.remote.client - [11e0e81c-b32c-4fbd-87ae-c700d3525075] Register server push request handler:com.alibaba.nacos.client.naming.remote.gprc.NamingPushRequestHandler
+2026-03-02 17:26:32.886 [main] INFO  c.alibaba.nacos.common.remote.client - [11e0e81c-b32c-4fbd-87ae-c700d3525075] Try to connect to server on start up, server: {serverIp = '127.0.0.1', server main port = 8848}
+2026-03-02 17:26:32.886 [main] INFO  c.a.n.c.r.client.grpc.GrpcClient - grpc client connection server:127.0.0.1 ip,serverPort:9848,grpcTslConfig:{"sslProvider":"OPENSSL","enableTls":false,"mutualAuthEnable":false,"trustAll":false}
+2026-03-02 17:26:33.002 [main] INFO  c.alibaba.nacos.common.remote.client - [11e0e81c-b32c-4fbd-87ae-c700d3525075] Success to connect to server [127.0.0.1:8848] on start up, connectionId = 1772443592893_172.17.0.1_52902
+2026-03-02 17:26:33.002 [main] INFO  c.alibaba.nacos.common.remote.client - [11e0e81c-b32c-4fbd-87ae-c700d3525075] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$ConnectResetRequestHandler
+2026-03-02 17:26:33.002 [main] INFO  c.alibaba.nacos.common.remote.client - [11e0e81c-b32c-4fbd-87ae-c700d3525075] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$$Lambda$604/0x00000008010d61c8
+2026-03-02 17:26:33.002 [com.alibaba.nacos.client.remote.worker] INFO  c.alibaba.nacos.common.remote.client - [11e0e81c-b32c-4fbd-87ae-c700d3525075] Notify connected event to listeners.
+2026-03-02 17:26:33.002 [com.alibaba.nacos.client.remote.worker] INFO  com.alibaba.nacos.client.naming - Grpc connection connect
+2026-03-02 17:26:33.003 [main] INFO  com.alibaba.nacos.client.naming - [REGISTER-SERVICE] 2e254952-9803-4eae-8771-b086042c797f registering service communitysharing-kv with instance Instance{instanceId='null', ip='26.26.26.1', port=8084, weight=1.0, healthy=true, enabled=true, ephemeral=true, clusterName='DEFAULT', serviceName='null', metadata={IPv6=null, preserved.register.source=SPRING_CLOUD}}
+2026-03-02 17:26:33.014 [main] INFO  c.a.c.n.r.NacosServiceRegistry - nacos registry, DEFAULT_GROUP communitysharing-kv 26.26.26.1:8084 register finished
+2026-03-02 17:26:33.152 [main] INFO  c.t.c.K.CommunitysharingKVBusinessApplication - Started CommunitysharingKVBusinessApplication in 4.992 seconds (process running for 5.538)
+2026-03-02 17:26:33.155 [main] INFO  c.a.n.client.config.impl.CacheData - nacos.cache.data.init.snapshot = true 
+2026-03-02 17:26:33.155 [main] INFO  c.a.n.c.config.impl.ClientWorker - [fixed-127.0.0.1_8848] [subscribe] communitysharing-kv-dev.properties+DEFAULT_GROUP
+2026-03-02 17:26:33.161 [main] INFO  c.a.n.client.config.impl.CacheData - [fixed-127.0.0.1_8848] [add-listener] ok, tenant=, dataId=communitysharing-kv-dev.properties, group=DEFAULT_GROUP, cnt=1
+2026-03-02 17:26:33.161 [main] INFO  c.a.c.n.r.NacosContextRefresher - [Nacos Config] Listening config: dataId=communitysharing-kv-dev.properties, group=DEFAULT_GROUP
+2026-03-02 17:26:33.161 [main] INFO  c.a.n.c.config.impl.ClientWorker - [fixed-127.0.0.1_8848] [subscribe] communitysharing-kv.properties+DEFAULT_GROUP
+2026-03-02 17:26:33.162 [main] INFO  c.a.n.client.config.impl.CacheData - [fixed-127.0.0.1_8848] [add-listener] ok, tenant=, dataId=communitysharing-kv.properties, group=DEFAULT_GROUP, cnt=1
+2026-03-02 17:26:33.162 [main] INFO  c.a.c.n.r.NacosContextRefresher - [Nacos Config] Listening config: dataId=communitysharing-kv.properties, group=DEFAULT_GROUP
+2026-03-02 17:26:33.162 [main] INFO  c.a.n.c.config.impl.ClientWorker - [fixed-127.0.0.1_8848] [subscribe] communitysharing-kv+DEFAULT_GROUP
+2026-03-02 17:26:33.162 [main] INFO  c.a.n.client.config.impl.CacheData - [fixed-127.0.0.1_8848] [add-listener] ok, tenant=, dataId=communitysharing-kv, group=DEFAULT_GROUP, cnt=1
+2026-03-02 17:26:33.162 [main] INFO  c.a.c.n.r.NacosContextRefresher - [Nacos Config] Listening config: dataId=communitysharing-kv, group=DEFAULT_GROUP
+2026-03-02 17:26:59.166 [Thread-7] WARN  c.a.nacos.common.notify.NotifyCenter - [NotifyCenter] Start destroying Publisher
+2026-03-02 17:26:59.166 [Thread-1] WARN  c.a.n.c.http.HttpClientBeanHolder - [HttpClientBeanHolder] Start destroying common HttpClient
+2026-03-02 17:26:59.168 [Thread-7] WARN  c.a.nacos.common.notify.NotifyCenter - [NotifyCenter] Destruction of the end
+2026-03-02 17:26:59.168 [Thread-1] WARN  c.a.n.c.http.HttpClientBeanHolder - [HttpClientBeanHolder] Destruction of the end
+2026-03-02 17:27:01.250 [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry - De-registering from Nacos Server now...
+2026-03-02 17:27:01.251 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - [DEREGISTER-SERVICE] 2e254952-9803-4eae-8771-b086042c797f deregistering service communitysharing-kv with instance: Instance{instanceId='null', ip='26.26.26.1', port=8084, weight=1.0, healthy=true, enabled=true, ephemeral=true, clusterName='DEFAULT', serviceName='null', metadata={}}
+2026-03-02 17:27:01.335 [SpringApplicationShutdownHook] INFO  c.a.c.n.r.NacosServiceRegistry - De-registration finished.
+2026-03-02 17:27:01.336 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - com.alibaba.nacos.client.naming.cache.ServiceInfoHolder do shutdown begin
+2026-03-02 17:27:01.336 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - com.alibaba.nacos.client.naming.backups.FailoverReactor do shutdown begin
+2026-03-02 17:27:01.336 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - com.alibaba.nacos.client.naming.backups.FailoverReactor do shutdown stop
+2026-03-02 17:27:01.336 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - com.alibaba.nacos.client.naming.cache.ServiceInfoHolder do shutdown stop
+2026-03-02 17:27:01.337 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - com.alibaba.nacos.client.naming.remote.NamingClientProxyDelegate do shutdown begin
+2026-03-02 17:27:01.337 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - com.alibaba.nacos.client.naming.core.ServiceInfoUpdateService do shutdown begin
+2026-03-02 17:27:01.337 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - com.alibaba.nacos.client.naming.core.ServiceInfoUpdateService do shutdown stop
+2026-03-02 17:27:01.337 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - com.alibaba.nacos.client.naming.core.ServerListManager do shutdown begin
+2026-03-02 17:27:01.337 [SpringApplicationShutdownHook] WARN  com.alibaba.nacos.client.naming - [NamingHttpClientManager] Start destroying NacosRestTemplate
+2026-03-02 17:27:01.337 [SpringApplicationShutdownHook] WARN  com.alibaba.nacos.client.naming - [NamingHttpClientManager] Destruction of the end
+2026-03-02 17:27:01.337 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - com.alibaba.nacos.client.naming.core.ServerListManager do shutdown stop
+2026-03-02 17:27:01.337 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - com.alibaba.nacos.client.naming.remote.http.NamingHttpClientProxy do shutdown begin
+2026-03-02 17:27:01.337 [SpringApplicationShutdownHook] WARN  com.alibaba.nacos.client.naming - [NamingHttpClientManager] Start destroying NacosRestTemplate
+2026-03-02 17:27:01.337 [SpringApplicationShutdownHook] WARN  com.alibaba.nacos.client.naming - [NamingHttpClientManager] Destruction of the end
+2026-03-02 17:27:01.337 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - com.alibaba.nacos.client.naming.remote.http.NamingHttpClientProxy do shutdown stop
+2026-03-02 17:27:01.337 [SpringApplicationShutdownHook] INFO  c.alibaba.nacos.common.remote.client - Shutdown rpc client, set status to shutdown
+2026-03-02 17:27:01.337 [SpringApplicationShutdownHook] INFO  c.alibaba.nacos.common.remote.client - Shutdown client event executor java.util.concurrent.ScheduledThreadPoolExecutor@4dc2fa6f[Running, pool size = 2, active threads = 2, queued tasks = 0, completed tasks = 0]
+2026-03-02 17:27:01.337 [SpringApplicationShutdownHook] INFO  c.alibaba.nacos.common.remote.client - Close current connection 1772443592893_172.17.0.1_52902
+2026-03-02 17:27:01.340 [nacos-grpc-client-executor-127.0.0.1-13] WARN  c.a.n.c.r.client.grpc.GrpcClient - [1772443592893_172.17.0.1_52902]Ignore error event,isRunning:false,isAbandon=false
+2026-03-02 17:27:01.341 [SpringApplicationShutdownHook] INFO  c.a.n.c.r.client.grpc.GrpcClient - Shutdown grpc executor java.util.concurrent.ThreadPoolExecutor@34f1ad4a[Running, pool size = 4, active threads = 0, queued tasks = 0, completed tasks = 14]
+2026-03-02 17:27:01.341 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - Shutdown grpc redo service executor java.util.concurrent.ScheduledThreadPoolExecutor@3afb0ec1[Running, pool size = 1, active threads = 0, queued tasks = 1, completed tasks = 9]
+2026-03-02 17:27:01.342 [SpringApplicationShutdownHook] INFO  c.a.n.c.a.r.i.CredentialWatcher - [null] CredentialWatcher is stopped
+2026-03-02 17:27:01.342 [SpringApplicationShutdownHook] INFO  c.a.n.c.a.r.i.CredentialService - [null] CredentialService is freed
+2026-03-02 17:27:01.342 [SpringApplicationShutdownHook] INFO  com.alibaba.nacos.client.naming - com.alibaba.nacos.client.naming.remote.NamingClientProxyDelegate do shutdown stop
+2026-03-02 17:27:07.688 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-03-02 17:27:07.730 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-03-02 17:27:07.899 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-03-02 17:27:07.901 [main] INFO  c.a.nacos.client.utils.ParamUtil - [settings] [req-serv] nacos-server port:8848
+2026-03-02 17:27:07.901 [main] INFO  c.a.nacos.client.utils.ParamUtil - [settings] [http-client] connect timeout:1000
+2026-03-02 17:27:07.901 [main] INFO  c.a.nacos.client.utils.ParamUtil - PER_TASK_CONFIG_SIZE: 3000.0
+2026-03-02 17:27:07.928 [main] INFO  c.a.n.p.a.s.c.ClientAuthPluginManager - [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.impl.NacosClientAuthServiceImpl success.
+2026-03-02 17:27:07.928 [main] INFO  c.a.n.p.a.s.c.ClientAuthPluginManager - [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.ram.RamClientAuthServiceImpl success.
+2026-03-02 17:27:07.933 [main] INFO  c.a.n.c.a.r.i.CredentialWatcher - null No credential found
+2026-03-02 17:27:08.231 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-03-02 17:27:08.244 [main] INFO  c.a.n.c.c.i.LocalConfigInfoProcessor - LOCAL_SNAPSHOT_PATH:C:\Users\moonth\nacos\config
+2026-03-02 17:27:08.246 [main] INFO  c.alibaba.nacos.common.remote.client - [RpcClientFactory] create a new rpc client of 47f7d100-94d4-4410-822e-ed38a002006a_config-0
+2026-03-02 17:27:08.264 [main] INFO  c.alibaba.nacos.common.remote.client - [47f7d100-94d4-4410-822e-ed38a002006a_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$584/0x0000000800f8dfe0
+2026-03-02 17:27:08.264 [main] INFO  c.alibaba.nacos.common.remote.client - [47f7d100-94d4-4410-822e-ed38a002006a_config-0] Register server push request handler:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$$Lambda$585/0x0000000800f8e400
+2026-03-02 17:27:08.264 [main] INFO  c.alibaba.nacos.common.remote.client - [47f7d100-94d4-4410-822e-ed38a002006a_config-0] Registry connection listener to current client:com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$1
+2026-03-02 17:27:08.265 [main] INFO  c.alibaba.nacos.common.remote.client - [47f7d100-94d4-4410-822e-ed38a002006a_config-0] RpcClient init, ServerListFactory = com.alibaba.nacos.client.config.impl.ClientWorker$ConfigRpcTransportClient$2
+2026-03-02 17:27:08.270 [main] INFO  c.alibaba.nacos.common.remote.client - [47f7d100-94d4-4410-822e-ed38a002006a_config-0] Try to connect to server on start up, server: {serverIp = '127.0.0.1', server main port = 8848}
+2026-03-02 17:27:08.300 [main] INFO  c.a.n.c.r.client.grpc.GrpcClient - grpc client connection server:127.0.0.1 ip,serverPort:9848,grpcTslConfig:{"sslProvider":"OPENSSL","enableTls":false,"mutualAuthEnable":false,"trustAll":false}
+2026-03-02 17:27:08.968 [main] INFO  c.alibaba.nacos.common.remote.client - [47f7d100-94d4-4410-822e-ed38a002006a_config-0] Success to connect to server [127.0.0.1:8848] on start up, connectionId = 1772443628798_172.17.0.1_43188
+2026-03-02 17:27:08.968 [com.alibaba.nacos.client.remote.worker] INFO  c.alibaba.nacos.common.remote.client - [47f7d100-94d4-4410-822e-ed38a002006a_config-0] Notify connected event to listeners.
+2026-03-02 17:27:08.968 [com.alibaba.nacos.client.remote.worker] INFO  c.a.n.c.config.impl.ClientWorker - [47f7d100-94d4-4410-822e-ed38a002006a_config-0] Connected,notify listen context...
+2026-03-02 17:27:08.968 [main] INFO  c.alibaba.nacos.common.remote.client - [47f7d100-94d4-4410-822e-ed38a002006a_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$ConnectResetRequestHandler
+2026-03-02 17:27:08.968 [main] INFO  c.alibaba.nacos.common.remote.client - [47f7d100-94d4-4410-822e-ed38a002006a_config-0] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$$Lambda$605/0x00000008010d58a8
+2026-03-02 17:27:08.990 [main] INFO  c.a.nacos.client.config.impl.Limiter - limitTime:5.0
+2026-03-02 17:27:09.008 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[communitysharing-kv] & group[DEFAULT_GROUP]
+2026-03-02 17:27:09.019 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[communitysharing-kv.properties] & group[DEFAULT_GROUP]
+2026-03-02 17:27:09.028 [main] WARN  c.a.c.n.c.NacosPropertySourceBuilder - Ignore the empty nacos configuration and get it based on dataId[communitysharing-kv-dev.properties] & group[DEFAULT_GROUP]
+2026-03-02 17:27:09.029 [main] INFO  o.s.c.b.c.PropertySourceBootstrapConfiguration - Located property source: [BootstrapPropertySource {name='bootstrapProperties-communitysharing-kv-dev.properties,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-communitysharing-kv.properties,DEFAULT_GROUP'}, BootstrapPropertySource {name='bootstrapProperties-communitysharing-kv,DEFAULT_GROUP'}]
+2026-03-02 17:27:09.033 [main] WARN  c.a.n.client.logging.NacosLogging - Load Logback Configuration of Nacos fail, message: Could not initialize Logback Nacos logging from classpath:nacos-logback.xml
+2026-03-02 17:27:09.034 [main] INFO  c.t.c.K.CommunitysharingKVBusinessApplication - The following 1 profile is active: "dev"
+2026-03-02 17:27:09.368 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Reactive Cassandra repositories in DEFAULT mode.
+2026-03-02 17:27:09.452 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 80 ms. Found 0 Reactive Cassandra repository interfaces.
+2026-03-02 17:27:09.455 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Cassandra repositories in DEFAULT mode.
+2026-03-02 17:27:09.467 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 12 ms. Found 2 Cassandra repository interfaces.
+2026-03-02 17:27:09.568 [main] INFO  o.s.cloud.context.scope.GenericScope - BeanFactory id=81449b8c-0b38-379d-b80a-495be641aea9
+2026-03-02 17:27:09.892 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8084 (http)
+2026-03-02 17:27:09.901 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2026-03-02 17:27:09.902 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.5]
+2026-03-02 17:27:09.987 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2026-03-02 17:27:09.988 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 945 ms
+2026-03-02 17:27:10.171 [main] INFO  c.d.o.d.i.c.DefaultMavenCoordinates - DataStax Java driver for Apache Cassandra(R) (com.datastax.oss:java-driver-core) version 4.15.0
+2026-03-02 17:27:10.448 [s0-admin-0] INFO  c.d.o.d.internal.core.time.Clock - Using native clock for microsecond precision
+2026-03-02 17:27:10.727 [s1-admin-0] INFO  c.d.o.d.internal.core.time.Clock - Using native clock for microsecond precision
+2026-03-02 17:27:10.970 [main] WARN  o.s.c.LocalVariableTableParameterNameDiscoverer - Using deprecated '-debug' fallback for parameter name resolution. Compile the affected code with '-parameters' instead or avoid its introspection: com.taoxin.communitysharing.KV.domian.repository.CommentContentRepository
+2026-03-02 17:27:11.682 [main] WARN  o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2026-03-02 17:27:11.731 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8084 (http) with context path ''
+2026-03-02 17:27:11.733 [main] INFO  com.alibaba.nacos.client.naming - initializer namespace from ans.namespace attribute : null
+2026-03-02 17:27:11.733 [main] INFO  com.alibaba.nacos.client.naming - initializer namespace from ALIBABA_ALIWARE_NAMESPACE attribute :null
+2026-03-02 17:27:11.733 [main] INFO  com.alibaba.nacos.client.naming - initializer namespace from namespace attribute :null
+2026-03-02 17:27:11.737 [main] INFO  c.a.n.p.a.s.c.ClientAuthPluginManager - [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.impl.NacosClientAuthServiceImpl success.
+2026-03-02 17:27:11.738 [main] INFO  c.a.n.p.a.s.c.ClientAuthPluginManager - [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.ram.RamClientAuthServiceImpl success.
+2026-03-02 17:27:11.740 [main] INFO  c.alibaba.nacos.common.remote.client - [RpcClientFactory] create a new rpc client of 46c6b385-1ad0-4126-9438-36d5e0a646ad
+2026-03-02 17:27:11.740 [main] INFO  c.alibaba.nacos.common.remote.client - [46c6b385-1ad0-4126-9438-36d5e0a646ad] RpcClient init, ServerListFactory = com.alibaba.nacos.client.naming.core.ServerListManager
+2026-03-02 17:27:11.741 [main] INFO  c.alibaba.nacos.common.remote.client - [46c6b385-1ad0-4126-9438-36d5e0a646ad] Registry connection listener to current client:com.alibaba.nacos.client.naming.remote.gprc.redo.NamingGrpcRedoService
+2026-03-02 17:27:11.741 [main] INFO  c.alibaba.nacos.common.remote.client - [46c6b385-1ad0-4126-9438-36d5e0a646ad] Register server push request handler:com.alibaba.nacos.client.naming.remote.gprc.NamingPushRequestHandler
+2026-03-02 17:27:11.741 [main] INFO  c.alibaba.nacos.common.remote.client - [46c6b385-1ad0-4126-9438-36d5e0a646ad] Try to connect to server on start up, server: {serverIp = '127.0.0.1', server main port = 8848}
+2026-03-02 17:27:11.741 [main] INFO  c.a.n.c.r.client.grpc.GrpcClient - grpc client connection server:127.0.0.1 ip,serverPort:9848,grpcTslConfig:{"sslProvider":"OPENSSL","enableTls":false,"mutualAuthEnable":false,"trustAll":false}
+2026-03-02 17:27:11.855 [main] INFO  c.alibaba.nacos.common.remote.client - [46c6b385-1ad0-4126-9438-36d5e0a646ad] Success to connect to server [127.0.0.1:8848] on start up, connectionId = 1772443631747_172.17.0.1_45186
+2026-03-02 17:27:11.855 [main] INFO  c.alibaba.nacos.common.remote.client - [46c6b385-1ad0-4126-9438-36d5e0a646ad] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$ConnectResetRequestHandler
+2026-03-02 17:27:11.855 [main] INFO  c.alibaba.nacos.common.remote.client - [46c6b385-1ad0-4126-9438-36d5e0a646ad] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$$Lambda$605/0x00000008010d58a8
+2026-03-02 17:27:11.855 [com.alibaba.nacos.client.remote.worker] INFO  c.alibaba.nacos.common.remote.client - [46c6b385-1ad0-4126-9438-36d5e0a646ad] Notify connected event to listeners.
+2026-03-02 17:27:11.856 [com.alibaba.nacos.client.remote.worker] INFO  com.alibaba.nacos.client.naming - Grpc connection connect
+2026-03-02 17:27:11.856 [main] INFO  com.alibaba.nacos.client.naming - [REGISTER-SERVICE] 2e254952-9803-4eae-8771-b086042c797f registering service communitysharing-kv with instance Instance{instanceId='null', ip='26.26.26.1', port=8084, weight=1.0, healthy=true, enabled=true, ephemeral=true, clusterName='DEFAULT', serviceName='null', metadata={IPv6=null, preserved.register.source=SPRING_CLOUD}}
+2026-03-02 17:27:11.868 [main] INFO  c.a.c.n.r.NacosServiceRegistry - nacos registry, DEFAULT_GROUP communitysharing-kv 26.26.26.1:8084 register finished
+2026-03-02 17:27:12.035 [main] INFO  c.t.c.K.CommunitysharingKVBusinessApplication - Started CommunitysharingKVBusinessApplication in 4.893 seconds (process running for 5.407)
+2026-03-02 17:27:12.038 [main] INFO  c.a.n.client.config.impl.CacheData - nacos.cache.data.init.snapshot = true 
+2026-03-02 17:27:12.039 [main] INFO  c.a.n.c.config.impl.ClientWorker - [fixed-127.0.0.1_8848] [subscribe] communitysharing-kv-dev.properties+DEFAULT_GROUP
+2026-03-02 17:27:12.042 [main] INFO  c.a.n.client.config.impl.CacheData - [fixed-127.0.0.1_8848] [add-listener] ok, tenant=, dataId=communitysharing-kv-dev.properties, group=DEFAULT_GROUP, cnt=1
+2026-03-02 17:27:12.042 [main] INFO  c.a.c.n.r.NacosContextRefresher - [Nacos Config] Listening config: dataId=communitysharing-kv-dev.properties, group=DEFAULT_GROUP
+2026-03-02 17:27:12.042 [main] INFO  c.a.n.c.config.impl.ClientWorker - [fixed-127.0.0.1_8848] [subscribe] communitysharing-kv.properties+DEFAULT_GROUP
+2026-03-02 17:27:12.042 [main] INFO  c.a.n.client.config.impl.CacheData - [fixed-127.0.0.1_8848] [add-listener] ok, tenant=, dataId=communitysharing-kv.properties, group=DEFAULT_GROUP, cnt=1
+2026-03-02 17:27:12.042 [main] INFO  c.a.c.n.r.NacosContextRefresher - [Nacos Config] Listening config: dataId=communitysharing-kv.properties, group=DEFAULT_GROUP
+2026-03-02 17:27:12.044 [main] INFO  c.a.n.c.config.impl.ClientWorker - [fixed-127.0.0.1_8848] [subscribe] communitysharing-kv+DEFAULT_GROUP
+2026-03-02 17:27:12.044 [main] INFO  c.a.n.client.config.impl.CacheData - [fixed-127.0.0.1_8848] [add-listener] ok, tenant=, dataId=communitysharing-kv, group=DEFAULT_GROUP, cnt=1
+2026-03-02 17:27:12.044 [main] INFO  c.a.c.n.r.NacosContextRefresher - [Nacos Config] Listening config: dataId=communitysharing-kv, group=DEFAULT_GROUP
+2026-03-02 17:28:44.342 [http-nio-8084-exec-5] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-02 17:28:44.343 [http-nio-8084-exec-5] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2026-03-02 17:28:44.343 [http-nio-8084-exec-5] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+2026-03-02 17:28:44.519 [http-nio-8084-exec-5] INFO  c.t.c.f.b.o.a.ApiOperationLogAspect - ====== 请求开始: [批量查询批量内容], 入参: {"contentId":2017271718413860910,"commentContentKeys":[{"yearMonth":"2026-03","commentId":"1cce7c77-f932-44b9-bb06-cf264acf73b0"},{"yearMonth":"2026-03","commentId":"a4f87869-9845-4476-88e5-d3d2de4eb7ca"}]}, 请求类: com.taoxin.communitysharing.KV.controller.SharingContentController, 请求方法: batchQuery =================================== 
+2026-03-02 17:28:44.754 [http-nio-8084-exec-5] INFO  c.t.c.K.s.i.CommentContentServiceImplement - 【批量查询批量内容】查询结果: [CommentContentDO(commentContentPrimaryKey=CommentContentPrimaryKey(contentId=2017271718413860910, yearMonth=2026-03, commentId=1cce7c77-f932-44b9-bb06-cf264acf73b0), comment=这是二级评论(回复)), CommentContentDO(commentContentPrimaryKey=CommentContentPrimaryKey(contentId=2017271718413860910, yearMonth=2026-03, commentId=a4f87869-9845-4476-88e5-d3d2de4eb7ca), comment=写的真好！)]
+2026-03-02 17:28:44.764 [http-nio-8084-exec-5] INFO  c.t.c.f.b.o.a.ApiOperationLogAspect - ====== 响应结束: [批量查询批量内容], 耗时: 243ms, 返回参数: {"success":true,"data":[{"commentId":"1cce7c77-f932-44b9-bb06-cf264acf73b0","comment":"这是二级评论(回复)"},{"commentId":"a4f87869-9845-4476-88e5-d3d2de4eb7ca","comment":"写的真好！"}]} =================================== 

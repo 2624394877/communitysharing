@@ -4,6 +4,8 @@ import com.alibaba.nacos.shaded.com.google.common.base.Preconditions;
 import com.taoxin.communitysharing.comment.business.constant.MQConstant;
 import com.taoxin.communitysharing.comment.business.model.dto.PublishCommentMqDTO;
 import com.taoxin.communitysharing.comment.business.model.vo.req.CommentPublishReqVo;
+import com.taoxin.communitysharing.comment.business.model.vo.req.FindCommentPageListReqVo;
+import com.taoxin.communitysharing.comment.business.model.vo.res.FindCommentItemRspVo;
 import com.taoxin.communitysharing.comment.business.retry.SendMQRetryHelper;
 import com.taoxin.communitysharing.comment.business.rpc.DistributedIdGeneratorRpcService;
 import com.taoxin.communitysharing.comment.business.service.CommentServer;
@@ -53,5 +55,10 @@ public class CommentServerImplement implements CommentServer {
         // 发送MQ
         sendMQRetryHelper.sendMQ(MQConstant.TOPIC_PUBLISH_COMMENT, JsonUtil.toJsonString(publishCommentMqDTO),"评论服务");
         return Response.success();
+    }
+
+    @Override
+    public Response<FindCommentItemRspVo> findCommentPageList(FindCommentPageListReqVo findCommentPageListReqVo) {
+        return null;
     }
 }
