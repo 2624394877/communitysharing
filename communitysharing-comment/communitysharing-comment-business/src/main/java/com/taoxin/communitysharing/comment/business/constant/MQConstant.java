@@ -14,4 +14,8 @@ public interface MQConstant {
     String TOPIC_COMMENT_UNLIKE_TAG = "unliked";
 
     String TOPIC_COUNT_COMMENT_LIKE_2_DB = "CountCommentLike2DBTopic";
+
+    String TOPIC_COMMENT_DELETE = "CommentDeleteTopic";
+
+    String TOPIC_COMMENT_DELETE_COUNT = "CommentDeleteTopicCount";
 }

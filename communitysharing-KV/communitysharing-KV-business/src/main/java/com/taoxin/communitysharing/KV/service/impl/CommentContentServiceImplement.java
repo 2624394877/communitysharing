@@ -5,10 +5,7 @@ import com.google.common.collect.Lists;
 import com.taoxin.communitysharing.KV.domian.dataobject.CommentContentDO;
 import com.taoxin.communitysharing.KV.domian.dataobject.CommentContentPrimaryKey;
 import com.taoxin.communitysharing.KV.domian.repository.CommentContentRepository;
-import com.taoxin.communitysharing.KV.dto.request.AddBatchCommentContentReqDTO;
-import com.taoxin.communitysharing.KV.dto.request.BatchFindCommentContentReqDTO;
-import com.taoxin.communitysharing.KV.dto.request.CommentContentReqDTO;
-import com.taoxin.communitysharing.KV.dto.request.FindCommentContentReqDTO;
+import com.taoxin.communitysharing.KV.dto.request.*;
 import com.taoxin.communitysharing.KV.dto.response.FindCommentContentRspDTO;
 import com.taoxin.communitysharing.KV.service.CommentContentService;
 import com.taoxin.communitysharing.common.response.Response;
@@ -78,5 +75,15 @@ public class CommentContentServiceImplement implements CommentContentService {
                             .build()).toList();
         }
         return Response.success(findCommentContentRspDTOS);
+    }
+
+    @Override
+    public Response<?> deleteBatchCommentContent(DeleteCommentContentReqDTO commentContentPrimaryKey) {
+        Long contentId = commentContentPrimaryKey.getContentId();
+        String yearMonth = commentContentPrimaryKey.getYearMonth();
+        String commentId = commentContentPrimaryKey.getCommentId();
+        UUID commentId_uuid = UUID.fromString(commentId);
+        commentContentRepository.deleteComment(contentId, yearMonth, commentId_uuid);
+        return Response.success();
     }
 }

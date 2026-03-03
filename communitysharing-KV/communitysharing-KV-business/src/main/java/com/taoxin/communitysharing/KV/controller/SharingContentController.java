@@ -1,5 +1,6 @@
 package com.taoxin.communitysharing.KV.controller;
 
+import com.taoxin.communitysharing.KV.domian.dataobject.CommentContentPrimaryKey;
 import com.taoxin.communitysharing.KV.dto.request.*;
 import com.taoxin.communitysharing.KV.dto.response.FindCommentContentRspDTO;
 import com.taoxin.communitysharing.KV.service.CommentContentService;
@@ -53,5 +54,11 @@ public class SharingContentController {
     @ApiOperationLog(description = "批量查询批量内容")
     public Response<List<FindCommentContentRspDTO>> batchQuery(@Validated @RequestBody BatchFindCommentContentReqDTO requestDTO) {
         return commentContentService.findBatchCommentContent(requestDTO);
+    }
+
+    @PostMapping("comment/content/delete")
+    @ApiOperationLog(description = "删除评论内容")
+    public Response<?> batchDelete(@RequestBody DeleteCommentContentReqDTO commentContentPrimaryKey) {
+        return commentContentService.deleteBatchCommentContent(commentContentPrimaryKey);
     }
 }

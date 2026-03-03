@@ -49,4 +49,10 @@ public class Controller {
     public Response<?> unlikeComment(@Validated @RequestBody UnlikeCommentReqVo unlikeCommentReqVo) {
         return commentServer.unlikeComment(unlikeCommentReqVo);
     }
+
+    @PostMapping("/delete")
+    @ApiOperationLog(description = "删除评论")
+    public Response<?> deleteComment(@Validated @RequestBody DeleteCommentReqVo deleteCommentReqVo) {
+        return commentServer.deleteComment(deleteCommentReqVo);
+    }
 }

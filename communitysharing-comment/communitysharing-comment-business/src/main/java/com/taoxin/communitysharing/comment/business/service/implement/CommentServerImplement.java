@@ -8,6 +8,7 @@ import com.alibaba.nacos.shaded.com.google.common.collect.Maps;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.google.common.collect.Lists;
+import com.taoxin.communitysharing.KV.dto.request.DeleteCommentContentReqDTO;
 import com.taoxin.communitysharing.KV.dto.request.FindCommentContentReqDTO;
 import com.taoxin.communitysharing.KV.dto.response.FindCommentContentRspDTO;
 import com.taoxin.communitysharing.comment.business.constant.CommentContentKeyConstant;
@@ -53,6 +54,7 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -81,6 +83,8 @@ public class CommentServerImplement implements CommentServer {
     private ThreadPoolTaskExecutor taskExecutor;
     @Resource
     private CommentLikeDoMapper commentLikeDoMapper;
+    @Resource
+    private TransactionTemplate transactionTemplate;
 
     private static final Cache<Long, String> LOCAL_CACHE = Caffeine.newBuilder()
             .initialCapacity(10000) // 初始化缓存大小
@@ -519,6 +523,84 @@ public class CommentServerImplement implements CommentServer {
             }
         });
         return Response.success("取消点赞成功");
+    }
+
+    @Override
+    public Response<?> deleteComment(DeleteCommentReqVo deleteCommentReqVo) {
+        // 1. 校验评论是否存在
+        Long commentId = deleteCommentReqVo.getCommentId();
+        // 2. 校验是否有权限删除
+        Long userId = LoginUserContextHolder.getUserId();
+
+        CommentDo commentDo = commentDoMapper.selectByPrimaryKey(commentId);
+        if (Objects.isNull(commentDo)) throw new BusinessException(ResponseStatusEnum.COMMENT_NOT_EXIST);
+        Long creatorId = commentDo.getUserId();
+        if (!creatorId.equals(userId)) throw new BusinessException(ResponseStatusEnum.COMMENT_CANT_OPERATE);
+        // 3. 物理删除评论、评论内容
+        transactionTemplate.execute(transactionStatus -> {
+            try {
+                commentDoMapper.deleteByPrimaryKey(commentId);
+                return null;
+            } catch (Exception e) {
+                log.error("========= 【删除评论】 ====> {}", e);
+                transactionStatus.setRollbackOnly();
+                throw e;
+            }
+        });
+        DeleteCommentContentReqDTO deleteCommentContentReqDTO = DeleteCommentContentReqDTO.builder()
+                .contentId(commentDo.getContentId())
+                .yearMonth(commentDo.getCreateTime().format(DateTimeFormatter.ofPattern(DateConstants.YEAR_MONTH_PATTERN)))
+                .commentId(commentDo.getContentUuid())
+                .build();
+        boolean deleteResult = kvFeignApiService.deleteCommentContent(deleteCommentContentReqDTO);
+        if (!deleteResult) throw new BusinessException(ResponseStatusEnum.DELETED_COMMENT_FAIL);
+        // 4. 删除 Redis 缓存（ZSet 和 String）
+        Integer level = commentDo.getLevel();
+        Long contentId = commentDo.getContentId();
+        Long parentCommentId = commentDo.getParentId();
+        // 判断级别
+        String ZSetKey = Objects.equals(level, CommentLevelEnum.FIRST_LEVEL.getCode()) ?
+                CommentContentKeyConstant.getCommentListId(contentId) : CommentContentKeyConstant.getCommentChildListId(parentCommentId);
+        String stringKey = Objects.equals(level, CommentLevelEnum.FIRST_LEVEL.getCode()) ?
+                CommentContentKeyConstant.getCommentDetail(commentId) : CommentContentKeyConstant.getCommentChildDetail(commentId);
+        redisTemplate.executePipelined(new SessionCallback<>() {
+            @Override
+            public Object execute(RedisOperations operations) {
+                operations.opsForZSet().remove(ZSetKey, commentId);
+
+                operations.delete(stringKey);
+                return null;
+            }
+        });
+        // 5. 发布广播 MQ, 将本地缓存删除
+        String topic = MQConstant.TOPIC_COMMENT_DELETE;
+        Message<String> message = MessageBuilder.withPayload(JsonUtil.toJsonString(deleteCommentReqVo)).build();
+        rocketMQTemplate.asyncSend(topic, message, new SendCallback() {
+            @Override
+            public void onSuccess(SendResult sendResult) {
+                log.info("========= 【删除评论本地】 ====> {}", sendResult);
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                log.error("========= 【删除评论本地】 ====> {}", throwable);
+            }
+        });
+
+        // 6. 发送 MQ, 异步去更新计数、删除关联评论、热度值等
+        Message<String> countMessage = MessageBuilder.withPayload(JsonUtil.toJsonString(commentDo)).build();
+        rocketMQTemplate.asyncSend(MQConstant.TOPIC_COMMENT_DELETE_COUNT, countMessage, new SendCallback() {
+            @Override
+            public void onSuccess(SendResult sendResult) {
+                log.info("========= 【删除评论计数】 ====> {}", sendResult);
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                log.error("========= 【删除评论计数】 ====> {}", throwable);
+            }
+        });
+        return Response.success();
     }
 
     private void asyncSetbloomCommentLikes(String likeCommentBloomKey, Long commentId, long expireTime) {

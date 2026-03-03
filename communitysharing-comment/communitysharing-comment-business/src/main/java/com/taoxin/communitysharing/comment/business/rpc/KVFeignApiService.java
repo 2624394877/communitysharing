@@ -3,10 +3,7 @@ package com.taoxin.communitysharing.comment.business.rpc;
 import cn.hutool.core.collection.CollUtil;
 import com.google.common.collect.Lists;
 import com.taoxin.communitysharing.KV.api.KVFeignApi;
-import com.taoxin.communitysharing.KV.dto.request.AddBatchCommentContentReqDTO;
-import com.taoxin.communitysharing.KV.dto.request.BatchFindCommentContentReqDTO;
-import com.taoxin.communitysharing.KV.dto.request.CommentContentReqDTO;
-import com.taoxin.communitysharing.KV.dto.request.FindCommentContentReqDTO;
+import com.taoxin.communitysharing.KV.dto.request.*;
 import com.taoxin.communitysharing.KV.dto.response.FindCommentContentRspDTO;
 import com.taoxin.communitysharing.comment.business.enums.ResponseStatusEnum;
 import com.taoxin.communitysharing.comment.business.model.bo.CommentBo;
@@ -26,6 +23,15 @@ import java.util.Objects;
 public class KVFeignApiService {
     @Resource
     private KVFeignApi kvFeignApi;
+
+    public boolean deleteCommentContent(DeleteCommentContentReqDTO deleteCommentContentReqDTO) {
+        Response<?> response = kvFeignApi.batchDelete(deleteCommentContentReqDTO);
+        if (!response.isSuccess()) {
+            log.error("【删除笔记内容失败】数据：{}", deleteCommentContentReqDTO);
+            throw new BusinessException(ResponseStatusEnum.DELETED_COMMENT_FAIL);
+        }
+        return true;
+    }
 
     public List<FindCommentContentRspDTO> QueryCommentContentList(Long contentId, List<FindCommentContentReqDTO> commentContentKeys) {
         BatchFindCommentContentReqDTO batchFindCommentContentReqDTO = BatchFindCommentContentReqDTO.builder()

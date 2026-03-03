@@ -29,4 +29,7 @@ public interface KVFeignApi {
 
     @PostMapping(value = PREFIX + "/sharing/content/batch/query")
     Response<List<FindCommentContentRspDTO>> batchQuery(@Validated @RequestBody BatchFindCommentContentReqDTO requestDTO);
+
+    @PostMapping(PREFIX + "/comment/content/delete")
+    Response<?> batchDelete(@Validated @RequestBody DeleteCommentContentReqDTO deleteCommentContentReqDTO);
 }

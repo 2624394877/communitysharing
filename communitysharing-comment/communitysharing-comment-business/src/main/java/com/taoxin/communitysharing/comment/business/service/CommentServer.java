@@ -37,4 +37,11 @@ public interface CommentServer {
 
     Response<?> unlikeComment(UnlikeCommentReqVo unlikeCommentReqVo);
 
+    /**
+     * 删除评论
+     * @param deleteCommentReqVo 请求参数
+     * @return
+     */
+    Response<?> deleteComment(DeleteCommentReqVo deleteCommentReqVo);
+
 }

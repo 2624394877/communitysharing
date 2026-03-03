@@ -18,6 +18,8 @@ public enum ResponseStatusEnum implements BaseExceptionInterface {
     UNLIKED_ERROR("comment-500", "取消点赞失败"),
     ALREADY_LIKED("comment-500", "已经点赞,无法再次点赞"),
     NOT_LIKED("comment-500", "没有点赞,无法取消点赞"),
+    DELETED_COMMENT_FAIL("comment-500", "删除评论失败"),
+    COMMENT_CANT_OPERATE("comment-500", "不能操作别人的评论")
     ;
 
     private final String ErrorCode;
