@@ -17,4 +17,7 @@ public interface CommentDoMapper {
     int updateByPrimaryKey(CommentDo record);
 
     int updateChildCommentTotal(@Param("parentId") Long parentId, @Param("count") int count);
+
+    int updateLikeTotalByCommentId(@Param("count") Integer count,
+                                   @Param("commentId") Long commentId);
 }

@@ -1,8 +1,6 @@
 package com.taoxin.communitysharing.comment.business.service;
 
-import com.taoxin.communitysharing.comment.business.model.vo.req.CommentPublishReqVo;
-import com.taoxin.communitysharing.comment.business.model.vo.req.FindCommentPageListReqVo;
-import com.taoxin.communitysharing.comment.business.model.vo.req.SecondCommentPageListReqVo;
+import com.taoxin.communitysharing.comment.business.model.vo.req.*;
 import com.taoxin.communitysharing.comment.business.model.vo.res.FindCommentItemRspVo;
 import com.taoxin.communitysharing.comment.business.model.vo.res.FindSecondCommentItemRspVo;
 import com.taoxin.communitysharing.common.response.PageResponse;
@@ -29,5 +27,14 @@ public interface CommentServer {
      * @return
      */
     PageResponse<FindSecondCommentItemRspVo> findChildCommentPageList(SecondCommentPageListReqVo secondCommentPageListReqVo);
+
+    /**
+     * 点赞
+     * @param likeCommentReqVo
+     * @return
+     */
+    Response<?> LikeComment(LikeCommentReqVo likeCommentReqVo);
+
+    Response<?> unlikeComment(UnlikeCommentReqVo unlikeCommentReqVo);
 
 }

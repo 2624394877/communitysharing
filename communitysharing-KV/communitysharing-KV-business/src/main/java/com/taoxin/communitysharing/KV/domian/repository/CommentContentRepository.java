@@ -18,4 +18,7 @@ public interface CommentContentRepository extends CassandraRepository<CommentCon
      */
     @Query("select * from comment_content where content_id = ?0 and year_month in ?1 and comment_id in ?2")
     List<CommentContentDO> findComment(Long contentId, List<String> yearMonths, List<UUID> commentIds);
+
+    @Query("delete from comment_content where content_id = ?0 and year_month = ?1 and comment_id = ?2")
+    void deleteComment(Long contentId, String yearMonth, UUID commentId);
 }

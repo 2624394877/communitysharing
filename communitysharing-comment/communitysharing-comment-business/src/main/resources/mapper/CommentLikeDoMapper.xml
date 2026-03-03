@@ -16,9 +16,22 @@
     from t_comment_like
     where id = #{id,jdbcType=BIGINT}
   </select>
+    <select id="selectByCommentIdAndUserId" parameterType="map" resultType="java.lang.Integer">
+      select count(1) from t_comment_like where comment_id = #{commentId} and user_id = #{userId}
+    </select>
+  <select id="selectByCommentId" resultType="java.lang.Long" parameterType="map">
+    select user_id from t_comment_like where comment_id = #{commentId}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_comment_like
     where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="batchDelete" parameterType="list">
+    delete from t_comment_like where (user_id, comment_id) in (
+      <foreach collection="unLike" item="item" separator=",">
+        (#{item.userId}, #{item.commentId})
+      </foreach>
+    )
   </delete>
   <insert id="insert" parameterType="com.taoxin.communitysharing.comment.business.domain.databaseObject.CommentLikeDo">
     insert into t_comment_like (id, user_id, comment_id, 
@@ -57,6 +70,14 @@
       </if>
     </trim>
   </insert>
+  <insert id="batchInsert" parameterType="list">
+    insert into t_comment_like (user_id, comment_id, create_time)
+    values
+        <foreach collection="like" item="item" separator=",">
+          (#{item.userId}, #{item.commentId}, #{item.createTime})
+        </foreach>
+    on duplicate key update id = id
+  </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.taoxin.communitysharing.comment.business.domain.databaseObject.CommentLikeDo">
     update t_comment_like
     <set>
@@ -78,5 +99,10 @@
       comment_id = #{commentId,jdbcType=BIGINT},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateLikeTotalByCommentId" parameterType="map">
+    update t_comment
+    set like_total = like_total + #{count},update_time = now()
+    where id = #{commentId}
   </update>
 </mapper>

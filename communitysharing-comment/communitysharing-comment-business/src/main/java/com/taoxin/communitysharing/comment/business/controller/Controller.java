@@ -1,8 +1,6 @@
 package com.taoxin.communitysharing.comment.business.controller;
 
-import com.taoxin.communitysharing.comment.business.model.vo.req.CommentPublishReqVo;
-import com.taoxin.communitysharing.comment.business.model.vo.req.FindCommentPageListReqVo;
-import com.taoxin.communitysharing.comment.business.model.vo.req.SecondCommentPageListReqVo;
+import com.taoxin.communitysharing.comment.business.model.vo.req.*;
 import com.taoxin.communitysharing.comment.business.model.vo.res.FindCommentItemRspVo;
 import com.taoxin.communitysharing.comment.business.model.vo.res.FindSecondCommentItemRspVo;
 import com.taoxin.communitysharing.comment.business.service.CommentServer;
@@ -38,5 +36,17 @@ public class Controller {
     @ApiOperationLog(description = "批量查询子评论")
     public PageResponse<FindSecondCommentItemRspVo> findChildCommentPageList(@Validated @RequestBody SecondCommentPageListReqVo secondCommentPageListReqVo) {
         return commentServer.findChildCommentPageList(secondCommentPageListReqVo);
+    }
+
+    @PostMapping("/like")
+    @ApiOperationLog(description = "点赞")
+    public Response<?> likeComment(@Validated @RequestBody LikeCommentReqVo likeCommentReqVo) {
+        return commentServer.LikeComment(likeCommentReqVo);
+    }
+
+    @PostMapping("/unlike")
+    @ApiOperationLog(description = "取消点赞")
+    public Response<?> unlikeComment(@Validated @RequestBody UnlikeCommentReqVo unlikeCommentReqVo) {
+        return commentServer.unlikeComment(unlikeCommentReqVo);
     }
 }

@@ -14,6 +14,10 @@ public enum ResponseStatusEnum implements BaseExceptionInterface {
     SYSTEMP_ERROR("comment-502", "系统异常" ),
     FILE_SIZE_ERROR("comment-500", "文件大小错误"),
     COMMENT_NOT_EXIST("comment-500", "评论不存在"),
+    LIKED_ERROR("comment-500", "点赞失败"),
+    UNLIKED_ERROR("comment-500", "取消点赞失败"),
+    ALREADY_LIKED("comment-500", "已经点赞,无法再次点赞"),
+    NOT_LIKED("comment-500", "没有点赞,无法取消点赞"),
     ;
 
     private final String ErrorCode;

@@ -5,12 +5,14 @@ import com.github.phantomthief.collection.BufferTrigger;
 import com.google.common.collect.Lists;
 import com.taoxin.communitysharing.common.uitl.JsonUtil;
 import com.taoxin.communitysharing.count.business.constant.MQConstant;
+import com.taoxin.communitysharing.count.business.constant.RedisKeyConstant;
 import com.taoxin.communitysharing.count.business.domain.mapper.ContentCountDoMapper;
 import com.taoxin.communitysharing.count.business.model.dto.CountPublishCommentMqDTO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -28,6 +30,8 @@ public class CountContentCommentConsumer implements RocketMQListener<String> {
     private RateLimiter rateLimiter;
     @Resource
     private ContentCountDoMapper contentCountDoMapper;
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate;
 
     private final BufferTrigger<String> bufferTrigger = BufferTrigger.<String>batchBlocking()
             .bufferSize(50000)
@@ -62,6 +66,13 @@ public class CountContentCommentConsumer implements RocketMQListener<String> {
         for (Map.Entry<Long, List<CountPublishCommentMqDTO>> entry : map.entrySet()) {
             Long contentId = entry.getKey();
             int count = entry.getValue().size(); // 笔记 ID 对应的评论数
+
+            String contentCountKey = RedisKeyConstant.buildCountContentKey(contentId);
+            boolean exists = redisTemplate.hasKey(contentCountKey);
+            if (exists) {
+                redisTemplate.opsForHash().increment(contentCountKey, RedisKeyConstant.FIELD_COMMENT_TOTAL, count);
+            }
+
             if (count > 0) {
                 log.info("【评论数计数】 内容 {} 评论数 {}", contentId, count);
                 contentCountDoMapper.insertOrUpdateCommentTotalByContentId(count,contentId);

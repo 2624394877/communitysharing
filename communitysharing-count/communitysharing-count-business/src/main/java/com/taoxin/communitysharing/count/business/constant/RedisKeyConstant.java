@@ -34,6 +34,8 @@ public class RedisKeyConstant {
      */
     public static final String FIELD_COLLECT_TOTAL = "collectTotal";
 
+    public static final String FIELD_COMMENT_TOTAL = "commentTotal";
+
     /**
      * 评论维度计数 Key 前缀
      */
