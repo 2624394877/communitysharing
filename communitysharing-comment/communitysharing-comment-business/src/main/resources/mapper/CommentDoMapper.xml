@@ -19,11 +19,12 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="child_comment_total" jdbcType="BIGINT" property="childCommentTotal" />
     <result column="first_reply_comment_id" jdbcType="BIGINT" property="firstReplyCommentId" />
+    <result column="heat" jdbcType="DOUBLE" property="heat" />
   </resultMap>
   <sql id="Base_Column_List">
     id, content_id, user_id, content_uuid, is_content_empty, image_url, `level`, reply_total, 
     like_total, parent_id, reply_comment_id, reply_user_id, is_top, create_time, update_time,
-    child_comment_total, first_reply_comment_id
+    child_comment_total, first_reply_comment_id,heat
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -32,7 +33,10 @@
     where id = #{id,jdbcType=BIGINT}
   </select>
   <select id="selectByCommentIds" resultMap="BaseResultMap" parameterType="list">
-      select id, level, parent_id, user_id, child_comment_total, like_total, first_reply_comment_id from t_comment where id in
+      select id, user_id, content_uuid, is_content_empty, image_url, reply_total,
+             like_total, is_top, create_time, child_comment_total, first_reply_comment_id,
+             parent_id, `level`, heat, update_time, content_id
+      from t_comment where id in
         <foreach collection="commentIds" item="commentId" open="(" index="index" separator="," close=")">
           #{commentId}
         </foreach>
@@ -42,18 +46,24 @@
   </select>
   <select id="selectPageList" parameterType="map" resultMap="BaseResultMap">
     select id, user_id, content_uuid, is_content_empty, image_url, reply_total,
-    like_total, is_top, create_time, child_comment_total, first_reply_comment_id
+    like_total, is_top, create_time, child_comment_total, first_reply_comment_id,
+    heat,update_time
     from t_comment where content_id = #{contentId} and `level` = 1
     order by heat desc, create_time desc
     limit #{offset}, #{pageSize}
   </select>
   <select id="selectTwoLevelCommentByIds" resultMap="BaseResultMap" parameterType="map">
     select id, user_id, content_uuid, is_content_empty, image_url,
-    like_total, create_time
+    like_total, create_time, heat
     from t_comment where id in
     <foreach collection="commentIds" item="commentId" open="(" index="index" separator="," close=")">
       #{commentId}
     </foreach>
+  </select>
+  <select id="selectHotComments" resultMap="BaseResultMap" parameterType="map">
+    select id, heat
+    from t_comment where content_id = #{contentId} and `level` = 1
+    order by heat desc, create_time desc limit 500
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_comment

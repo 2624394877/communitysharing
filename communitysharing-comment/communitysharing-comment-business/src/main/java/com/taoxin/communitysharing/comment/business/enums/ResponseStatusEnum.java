@@ -13,7 +13,7 @@ public enum ResponseStatusEnum implements BaseExceptionInterface {
     PARAMS_NOT_VALID("comment-400", "参数校验失败"),
     SYSTEMP_ERROR("comment-502", "系统异常" ),
     FILE_SIZE_ERROR("comment-500", "文件大小错误"),
-
+    COMMENT_NOT_EXIST("comment-500", "评论不存在"),
     ;
 
     private final String ErrorCode;

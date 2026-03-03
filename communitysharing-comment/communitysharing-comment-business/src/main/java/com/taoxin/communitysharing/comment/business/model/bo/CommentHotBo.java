@@ -19,4 +19,10 @@ public class CommentHotBo {
      * 热度值
      */
     private double hot;
+
+
+    /**
+     * 内容id
+     */
+    private Long contentId;
 }

@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import com.alibaba.nacos.shaded.com.google.common.collect.Maps;
 import com.alibaba.nacos.shaded.com.google.common.util.concurrent.RateLimiter;
 import com.google.common.collect.Lists;
+import com.taoxin.communitysharing.comment.business.constant.CommentContentKeyConstant;
 import com.taoxin.communitysharing.comment.business.constant.MQConstant;
 import com.taoxin.communitysharing.comment.business.domain.databaseObject.CommentDo;
 import com.taoxin.communitysharing.comment.business.domain.mapper.CommentDoMapper;
@@ -28,16 +29,17 @@ import org.apache.rocketmq.common.protocol.heartbeat.MessageModel;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.security.PrivilegedAction;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -56,6 +58,8 @@ public class Comment2DBConsumer {
     private KVFeignApiService kvFeignApiService;
     @Resource
     private RocketMQTemplate rocketMQTemplate;
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate;
 
     private DefaultMQPushConsumer consumer;
 
@@ -170,6 +174,8 @@ public class Comment2DBConsumer {
                     }
                 });
                 if (Objects.nonNull(result) && result > 0) {
+                    log.info("【评论数据对齐】数据入库成功, {}", JsonUtil.toJsonString(commentBOS));
+                    asyncFirstComment2RedisSet(commentBOS);
                     // 构建计数消息
                     List<CountPublishCommentMqDTO> countPublishCommentMqDTOS = commentBOS.stream()
                             .map(commentBo -> CountPublishCommentMqDTO.builder()
@@ -201,6 +207,30 @@ public class Comment2DBConsumer {
         });
         consumer.start();
         return consumer;
+    }
+
+    /**
+     * 批量插入一级评论到 Redis
+     * @param commentBOS
+     */
+    private void asyncFirstComment2RedisSet(List<CommentBo> commentBOS) {
+        Map<Long,List<CommentBo>> commentMap = commentBOS.stream()
+                .filter(commentBo -> Objects.equals(commentBo.getLevel(), CommentLevelEnum.FIRST_LEVEL.getCode()))
+                .collect(Collectors.groupingBy(CommentBo::getContentId));
+        commentMap.forEach((contentId, commentBos) -> {
+            List<Object> args = Lists.newArrayList();
+            commentBos.forEach(commentBo -> {
+                args.add(commentBo.getId()); // 评论 ID
+                args.add(0); // 热度值 默认为 0
+            });
+            DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
+            redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("lua/add_hot_comments.lua")));
+            redisScript.setResultType(Long.class);
+
+            String redisKey = CommentContentKeyConstant.getCommentListId(contentId);
+
+            redisTemplate.execute(redisScript, Collections.singletonList(redisKey), args.toArray());
+        });
     }
 
     @PreDestroy

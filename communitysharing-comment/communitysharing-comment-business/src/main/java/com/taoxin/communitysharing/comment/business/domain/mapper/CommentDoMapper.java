@@ -38,4 +38,6 @@ public interface CommentDoMapper {
     List<CommentDo> selectPageList(@Param("contentId") Long contentId,@Param("offset") long offset,@Param("pageSize") long pageSize);
 
     List<CommentDo> selectTwoLevelCommentByIds(@Param("commentIds") List<Long> commentIds);
+
+    List<CommentDo> selectHotComments(@Param("contentId") Long contentId);
 }

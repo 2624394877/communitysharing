@@ -37,7 +37,7 @@ public class DateUtil {
         LocalDateTime now = LocalDateTime.now();
 
         // 计算与当前时间的差距 ChronoUnit说明：时间单位
-        long days = ChronoUnit.DAYS.between(localDateTime, now);
+        long days = ChronoUnit.DAYS.between(localDateTime.toLocalDate(), now);
         long hours = ChronoUnit.HOURS.between(localDateTime, now);
         long minutes = ChronoUnit.MINUTES.between(localDateTime, now);
 
@@ -45,12 +45,14 @@ public class DateUtil {
             // 1天内
             if (hours < 1)
                 // 1小时内
-                return minutes + "分钟前";
+                return Math.max(minutes, 1) + "分钟前";
             else
                 // 1小时外
                 return hours + "小时前";
-        } else if (days == 1)
+        } else if (days < 2)
             return "昨天" + localDateTime.format(DateTimeFormatter.ofPattern(DateConstants.HOUR_MINUTE_PATTERN));
+        else if (days < 3)
+            return "前天" + localDateTime.format(DateTimeFormatter.ofPattern(DateConstants.HOUR_MINUTE_PATTERN));
         else if (days < 7)
             return days + "天前";
         else if (localDateTime.getMonth() == now.getMonth())

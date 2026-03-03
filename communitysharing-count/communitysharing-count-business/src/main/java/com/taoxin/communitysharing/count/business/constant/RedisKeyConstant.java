@@ -17,6 +17,8 @@ public class RedisKeyConstant {
      */
     public static final String FIELD_FOLLOWING_TOTAL = "followingTotal";
 
+    public static final String CONTENT_COUNT_TOTAL = "contentTotal";
+
     /**
      * 内容维度计数 Key 前缀
      */
@@ -31,8 +33,6 @@ public class RedisKeyConstant {
      * Hash Field: 内容收藏总数
      */
     public static final String FIELD_COLLECT_TOTAL = "collectTotal";
-
-    public static final String CONTENT_COUNT_TOTAL = "contentTotal";
 
     /**
      * 构建用户维度计数 Key

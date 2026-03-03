@@ -1,9 +1,11 @@
 package com.taoxin.communitysharing.comment.business.consumer;
 
+import com.alibaba.nacos.common.utils.CollectionUtils;
 import com.alibaba.nacos.shaded.com.google.common.util.concurrent.RateLimiter;
 import com.github.phantomthief.collection.BufferTrigger;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.taoxin.communitysharing.comment.business.constant.CommentContentKeyConstant;
 import com.taoxin.communitysharing.comment.business.constant.MQConstant;
 import com.taoxin.communitysharing.comment.business.domain.databaseObject.CommentDo;
 import com.taoxin.communitysharing.comment.business.domain.mapper.CommentDoMapper;
@@ -14,12 +16,16 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -34,6 +40,8 @@ public class CommentHotUpdateConsumer implements RocketMQListener<String> {
     private ThreadPoolTaskExecutor taskExecutor;
     @Resource
     private CommentDoMapper commentDoMapper;
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate;
 
     private final BufferTrigger<String> bufferTrigger = BufferTrigger.<String>batchBlocking()
             .bufferSize(50000)
@@ -82,9 +90,38 @@ public class CommentHotUpdateConsumer implements RocketMQListener<String> {
                 commentHeatList.add(CommentHotBo.builder()
                         .commentId(commentId)
                         .hot(heat.doubleValue())
+                        .contentId(commentDo.getContentId())
                         .build());
             });
-            commentDoMapper.bacthUpdateCommentHeat(ids, commentHeatList);
+            if (CollectionUtils.isEmpty(commentHeatList) || CollectionUtils.isEmpty(ids)) {
+                return;
+            }
+            int count = commentDoMapper.bacthUpdateCommentHeat(ids, commentHeatList);
+            if (count == 0) return;
+            UpdateRedisHotZSet(commentHeatList);
         });
+    }
+
+    private void UpdateRedisHotZSet(List<CommentHotBo> commentHeatList) {
+        // 过滤出热度值大于 0 的，并按所属笔记 ID 分组（若热度等于0，则不进行更新）
+        Map<Long, List<CommentHotBo>> map = commentHeatList.stream()
+                .filter(commentHotBo -> commentHotBo.getHot() > 0)
+                .collect(Collectors.groupingBy(CommentHotBo::getContentId));
+        map.forEach((contentId, commentHotBoList) -> {
+            String Key = CommentContentKeyConstant.getCommentListId(contentId);
+
+            DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
+            redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("lua/update_hot_comments.lua")));
+            redisScript.setResultType(Long.class);
+
+            List<Object> args = Lists.newArrayList();
+            commentHotBoList.forEach(commentHotBo -> {
+                args.add(commentHotBo.getCommentId());
+                args.add(commentHotBo.getHot());
+            });
+
+            redisTemplate.execute(redisScript, Collections.singletonList(Key), args.toArray());
+        });
+        log.info("【评论热度更新】 更新redis成功, size: {}", map.size());
     }
 }

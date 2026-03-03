@@ -44,4 +44,6 @@ public class CommentDo {
     private Long childCommentTotal; // 子评论数
 
     private Long firstReplyCommentId; // 第一个回复评论的id
+
+    private Double heat; // 热度值
 }

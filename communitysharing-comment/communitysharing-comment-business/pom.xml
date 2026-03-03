@@ -18,6 +18,13 @@
 
     <dependencies>
 
+        <!-- Caffeine 本地缓存 -->
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+        </dependency>
+
+
         <!-- 缓存 -->
         <dependency>
             <groupId>com.github.phantomthief</groupId>

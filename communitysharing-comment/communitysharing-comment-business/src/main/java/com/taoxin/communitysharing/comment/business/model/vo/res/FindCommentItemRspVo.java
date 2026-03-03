@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -59,4 +61,14 @@ public class FindCommentItemRspVo {
      * 评论的第一个回复
      */
     private FindCommentItemRspVo firstReplyComment;
+
+    /**
+     * 热度
+     */
+    private Double heat;
+
+    /**
+     * 更新时间
+     */
+    private LocalDateTime updateTime;
 }
