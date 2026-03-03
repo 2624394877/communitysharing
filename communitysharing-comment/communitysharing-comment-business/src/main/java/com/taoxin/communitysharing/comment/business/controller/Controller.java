@@ -2,7 +2,9 @@ package com.taoxin.communitysharing.comment.business.controller;
 
 import com.taoxin.communitysharing.comment.business.model.vo.req.CommentPublishReqVo;
 import com.taoxin.communitysharing.comment.business.model.vo.req.FindCommentPageListReqVo;
+import com.taoxin.communitysharing.comment.business.model.vo.req.SecondCommentPageListReqVo;
 import com.taoxin.communitysharing.comment.business.model.vo.res.FindCommentItemRspVo;
+import com.taoxin.communitysharing.comment.business.model.vo.res.FindSecondCommentItemRspVo;
 import com.taoxin.communitysharing.comment.business.service.CommentServer;
 import com.taoxin.communitysharing.common.response.PageResponse;
 import com.taoxin.communitysharing.common.response.Response;
@@ -30,5 +32,11 @@ public class Controller {
     @ApiOperationLog(description = "批量查询")
     public PageResponse<FindCommentItemRspVo> findCommentPageList(@Validated @RequestBody FindCommentPageListReqVo findCommentPageListReqVo) {
         return commentServer.findCommentPageList(findCommentPageListReqVo);
+    }
+
+    @PostMapping("/batch/query/child")
+    @ApiOperationLog(description = "批量查询子评论")
+    public PageResponse<FindSecondCommentItemRspVo> findChildCommentPageList(@Validated @RequestBody SecondCommentPageListReqVo secondCommentPageListReqVo) {
+        return commentServer.findChildCommentPageList(secondCommentPageListReqVo);
     }
 }

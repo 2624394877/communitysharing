@@ -16,6 +16,17 @@ public class CommentContentKeyConstant {
      */
     private static final String CONTENT_COMMENT_DETAIL = "content:comment:detail:";
 
+    /**
+     * 评论列表
+     */
+    private static final String CONTENT_COMMENT_CHILD_LIST_ID = "content:comment:child:list:";
+
+
+    /**
+     * 子评论详情
+     */
+    private static final String CONTENT_COMMENT_CHILD_DETAIL = "content:comment:child:detail:";
+
     public static String getReplyCommentId(Long commentId) {
         return ST1_REPLY_COMMENT_ID + commentId;
     }
@@ -32,5 +43,13 @@ public class CommentContentKeyConstant {
      */
     public static String getCommentDetail(Object commentId) {
         return CONTENT_COMMENT_DETAIL + commentId;
+    }
+
+    public static String getCommentChildListId(Long commentId) {
+        return CONTENT_COMMENT_CHILD_LIST_ID + commentId;
+    }
+
+    public static String getCommentChildDetail(Object commentId) {
+        return CONTENT_COMMENT_CHILD_DETAIL + commentId;
     }
 }

@@ -65,6 +65,29 @@
     from t_comment where content_id = #{contentId} and `level` = 1
     order by heat desc, create_time desc limit 500
   </select>
+  <select id="selectSecondCommentCountByContentId" resultType="java.lang.Long" parameterType="map">
+    select child_comment_total from t_comment where id = #{Leve1CommentId} and `level` = 1
+  </select>
+  <select id="selectSecondCommentByLeve1CommentId" resultMap="BaseResultMap" parameterType="map">
+    select id, user_id,content_id, content_uuid, is_content_empty, image_url, like_total,
+        is_top, create_time, update_time,parent_id, reply_user_id
+    from t_comment where parent_id = #{Leve1CommentId} and `level` = 2
+    order by create_time desc
+    limit #{offset}, #{pageSize}
+  </select>
+  <select id="selectCommentCountByIds" resultMap="BaseResultMap" parameterType="list">
+    select id, child_comment_total, like_total, `level`
+    from t_comment where id in
+    <foreach collection="commentIds" item="commentId" open="(" index="index" separator="," close=")">
+      #{commentId}
+    </foreach>
+  </select>
+  <select id="selectChildCommentsByParentIdAndLimit" resultMap="BaseResultMap" parameterType="map">
+    select id,create_time, like_total
+    from t_comment
+    where parent_id = #{parentId} and `level` = 2
+    order by create_time desc, like_total desc limit #{limit}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_comment
     where id = #{id,jdbcType=BIGINT}

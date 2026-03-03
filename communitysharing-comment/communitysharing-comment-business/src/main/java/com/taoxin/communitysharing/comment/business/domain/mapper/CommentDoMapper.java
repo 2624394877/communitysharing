@@ -40,4 +40,30 @@ public interface CommentDoMapper {
     List<CommentDo> selectTwoLevelCommentByIds(@Param("commentIds") List<Long> commentIds);
 
     List<CommentDo> selectHotComments(@Param("contentId") Long contentId);
+
+    Long selectSecondCommentCountByContentId(@Param("Leve1CommentId") Long Leve1CommentId);
+
+    /**
+     * 根据一级评论 ID 批量查询二级评论
+     * @param Leve1CommentId
+     * @param offset
+     * @param pageSize
+     * @return
+     */
+    List<CommentDo> selectSecondCommentByLeve1CommentId(@Param("Leve1CommentId") Long Leve1CommentId,@Param("offset") long offset,@Param("pageSize") long pageSize);
+
+    /**
+     * 根据评论 ID 批量查询评论数量
+     * @param commentIds
+     * @return
+     */
+    List<CommentDo> selectCommentCountByIds(@Param("commentIds") List<Long> commentIds);
+
+    /**
+     * 根据父级评论 ID 批量查询子评论
+     * @param parentId 父级评论 ID
+     * @param limit 查询数量
+     * @return 排序后的数据，先时间降序，再点赞数降序
+     */
+    List<CommentDo> selectChildCommentsByParentIdAndLimit(@Param("parentId") Long parentId, @Param("limit") int limit);
 }

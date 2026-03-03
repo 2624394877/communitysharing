@@ -5,6 +5,7 @@ import com.github.phantomthief.collection.BufferTrigger;
 import com.google.common.collect.Lists;
 import com.taoxin.communitysharing.common.uitl.JsonUtil;
 import com.taoxin.communitysharing.count.business.constant.MQConstant;
+import com.taoxin.communitysharing.count.business.constant.RedisKeyConstant;
 import com.taoxin.communitysharing.count.business.domain.mapper.CommentDoMapper;
 import com.taoxin.communitysharing.count.business.enums.CommentLevelEnum;
 import com.taoxin.communitysharing.count.business.model.dto.CountPublishCommentMqDTO;
@@ -15,6 +16,7 @@ import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.spring.annotation.RocketMQMessageListener;
 import org.apache.rocketmq.spring.core.RocketMQListener;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
@@ -38,10 +40,12 @@ public class CountContentChildCommentConsumer implements RocketMQListener<String
     private CommentDoMapper commentDoMapper;
     @Resource
     private RocketMQTemplate rocketMQTemplate;
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate;
 
     private final BufferTrigger<String> bufferTrigger = BufferTrigger.<String>batchBlocking()
             .bufferSize(50000)
-            .batchSize(1000)
+            .batchSize(500)
             .linger(java.time.Duration.ofSeconds(1)) // 多久聚合一次
             .setConsumerEx(this::consumeMessage)
             .build();
@@ -76,6 +80,13 @@ public class CountContentChildCommentConsumer implements RocketMQListener<String
                 ));
         log.info("【子评论数计数】 二级评论: {}", map);
         map.forEach((parentId, count) -> {
+            // 更新redisSet
+            String prefixKey = RedisKeyConstant.getCountCommentKeyPrefix(parentId);
+            boolean isExist = redisTemplate.hasKey(prefixKey);
+            if (isExist) {
+                // 累加到缓存
+                redisTemplate.opsForHash().increment(prefixKey, RedisKeyConstant.CHILD_COMMENT_TOTAL, count);
+            }
             log.info("【子评论数计数】父评论 {} 二级评论数 {}", parentId, count);
             commentDoMapper.updateChildCommentTotal(parentId, count);
         });
