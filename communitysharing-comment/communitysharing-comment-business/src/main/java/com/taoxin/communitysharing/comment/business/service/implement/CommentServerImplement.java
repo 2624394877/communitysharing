@@ -2,6 +2,7 @@ package com.taoxin.communitysharing.comment.business.service.implement;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import com.alibaba.nacos.shaded.com.google.common.base.Preconditions;
 import com.alibaba.nacos.shaded.com.google.common.collect.Maps;
 import com.github.benmanes.caffeine.cache.Cache;
@@ -110,6 +111,9 @@ public class CommentServerImplement implements CommentServer {
                 .build();
         // 发送MQ
         sendMQRetryHelper.sendMQ(MQConstant.TOPIC_PUBLISH_COMMENT, JsonUtil.toJsonString(publishCommentMqDTO),"评论服务");
+        // 删除Caffeine
+        log.info("删除Caffeine id: {}",Long.valueOf(commentId));
+        LOCAL_CACHE.invalidate(commentPublishReqVo.getReplayCommentId());
         return Response.success();
     }
 
@@ -192,6 +196,7 @@ public class CommentServerImplement implements CommentServer {
                 if (!Objects.equals(CollUtil.size(localCacheCommentIdsExist), commentIdList.size())) {
                     // 将本地缓存中的评论详情 Json, 转换为实体类，添加到 VO 返参集合中
                     for (String commentDetailJson : commentIdAndDetailJsonMap.values()) {
+                        if (StrUtil.isBlank(commentDetailJson)) continue;
                         findCommentItemRspVoList.add(JsonUtil.parseObject(commentDetailJson, FindCommentItemRspVo.class));
                     }
                 }
@@ -212,7 +217,6 @@ public class CommentServerImplement implements CommentServer {
                         .map(CommentContentKeyConstant::getCommentDetail)
                         .toList();
                 List<Object> commentsJsonList = redisTemplate.opsForValue().multiGet(commentDetailKeys);
-
                 // 可能存在部分评论不在缓存中，已经过期被删除，这些评论 ID 需要提取出来，等会查数据库
                 List<Long> expiredCommentIds = Lists.newArrayList();
                 for (int i = 0; i < commentsJsonList.size(); i++) {
@@ -222,9 +226,10 @@ public class CommentServerImplement implements CommentServer {
                         // 缓存中存在的评论 Json，直接转换为 VO 添加到返参集合中
                         FindCommentItemRspVo findCommentItemRspVo = JsonUtil.parseObject(commentJson, FindCommentItemRspVo.class);
                         findCommentItemRspVoList.add(findCommentItemRspVo);
+
                     } else {
                         // 缓存中不存在的评论 ID，添加到待查询的集合中
-                        expiredCommentIds.add(Long.valueOf(commentIdList.get(i).toString()));
+                        expiredCommentIds.add(Long.valueOf(localCacheCommentIdsExist.get(i).toString()));
                     }
                 }
 
@@ -252,6 +257,7 @@ public class CommentServerImplement implements CommentServer {
             }
         }
 
+        log.info("一级评论缓存不存在，查询数据库");
         // 缓存不存在，则从数据库中查询
         // 查询一级评论
         List<CommentDo> commentDoList = commentDoMapper.selectPageList(contentId, offset, pageSize);
@@ -841,7 +847,7 @@ public class CommentServerImplement implements CommentServer {
                     Map<Object,Object> replyCommentCountMap = commentCountMaps.get(replyComment);
                     if (CollUtil.isNotEmpty(replyCommentCountMap)) {
                         Object replyLikeToTalValue = replyCommentCountMap.get(CountConentRedisKeyConstant.LIKE_TOTAL);
-                        Long replyLikeTotal = replyLikeToTalValue == null ? 0 : Long.parseLong(String.valueOf(likeToTalValue));
+                        Long replyLikeTotal = replyLikeToTalValue == null ? 0 : Long.parseLong(String.valueOf(replyLikeToTalValue));
                         firstReplyComment.setLikeTotal(replyLikeTotal);
                     }
                 }

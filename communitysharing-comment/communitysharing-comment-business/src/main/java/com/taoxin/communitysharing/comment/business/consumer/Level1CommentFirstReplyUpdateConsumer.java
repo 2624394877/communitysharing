@@ -3,6 +3,8 @@ package com.taoxin.communitysharing.comment.business.consumer;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.alibaba.nacos.shaded.com.google.common.util.concurrent.RateLimiter;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.phantomthief.collection.BufferTrigger;
 import com.google.common.collect.Lists;
 import com.taoxin.communitysharing.comment.business.constant.CommentContentKeyConstant;
@@ -120,6 +122,7 @@ public class Level1CommentFirstReplyUpdateConsumer implements RocketMQListener<S
                     Long commentId = firstReplyComment.getId();
                     commentDoMapper.updateFirstReplyCommentIdByPrimaryKey(commentId, firstRepliedCommentId);
                     syncIds.add(firstRepliedCommentId);
+                    redisTemplate.delete(CommentContentKeyConstant.getCommentDetail(firstRepliedCommentId));
                 }
             });
             taskExecutor.submit(() -> {
