@@ -13,6 +13,9 @@ public class ContentDetailsKeyConstant {
      */
     private static final String BLOOM_USER_CONTENT_LIKE_ZSET_KEY = "user:content:likes:";
 
+    /**
+     * redis中用户的内容收藏列表，使用bloom过滤器
+     */
     private static final String BLOOM_USER_CONTENT_COLLECT_LIST_KEY = "bloom:content:collects:";
 
     private static final String BLOOM_USER_CONTENT_COLLECT_ZSET_KEY = "user:content:collects:";

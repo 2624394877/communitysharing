@@ -1,6 +1,7 @@
 package com.taoxin.communitysharing.user.business;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.RandomUtil;
 import com.taoxin.communitysharing.user.business.domain.databaseObject.UserDo;
 import com.taoxin.communitysharing.user.business.domain.mapper.UserDoMapper;
 import jakarta.annotation.Resource;
@@ -9,21 +10,27 @@ import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
+import org.springframework.data.redis.core.script.RedisScript;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 @SpringBootTest
 @Slf4j
 public class DruidTest {
-    @Resource
-    UserDoMapper userDoMapper;
+//    @Resource
+//    UserDoMapper userDoMapper;
+//    @Resource
+//    private RedisTemplate<String, Object> redisTemplate;
 
-    @Test
-    void selectUser() {
-        UserDo userDo = userDoMapper.selectByPrimaryKey(8L);
-        log.info("用户信息：{}", userDo);
-    }
+//    @Test
+//    void selectUser() {
+//        UserDo userDo = userDoMapper.selectByPrimaryKey(8L);
+//        log.info("用户信息：{}", userDo);
+//    }
 
 //    @Test
 //    @SneakyThrows // 忽略方法抛出的异常
@@ -38,20 +45,20 @@ public class DruidTest {
 //        log.info("密文：{}", cipherText);
 //    }
 
-    @Test
-    @SneakyThrows // 忽略方法抛出的异常
-    void Test() {
-        List<Object> objs = Lists.newArrayList();
-        objs.add(null);
-        objs.add(null);
-        objs.add(null);
-        if (CollUtil.isNotEmpty(objs)) {
-            log.info("集合不会空：{}", objs); // 集合不会空：[null, null, null]
-            objs = objs.stream().filter(Objects::nonNull).toList();
-        } else {
-            log.info("集合为空：{}", objs);
-        }
-        if (CollUtil.isNotEmpty(objs)) log.info("集合不会空：{}", objs);
-        else log.info("(过滤后)集合为空：{}", objs);
-    }
+//    @Test
+//    @SneakyThrows // 忽略方法抛出的异常
+//    void Test() {
+//        List<Object> objs = Lists.newArrayList();
+//        objs.add(null);
+//        objs.add(null);
+//        objs.add(null);
+//        if (CollUtil.isNotEmpty(objs)) {
+//            log.info("集合不会空：{}", objs); // 集合不会空：[null, null, null]
+//            objs = objs.stream().filter(Objects::nonNull).toList();
+//        } else {
+//            log.info("集合为空：{}", objs);
+//        }
+//        if (CollUtil.isNotEmpty(objs)) log.info("集合不会空：{}", objs);
+//        else log.info("(过滤后)集合为空：{}", objs);
+//    }
 }

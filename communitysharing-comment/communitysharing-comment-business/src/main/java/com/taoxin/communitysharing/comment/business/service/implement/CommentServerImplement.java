@@ -101,6 +101,7 @@ public class CommentServerImplement implements CommentServer {
         // 内容和图片不能都为空
         Preconditions.checkArgument(StringUtils.isNotBlank(content) || StringUtils.isNotBlank(imageUrl), "评论不能为空");
 
+
         // todo 评论逻辑
         Long creatorId = LoginUserContextHolder.getUserId();
         String commentId = commentIdGenerator.getCommentId();
@@ -113,11 +114,13 @@ public class CommentServerImplement implements CommentServer {
                 .createTime(LocalDateTime.now())
                 .creatorId(creatorId)
                 .build();
-        // 发送MQ
-        sendMQRetryHelper.sendMQ(MQConstant.TOPIC_PUBLISH_COMMENT, JsonUtil.toJsonString(publishCommentMqDTO),"评论服务");
         // 删除Caffeine
         log.info("删除Caffeine id: {}",Long.valueOf(commentId));
-        LOCAL_CACHE.invalidate(commentPublishReqVo.getReplayCommentId());
+        if (Objects.nonNull(commentPublishReqVo.getReplayCommentId())) {
+            LOCAL_CACHE.invalidate(commentPublishReqVo.getReplayCommentId());
+        }
+        // 发送MQ
+        sendMQRetryHelper.sendMQ(MQConstant.TOPIC_PUBLISH_COMMENT, JsonUtil.toJsonString(publishCommentMqDTO),"评论服务");
         return Response.success();
     }
 
@@ -302,7 +305,7 @@ public class CommentServerImplement implements CommentServer {
 
         List<FindSecondCommentItemRspVo> findSecondCommentItemRspVoList = Lists.newArrayList();
 
-        long offset = PageResponse.getOffset(pageNo, pageSize) + 1; //数据库起始位置
+        long offset = PageResponse.getOffset(pageNo, pageSize); //数据库起始位置
 
         String commentChildZSetKey = CommentContentKeyConstant.getCommentChildListId(level1CommentId);
         boolean isExist = redisTemplate.hasKey(commentChildZSetKey);
@@ -313,6 +316,7 @@ public class CommentServerImplement implements CommentServer {
         }
 
         if (isExist && totalCount <= 70) {
+            pageSize = totalCount < 70/7 ? totalCount-1 : Objects.equals(totalCount,70/7) ? 9 : 10;
             // 使用 ZRevRange 获取某篇内容下，按热度降序排序的一级评论 ID
             Set<Object> commentIdSet = redisTemplate.opsForZSet().reverseRangeByScore(commentChildZSetKey, -Double.MAX_VALUE, Double.MAX_VALUE, offset, pageSize);
 
@@ -342,6 +346,10 @@ public class CommentServerImplement implements CommentServer {
                 if (!Objects.equals(CollUtil.size(localCacheCommentIdsExist), commentIdList.size())) {
                     // 将本地缓存中的评论详情 Json, 转换为实体类，添加到 VO 返参集合中
                     for (String commentDetailJson : commentIdAndDetailJsonMap.values()) {
+                        if (Objects.isNull(commentDetailJson)) {
+                            StringUtils.isBlank(commentDetailJson);
+                            continue; // 若为空，则跳过
+                        }
                         findSecondCommentItemRspVoList.add(JsonUtil.parseObject(commentDetailJson, FindSecondCommentItemRspVo.class));
                     }
                 }
@@ -374,7 +382,7 @@ public class CommentServerImplement implements CommentServer {
                         findSecondCommentItemRspVoList.add(findCommentItemRspVo);
                     } else {
                         // 缓存中不存在的评论 ID，添加到待查询的集合中
-                        expiredCommentIds.add(Long.valueOf(commentIdList.get(i).toString()));
+                        expiredCommentIds.add(Long.valueOf(localCacheCommentIdsExist.get(i).toString()));
                     }
                 }
                 // 这里都是从redis中拿的数据，需要更新计数
@@ -1129,5 +1137,11 @@ public class CommentServerImplement implements CommentServer {
             String uuid = commentDo.getContentUuid();
             firstCommentItemRspVo.setComment(commentContentMap.get(uuid));
         }
+    }
+
+    @Override
+    public void deleteCommentLocalCache(Long commentId) {
+        // 是否可以批量删除
+        LOCAL_CACHE.invalidate(commentId);
     }
 }

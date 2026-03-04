@@ -18,4 +18,5 @@ public interface MQConstant {
     String TOPIC_COMMENT_DELETE = "CommentDeleteTopic";
 
     String TOPIC_COMMENT_DELETE_COUNT = "CommentDeleteTopicCount";
+    String TOPIC_COMMENT_UPDATE_HEAT = "CommentUpdateHeatTopic";
 }

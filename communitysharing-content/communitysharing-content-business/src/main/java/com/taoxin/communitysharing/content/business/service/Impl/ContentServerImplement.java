@@ -3,6 +3,7 @@ package com.taoxin.communitysharing.content.business.service.Impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.taoxin.communitysharing.common.exception.BusinessException;
+import com.taoxin.communitysharing.content.business.model.vo.res.LikeCollectStatusJudgeResVo;
 import com.taoxin.communitysharing.framework.business.context.holder.LoginUserContextHolder;
 import com.taoxin.communitysharing.common.response.Response;
 import com.taoxin.communitysharing.common.uitl.DateUtil;
@@ -565,7 +566,7 @@ public class ContentServerImplement implements ContentServer {
         String bloomFilterKey = ContentDetailsKeyConstant.getBloomUserContentLikeListKey(userid);
         // 执行lua脚本，判断是否存在布隆过滤器中
         DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
-        redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("/lua/bloom_content_like_checked.lua")));
+        redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("lua/r64_bitmap_content_like_check.lua")));
         redisScript.setResultType(Long.class);
         Long result = redisTemplate.execute(redisScript, Collections.singletonList(bloomFilterKey), contentId);
         ContentLikeLuaResultEnum contentLikeLuaResultEnum = ContentLikeLuaResultEnum.valueOf(result);
@@ -585,19 +586,29 @@ public class ContentServerImplement implements ContentServer {
                     // 表示点赞过 数据库查到了就要更新布隆过滤器
                     Long userId;
                     userId = userid;
-                    asyncBatchAddContentLikeToBloomFilter(userId,expireTime,bloomFilterKey);
+//                    asyncBatchAddContentLikeToBloomFilter(userId,expireTime,bloomFilterKey);
+//                    throw new BusinessException(ResponseStatusEnum.CONTENT_ALREADY_LIKED);
+
+                    // 异步初始化 Roaring Bitmap
+                    threadPoolTaskExecutor.submit(() ->
+                            batchAddContentLike2R64BitmapAndExpire(userId,expireTime,bloomFilterKey));
                     throw new BusinessException(ResponseStatusEnum.CONTENT_ALREADY_LIKED);
                 }
 
-                // 数据库中也没有数据，表还没点赞过，将id添加到布隆过滤器中
-                redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("/lua/bloom_add_content_like_and_expire.lua")));
+//                // 数据库中也没有数据，表还没点赞过，将id添加到布隆过滤器中
+//                redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("/lua/bloom_add_content_like_and_expire.lua")));
+//                redisScript.setResultType(Long.class);
+//                redisTemplate.execute(redisScript, Collections.singletonList(bloomFilterKey), contentId,expireTime);
+                batchAddContentLike2R64BitmapAndExpire(userid,expireTime,bloomFilterKey);
+                redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("lua/r64_bitmap_add_content_like_and_expire.lua")));
                 redisScript.setResultType(Long.class);
                 redisTemplate.execute(redisScript, Collections.singletonList(bloomFilterKey), contentId,expireTime);
+
             }
             // id存在，提示已经点赞过了
             case BLOOM_LIKED -> {
                 // 获取数据库中点赞的分数（时间戳）
-                Double score = redisTemplate.opsForZSet().score(userContentLikedZsetKey, contentId);
+                /*Double score = redisTemplate.opsForZSet().score(userContentLikedZsetKey, contentId);
                 if (Objects.nonNull(score)) {
                     throw new BusinessException(ResponseStatusEnum.CONTENT_ALREADY_LIKED);
                 }
@@ -608,7 +619,8 @@ public class ContentServerImplement implements ContentServer {
                     userId = userid;
                     asyncInitContentLikedZSet(userId, userContentLikedZsetKey);
                     throw new BusinessException(ResponseStatusEnum.CONTENT_ALREADY_LIKED);
-                }
+                }*/
+                throw new BusinessException(ResponseStatusEnum.CONTENT_ALREADY_LIKED);
             }
         }
         // 3. 更新用户 ZSET 点赞列表
@@ -672,6 +684,25 @@ public class ContentServerImplement implements ContentServer {
         return Response.success("点赞成功");
     }
 
+    private void batchAddContentLike2R64BitmapAndExpire(Long userId, long expireTime, String bloomFilterKey) {
+        try {
+            List<ContentLikeDo> contentLikeDoList = contentLikeDoMapper.selectContentsIdByUserId(userId);
+            if (CollUtil.isNotEmpty(contentLikeDoList)) {
+                DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
+                redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("lua/r64_bitmap_batch_add_content_like_and_expire.lua")));
+                redisScript.setResultType(Long.class);
+                List<Object> LuaArgs = Lists.newArrayList();
+                for (ContentLikeDo contentLikeDo : contentLikeDoList) {
+                    LuaArgs.add(contentLikeDo.getContentId());
+                }
+                LuaArgs.add(expireTime);
+                redisTemplate.execute(redisScript, Collections.singletonList(bloomFilterKey), LuaArgs.toArray());
+            }
+        } catch (Exception e) {
+            log.error("【内容点赞】批量添加用户点赞内容id添加到bitmap失败", e);
+        }
+    }
+
     @Override
     public Response<?> ContentUnlike(ContentUnlikeReqVo contentUnlikeReqVo) {
         Long contentId = contentUnlikeReqVo.getContentId();
@@ -682,7 +713,7 @@ public class ContentServerImplement implements ContentServer {
         String bloomFilterKey = ContentDetailsKeyConstant.getBloomUserContentLikeListKey(userid);
         // 执行lua脚本，判断是否存在布隆过滤器中
         DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
-        redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("/lua/bloom_content_unlike_checked.lua")));
+        redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("lua/r64_bitmap_content_unlike_check.lua")));
         redisScript.setResultType(Long.class);
 
         Long result = redisTemplate.execute(redisScript, Collections.singletonList(bloomFilterKey), contentId);
@@ -695,18 +726,18 @@ public class ContentServerImplement implements ContentServer {
                 userId = userid;
                 threadPoolTaskExecutor.submit(()->{
                     long expireTime = 60 * 60 * 24 + RandomUtil.randomInt(60 * 60 * 24); // 随机过期时间，1天+一天内的随机数
-                    asyncBatchAddContentLikeToBloomFilter(userId, expireTime, bloomFilterKey);
+                    batchAddContentLike2R64BitmapAndExpire(userId, expireTime, bloomFilterKey);
                 });
                 int count = contentLikeDoMapper.selectCountByUserIdAndContentId(userid, contentId);
                 if (count <= 0) throw new BusinessException(ResponseStatusEnum.CONTENT_NOT_LIKED);
             }
             // 布隆过滤器中不存在元素，提示没有点赞过，不能点踩(绝对正确)
             case UNLIKED -> throw new BusinessException(ResponseStatusEnum.CONTENT_NOT_LIKED);
-            case LIKED -> {
+            /*case LIKED -> {
                 // 点过赞，判断有没有取消点赞的记录，如果有，说明之前点过赞又取消了点赞，现在又来了一个取消点赞的请求，提示没有点赞过，不能点踩
                 int count = contentLikeDoMapper.selectCountByUserIdAndContentId(userid, contentId);
                 if (count <= 0) throw new BusinessException(ResponseStatusEnum.CONTENT_NOT_LIKED);
-            }
+            }*/
         }
         // 3. 更新用户 ZSET 点赞列表
         String userContentLikedZsetKey = ContentDetailsKeyConstant.getBloomUserContentLikeZSetKey(userid);
@@ -748,7 +779,7 @@ public class ContentServerImplement implements ContentServer {
         log.info("收藏接口接收的上下文id: {}", userId);
         String bloomFilterKey = ContentDetailsKeyConstant.getBloomUserContentCollectListKey(userId);
         DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
-        redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("/lua/bloom_content_collect_check.lua")));
+        redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("lua/r64_bitmap_content_collect_check.lua")));
         redisScript.setResultType(Long.class);
         Long result = redisTemplate.execute(redisScript, Collections.singletonList(bloomFilterKey), contentId);
         ContentCollectTypeEnum contentCollectTypeEnum = ContentCollectTypeEnum.valueOf(result);
@@ -757,22 +788,21 @@ public class ContentServerImplement implements ContentServer {
         userid = userId;
         switch (contentCollectTypeEnum) {
             case NOT_EXIST ->{
-                log.info("==> id={}",userId);
                 int count = contentCollectionDoMapper.selectCountByUserIdAndContentId(userId, contentId);
                 long expireTime = 60 * 60 * 24 + RandomUtil.randomInt(60 * 60 * 24);
                 if (count >0) {
-                    asyncBatchAddContentCollectToBloomFilter(userid, expireTime, bloomFilterKey);
+                    threadPoolTaskExecutor.execute(()->{batchAddContentCollect2R64BitmapAndExpire(userid, expireTime, bloomFilterKey);});
                     throw new BusinessException(ResponseStatusEnum.CONTENT_COLLECTED);
                 };
                 // 将当前收藏的内容id添加到布隆过滤器中
                 DefaultRedisScript<Long> redisScript2 = new DefaultRedisScript<>();
-                redisScript2.setScriptSource(new ResourceScriptSource(new ClassPathResource("/lua/bloom_add_content_collect_and_expire.lua")));
+                redisScript2.setScriptSource(new ResourceScriptSource(new ClassPathResource("lua/r64_bitmap_add_content_collect_and_expire.lua")));
                 redisScript2.setResultType(Long.class);
                 redisTemplate.execute(redisScript2, Collections.singletonList(bloomFilterKey), contentId, expireTime);
             }
             case COLLECTED ->{
                 // 可能误判，查询数据库，如果数据库中有数据，提示已经收藏过了
-                Double score = redisTemplate.opsForZSet().score(userContentCollectZsetKey, contentId);
+                /*Double score = redisTemplate.opsForZSet().score(userContentCollectZsetKey, contentId);
                 if (Objects.nonNull(score)) {
                     // redis中查询
                     throw new BusinessException(ResponseStatusEnum.CONTENT_COLLECTED);
@@ -783,7 +813,8 @@ public class ContentServerImplement implements ContentServer {
                     log.info("===> 代码走到了这里【COLLECTED】");
                     asynInitUserContentCollectsZSet(userid, userContentCollectZsetKey);
                     throw new BusinessException(ResponseStatusEnum.CONTENT_COLLECTED);
-                }
+                }*/
+                throw new BusinessException(ResponseStatusEnum.CONTENT_COLLECTED);
             }
         }
         // 3. 更新redisZSet收藏列表
@@ -836,6 +867,19 @@ public class ContentServerImplement implements ContentServer {
         return Response.success("收藏成功");
     }
 
+    private void batchAddContentCollect2R64BitmapAndExpire(Long userid, long expireTime, String bloomFilterKey) {
+        List<ContentCollectionDo> contentCollectionDos = contentCollectionDoMapper.selectContentsByUserId(userid);
+        List<Object> args = Lists.newArrayList();
+        contentCollectionDos.forEach(contentCollectionDo -> {
+            args.add(contentCollectionDo.getContentId());
+        });
+        args.add(expireTime);
+        DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
+        redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("lua/r64_bitmap_batch_add_content_collect_and_expire.lua")));
+        redisScript.setResultType(Long.class);
+        redisTemplate.execute(redisScript, Collections.singletonList(bloomFilterKey), args.toArray());
+    }
+
     @Override
     public Response<?> UnCollectContent(UnCollectContentReqVo unCollectContentReqVo) {
         Long contentId = unCollectContentReqVo.getContentId();
@@ -845,7 +889,7 @@ public class ContentServerImplement implements ContentServer {
         Long userId = LoginUserContextHolder.getUserId();
         String bloomFilterKey = ContentDetailsKeyConstant.getBloomUserContentCollectListKey(userId);
         DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
-        redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("/lua/bloom_content_uncollect_checked.lua")));
+        redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("lua/r64_bitmap_content_uncollect_checked.lua")));
         redisScript.setResultType(Long.class);
 
         Long result = redisTemplate.execute(redisScript, Collections.singletonList(bloomFilterKey), contentId);
@@ -857,16 +901,12 @@ public class ContentServerImplement implements ContentServer {
             case NOT_EXISTS -> {
                 threadPoolTaskExecutor.submit(()->{
                     long expireTime = 60 * 60 * 24 + RandomUtil.randomInt(60 * 60 * 24); // 随机过期时间，1天+一天内的随机数
-                    asyncBatchAddContentCollectToBloomFilter(userid, expireTime, bloomFilterKey);
+                    batchAddContentCollect2R64BitmapAndExpire(userid, expireTime, bloomFilterKey);
                 });
                 int count = contentCollectionDoMapper.selectCountByUserIdAndContentId(userId, contentId);
                 if (count <= 0) throw new BusinessException(ResponseStatusEnum.CONTENT_NOT_COLLECTED);
             }
             case UNCOLLECTED -> throw new BusinessException(ResponseStatusEnum.CONTENT_NOT_COLLECTED);
-            case COLLECTED -> {
-                int count = contentCollectionDoMapper.selectCountByUserIdAndContentId(userId, contentId);
-                if (count <= 0) throw new BusinessException(ResponseStatusEnum.CONTENT_NOT_COLLECTED);
-            }
         }
         String userContentCollectZsetKey = ContentDetailsKeyConstant.getBloomUserContentCollectZSetKey(userId);
         redisTemplate.opsForZSet().remove(userContentCollectZsetKey, contentId); // 更新redisZSet收藏列表
@@ -1077,4 +1117,85 @@ public class ContentServerImplement implements ContentServer {
     private boolean checkContentVisible(Integer visible, Long creatorId, Long UserId) {
         return !Objects.equals(visible, ContentVisibleEnum.PRIVATE.getCode()) || Objects.equals(creatorId, UserId);
     }
+
+    @Override
+    public Response<LikeCollectStatusJudgeResVo> LikeCollectStatusJudge(LikeCollectStatusJudge likeCollectStatusJudgeReqVo) {
+        Long contentId = likeCollectStatusJudgeReqVo.getContentId();
+        Long userId = LoginUserContextHolder.getUserId();
+
+        boolean like = false;
+        boolean collect = false;
+
+        if (Objects.isNull(userId)) throw new BusinessException(ResponseStatusEnum.PARAMS_NOT_VALID.getErrorCode()
+        ,"未登录/失效");
+        String userContentLikedZsetKey = ContentDetailsKeyConstant.getBloomUserContentLikeListKey(userId);
+        String userContentCollectedZsetKey = ContentDetailsKeyConstant.getBloomUserContentCollectListKey(userId);
+
+        like = isLiked(userId, contentId, userContentLikedZsetKey);
+        collect = isCollected(userId, contentId, userContentCollectedZsetKey);
+
+
+
+        LikeCollectStatusJudgeResVo likeCollectStatusJudgeResVo = LikeCollectStatusJudgeResVo.builder()
+                .contentId(contentId)
+                .like(like)
+                .collect(collect)
+                .build();
+        return Response.success(likeCollectStatusJudgeResVo);
+    }
+
+    private boolean isCollected(Long userId, Long contentId, String userContentCollectedZsetKey) {
+        DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
+        redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("lua/r64_bitmap_content_colloect_only_check.lua")));
+        redisScript.setResultType(Long.class);
+        Long result = redisTemplate.execute(redisScript, Collections.singletonList(userContentCollectedZsetKey), contentId);
+        ContentCollectTypeEnum contentCollectTypeEnum = ContentCollectTypeEnum.valueOf(result);
+        if (Objects.nonNull(contentCollectTypeEnum)) {
+            switch (contentCollectTypeEnum) {
+                case NOT_EXIST -> {
+                    int count = contentCollectionDoMapper.selectCountByUserIdAndContentId(userId, contentId);
+                    long expireTime = 60 * 60 * 24 + RandomUtil.randomInt(60 * 60 * 24);
+                    if (count >0) {
+                        threadPoolTaskExecutor.execute(()->{batchAddContentCollect2R64BitmapAndExpire(userId, expireTime, userContentCollectedZsetKey);});
+                        return true;
+                    };
+                }
+                case COLLECTED -> {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean isLiked(Long userId, Long contentId, String userContentLikedZsetKey) {
+        DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
+        redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("lua/r64_bitmap_content_like_only_check.lua")));
+        redisScript.setResultType(Long.class);
+        Long result = redisTemplate.execute(redisScript, Collections.singletonList(userContentLikedZsetKey), contentId);
+        ContentCollectTypeEnum contentCollectTypeEnum = ContentCollectTypeEnum.valueOf(result);
+        if (Objects.nonNull(contentCollectTypeEnum)) {
+            switch (contentCollectTypeEnum) {
+                case COLLECTED -> {
+                    return true;
+                }
+                case NOT_EXIST -> {
+                    int count = contentLikeDoMapper.selectCountByUserIdAndContentId(userId, contentId);
+
+                    long expireTime = 60 * 60 * 24 + RandomUtil.randomInt(60 * 60 * 24); // 随机过期时间，1天+一天内的随机数
+
+                    if (count > 0) {
+                        // 表示点赞过 数据库查到了就要更新布隆过滤器
+                        // 异步初始化 Roaring Bitmap
+                        threadPoolTaskExecutor.submit(() ->
+                                batchAddContentLike2R64BitmapAndExpire(userId,expireTime,userContentLikedZsetKey));
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 }
+

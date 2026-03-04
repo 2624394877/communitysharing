@@ -1,6 +1,7 @@
 package com.taoxin.communitysharing.comment.business.consumer;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.RandomUtil;
 import com.alibaba.nacos.shaded.com.google.common.collect.Maps;
 import com.alibaba.nacos.shaded.com.google.common.util.concurrent.RateLimiter;
 import com.google.common.collect.Lists;
@@ -13,6 +14,7 @@ import com.taoxin.communitysharing.comment.business.model.bo.CommentBo;
 import com.taoxin.communitysharing.comment.business.model.dto.CountPublishCommentMqDTO;
 import com.taoxin.communitysharing.comment.business.model.dto.PublishCommentMqDTO;
 import com.taoxin.communitysharing.comment.business.rpc.KVFeignApiService;
+import com.taoxin.communitysharing.common.uitl.DateUtil;
 import com.taoxin.communitysharing.common.uitl.JsonUtil;
 import jakarta.annotation.PreDestroy;
 import jakarta.annotation.Resource;
@@ -30,7 +32,10 @@ import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.redis.core.DefaultTypedTuple;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
@@ -39,6 +44,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Component
@@ -141,6 +147,7 @@ public class Comment2DBConsumer {
                             commentBo.setReplyUserId(publishCommentMqDTO.getReplayCommentId());
                             // 父评论 ID
                             commentBo.setParentId(commentDo.getId());
+                            commentBo.setReplyCommentId(replyCommentId);
                             if (Objects.equals(commentDo.getLevel(), CommentLevelEnum.SECOND_LEVEL.getCode())) {
                                 // 如果回复的评论为二级评论，则父级评论 ID为回复的评论的父级评论 ID
                                 commentBo.setParentId(commentDo.getParentId());
@@ -149,6 +156,7 @@ public class Comment2DBConsumer {
                             commentBo.setReplyUserId(commentDo.getUserId());
                         }
                     }
+
                     commentBOS.add(commentBo);
                 }
                 log.info("【评论数据对齐】开始插入：{}", JsonUtil.toJsonString(commentBOS));
@@ -172,6 +180,7 @@ public class Comment2DBConsumer {
                         throw e;
                     }
                 });
+                level1CommentChildList2RedisSet(commentBOS);
                 if (Objects.nonNull(result) && result > 0) {
                     log.info("【评论数据对齐】数据入库成功, {}", JsonUtil.toJsonString(commentBOS));
                     asyncFirstComment2RedisSet(commentBOS);
@@ -206,6 +215,37 @@ public class Comment2DBConsumer {
         });
         consumer.start();
         return consumer;
+    }
+
+    private void level1CommentChildList2RedisSet(List<CommentBo> commentBOS) {
+
+        Map<Long, List<CommentBo>> commentMap = commentBOS.stream()
+                .filter(c -> Objects.equals(c.getLevel(), CommentLevelEnum.SECOND_LEVEL.getCode()))
+                .collect(Collectors.groupingBy(CommentBo::getParentId));
+
+        redisTemplate.executePipelined((RedisCallback<Object>) connection -> {
+
+            commentMap.forEach((parentId, commentBos) -> {
+
+                String key = CommentContentKeyConstant.getCommentChildListId(parentId);
+                byte[] keyBytes = key.getBytes();
+
+                for (CommentBo comment : commentBos) {
+
+                    long score = DateUtil.LocalTimestampToDate(comment.getCreateTime());
+
+                    connection.zAdd(
+                            keyBytes,
+                            score,
+                            comment.getId().toString().getBytes()
+                    );
+                }
+
+                connection.expire(keyBytes, 3600 + RandomUtil.randomInt(60));
+            });
+
+            return null;
+        });
     }
 
     /**

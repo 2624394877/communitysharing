@@ -88,9 +88,27 @@
     where parent_id = #{parentId} and `level` = 2
     order by create_time desc, like_total desc limit #{limit}
   </select>
+  <delete id="DeleteByCommentId" parameterType="map">
+    delete from t_comment where parent_id = #{commentId}
+  </delete>
+  <select id="selectByReplyCommentId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_comment
+    where reply_comment_id = #{commentId}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_comment
     where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByIds" parameterType="list">
+    delete from t_comment where id in
+    <foreach collection="commentIds" item="commentId" open="(" index="index" separator="," close=")">
+      #{commentId}
+    </foreach>
+  </delete>
+  <delete id="DeleteCommentByReplyCommentId" parameterType="map">
+    delete from t_comment where reply_comment_id = #{commentId}
   </delete>
   <insert id="insert" parameterType="com.taoxin.communitysharing.comment.business.domain.databaseObject.CommentDo">
     insert into t_comment (id, content_id, user_id, 
@@ -302,4 +320,5 @@
     set first_reply_comment_id = #{firstReplyCommentId,jdbcType=BIGINT}
     where id = #{commentId,jdbcType=BIGINT}
   </update>
+
 </mapper>

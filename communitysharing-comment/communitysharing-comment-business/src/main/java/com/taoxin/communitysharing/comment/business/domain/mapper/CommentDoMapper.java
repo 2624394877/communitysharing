@@ -66,4 +66,22 @@ public interface CommentDoMapper {
      * @return 排序后的数据，先时间降序，再点赞数降序
      */
     List<CommentDo> selectChildCommentsByParentIdAndLimit(@Param("parentId") Long parentId, @Param("limit") int limit);
+
+    int DeleteByCommentId(@Param("commentId") Long commentId);
+
+    /**
+     * 批量删除评论
+     * @param commentIds
+     * @return
+     */
+    int deleteByIds(@Param("commentIds") List<Long> commentIds);
+
+    /**
+     * 根据 reply_comment_id 查询
+     * @param commentId
+     * @return
+     */
+    List<CommentDo> selectByReplyCommentId(@Param("commentId") Long commentId);
+
+    int DeleteCommentByReplyCommentId(@Param("commentId") Long commentId);
 }

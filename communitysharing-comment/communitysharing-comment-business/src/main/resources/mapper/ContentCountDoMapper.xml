@@ -93,4 +93,9 @@
       comment_total = #{commentTotal,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+    <update id="UpdateCommentCountByContentId" parameterType="map">
+      update t_content_count
+      set comment_total = comment_total + #{commentCount}
+      where content_id = #{contentId}
+    </update>
 </mapper>

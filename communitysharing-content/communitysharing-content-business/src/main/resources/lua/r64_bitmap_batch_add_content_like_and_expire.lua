@@ -1,0 +1,11 @@
+-- 操作的 Key
+local key = KEYS[1]
+
+for i = 1, #ARGV - 1 do
+    redis.call("R64.SETBIT", key, ARGV[i], 1)
+end
+
+local expireTime = ARGV[#ARGV] -- 过期时间（秒）
+-- 设置过期时间
+redis.call("EXPIRE", key, expireTime)
+return 0
