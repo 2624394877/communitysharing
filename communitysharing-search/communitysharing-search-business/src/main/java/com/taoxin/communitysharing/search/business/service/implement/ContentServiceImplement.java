@@ -12,7 +12,9 @@ import com.taoxin.communitysharing.search.business.enums.ContentSortTypeEnum;
 import com.taoxin.communitysharing.search.business.enums.ContentTimeRangeEnum;
 import com.taoxin.communitysharing.search.business.enums.ResponseStatusEnum;
 import com.taoxin.communitysharing.search.business.index.ContentIndex;
+import com.taoxin.communitysharing.search.business.model.vo.req.GetContentReqVo;
 import com.taoxin.communitysharing.search.business.model.vo.req.SearchContentReqVo;
+import com.taoxin.communitysharing.search.business.model.vo.res.GetContentResVo;
 import com.taoxin.communitysharing.search.business.model.vo.res.SearchContentResVo;
 import com.taoxin.communitysharing.search.business.service.ContentServer;
 import com.taoxin.communitysharing.common.uitl.DateUtil;
@@ -44,6 +46,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -108,6 +111,7 @@ public class ContentServiceImplement implements ContentServer {
             }
             searchSourceBuilder.query(multiMatchQueryBuilder); // 搜索条件
         }else {
+            // 默认排序
             searchSourceBuilder.sort(new FieldSortBuilder("_score").order(SortOrder.DESC));
             FunctionScoreQueryBuilder functionScoreQueryBuilder = QueryBuilders.functionScoreQuery(
                     multiMatchQueryBuilder,
@@ -240,5 +244,122 @@ public class ContentServiceImplement implements ContentServer {
             }
         }
         return Response.success();
+    }
+
+    @Override
+    public PageResponse<GetContentResVo> getContent(GetContentReqVo reqVo) {
+        // 当前页码
+        Integer pageNo = reqVo.getPageNo();
+
+        SearchRequest searchRequest = new SearchRequest(ContentIndex.NAME);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        // 构建搜索条件
+        BoolQueryBuilder multiMatchQueryBuilder = QueryBuilders.boolQuery().must(
+                QueryBuilders.matchAllQuery()
+        );
+//        searchSourceBuilder.sort(ContentIndex.FIELD_CONTENT_UPDATE_TIME, SortOrder.DESC);
+        searchSourceBuilder.sort(new FieldSortBuilder("_score").order(SortOrder.DESC));
+        FunctionScoreQueryBuilder functionScoreQueryBuilder = QueryBuilders.functionScoreQuery(
+                multiMatchQueryBuilder,
+                new FunctionScoreQueryBuilder.FilterFunctionBuilder[]{
+                        // like_total 权重
+                        new FunctionScoreQueryBuilder.FilterFunctionBuilder(
+                                ScoreFunctionBuilders.fieldValueFactorFunction(ContentIndex.FIELD_CONTENT_LIKE_TOTAL)
+                                        .factor(0.5f)
+                                        .modifier(FieldValueFactorFunction.Modifier.SQRT)
+                                        .missing(0)
+                        ),
+                        // collect_total 权重
+                        new FunctionScoreQueryBuilder.FilterFunctionBuilder(
+                                ScoreFunctionBuilders.fieldValueFactorFunction(ContentIndex.FIELD_CONTENT_COLLECT_TOTAL)
+                                        .factor(0.3f)
+                                        .modifier(FieldValueFactorFunction.Modifier.SQRT)
+                                        .missing(0)
+                        ),
+                        // comment_total 权重
+                        new FunctionScoreQueryBuilder.FilterFunctionBuilder(
+                                ScoreFunctionBuilders.fieldValueFactorFunction(ContentIndex.FIELD_CONTENT_COMMENT_TOTAL)
+                                        .factor(0.2f)
+                                        .modifier(FieldValueFactorFunction.Modifier.SQRT)
+                                        .missing(0)
+                        ),
+                        // 时间衰减
+                        new FunctionScoreQueryBuilder.FilterFunctionBuilder(
+                                ScoreFunctionBuilders.gaussDecayFunction(
+                                        ContentIndex.FIELD_CONTENT_UPDATE_TIME,
+                                        "now",
+                                        "7d",
+                                        null,
+                                        0.5
+                                ).setWeight(0.8f)
+                        )
+                }
+        );
+        // 设置 score_mode 和 boost_mode
+        functionScoreQueryBuilder.scoreMode(FunctionScoreQuery.ScoreMode.SUM);
+        functionScoreQueryBuilder.boostMode(CombineFunction.SUM);
+        searchSourceBuilder.query(functionScoreQueryBuilder); // 设置查询
+        // 设置分页，from 和 size
+        int pageSize = 20; // 每页展示数据量
+        int from = (pageNo - 1) * pageSize; // 偏移量
+        searchSourceBuilder.from(from);
+        searchSourceBuilder.size(pageSize);
+        searchRequest.source(searchSourceBuilder); // 设置查询
+
+        List<GetContentResVo> getContentResVoList = null;
+        long total = 0;
+        try {
+            log.info("搜索内容: {}", searchSourceBuilder.toString());
+            SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+            // 处理结果
+            total = searchResponse.getHits().getTotalHits().value;
+            log.info("总记录数: {}", total);
+            getContentResVoList = Lists.newArrayList();
+            // 获取结果的文档列表
+            SearchHits hits = searchResponse.getHits();
+            for (SearchHit hit : hits) {
+                log.info("文档内容: {}", hit.getSourceAsString());
+                // 获取所有字段
+                Map<String,Object> sourceAsMap = hit.getSourceAsMap();
+                Long contentId = ((Number) sourceAsMap.get(ContentIndex.FIELD_CONTENT_ID)).longValue();
+                String cover = (String) sourceAsMap.get(ContentIndex.FIELD_CONTENT_COVER);
+                String title = (String) sourceAsMap.get(ContentIndex.FIELD_CONTENT_TITLE);
+                String nickname = (String) sourceAsMap.get(ContentIndex.FIELD_CONTENT_NICKNAME);
+                String avatar = (String) sourceAsMap.get(ContentIndex.FIELD_CONTENT_AVATAR);
+                String topic = (String) sourceAsMap.get(ContentIndex.FIELD_CONTENT_TOPIC);
+                Object likeTotalObj = sourceAsMap.get(ContentIndex.FIELD_CONTENT_LIKE_TOTAL);
+                Integer likeTotal = (likeTotalObj instanceof Number) ? ((Number) likeTotalObj).intValue() : 0;
+                Object collectTotalObj = sourceAsMap.get(ContentIndex.FIELD_CONTENT_COLLECT_TOTAL);
+                Integer collectTotal = (collectTotalObj instanceof Number) ? ((Number) collectTotalObj).intValue() : 0;
+                Object commentTotalObj = sourceAsMap.get(ContentIndex.FIELD_CONTENT_COMMENT_TOTAL);
+                Integer commentTotal = (commentTotalObj instanceof Number) ? ((Number) commentTotalObj).intValue() : 0;
+                DateTimeFormatter dateTimeStr = DateTimeFormatter.ofPattern(DateConstants.LOCAL_DATE_TIME_PATTERN);
+                LocalDateTime createTime = LocalDateTime.parse((String)sourceAsMap.get(ContentIndex.FIELD_CONTENT_CREATE_TIME), dateTimeStr);
+                LocalDateTime updateTime = LocalDateTime.parse((String) sourceAsMap.get(ContentIndex.FIELD_CONTENT_UPDATE_TIME), dateTimeStr);
+                Integer contentType = ((Number) sourceAsMap.get(ContentIndex.FIELD_CONTENT_TYPE)).intValue();
+                String HighLightKeyword = null;
+                if ( CollUtil.isNotEmpty(hit.getHighlightFields()) && hit.getHighlightFields().containsKey(ContentIndex.FIELD_CONTENT_TITLE)) {
+                    HighLightKeyword = hit.getHighlightFields().get(ContentIndex.FIELD_CONTENT_TITLE).fragments()[0].toString();
+                }
+                GetContentResVo getContentResVo = GetContentResVo.builder()
+                        .contentId(contentId)
+                        .cover(cover)
+                        .title(title)
+                        .avatar(avatar)
+                        .nickname(nickname)
+                        .topic(topic)
+                        .type(contentType)
+                        .likeTotal(NumberUtil.formatNumberString(likeTotal))
+                        .collectTotal(NumberUtil.formatNumberString(collectTotal))
+                        .commentTotal(NumberUtil.formatNumberString(commentTotal))
+                        .createTime(DateUtil.formatRelativeTime(createTime))
+                        .updateTime(DateUtil.formatRelativeTime(updateTime))
+                        .build();
+                getContentResVoList.add(getContentResVo);
+            }
+        } catch (Exception e) {
+            log.error("查询内容失败:", e);
+        }
+        return PageResponse.success(getContentResVoList, pageNo, total);
     }
 }
