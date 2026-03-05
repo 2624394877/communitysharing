@@ -37,4 +37,7 @@ public interface MQConstant {
     String TAG_UPDATE_CONTENT = "UpdateContent"; // 更新内容标签
 
     String TAG_DELETE_CONTENT = "DeleteContent"; // 删除内容标签
+
+    String TOPIC_DELAY_DELETE_PUBLISHED_CONTENT_LIST_REDIS_CACHE = "delayDeletePublishContentListRedisCache";
+    String TOPIC_DELAY_DELETE_PUBLISHED_CONTENT_LIST_REDIS_CACHE_UPDATE = "delayDeletePublishContentListRedisCacheUpdate";
 }

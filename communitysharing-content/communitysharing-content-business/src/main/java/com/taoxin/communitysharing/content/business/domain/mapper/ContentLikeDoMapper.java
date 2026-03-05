@@ -42,4 +42,6 @@ public interface ContentLikeDoMapper {
     int insertOrUpdateUnlike(ContentLikeDo record);
 
     int batchInsertOrUpdate(@Param("contentLikeDos") List<ContentLikeDo> contentLikeDos);
+
+    List<ContentLikeDo> selectByContentIdAndContentIds(@Param("contentId") Long contentId, @Param("contentIds") List<Long> contentIds);
 }

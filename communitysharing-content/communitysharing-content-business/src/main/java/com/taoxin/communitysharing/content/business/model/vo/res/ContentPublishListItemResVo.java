@@ -41,4 +41,6 @@ public class ContentPublishListItemResVo {
     private String avatar;
 
     private String likeTotal;
+
+    private boolean isLiked;
 }

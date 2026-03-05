@@ -3,6 +3,7 @@ package com.taoxin.communitysharing.content.business.service.Impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.taoxin.communitysharing.common.exception.BusinessException;
+import com.taoxin.communitysharing.common.uitl.NumberUtil;
 import com.taoxin.communitysharing.content.business.model.vo.res.ContentPublishListItemResVo;
 import com.taoxin.communitysharing.content.business.model.vo.res.ContentPublishListResVo;
 import com.taoxin.communitysharing.content.business.model.vo.res.LikeCollectStatusJudgeResVo;
@@ -187,6 +188,11 @@ public class ContentServerImplement implements ContentServer {
                 .status(ContentStatusEnum.NORMAL.getCode()) // 默认正常
                 .contentUuid(contentUuid)
                 .build();
+
+        // 删除个人主页缓存
+        String userHomePageCacheKey = ContentDetailsKeyConstant.getUserPublishContentListKey(userId);
+        redisTemplate.delete(userHomePageCacheKey);
+        // 插入数据库
         try {
             contentDoMapper.insertSelective(contentDo);
         } catch (Exception e) {
@@ -195,6 +201,8 @@ public class ContentServerImplement implements ContentServer {
                 kvFeignApiService.deleteSharingContent(contentUuid);
             }
         }
+        //发送消息双删
+        sendDelayMessage(userId);
         ContentOperateMqDTO contentOperateMqDTO = ContentOperateMqDTO.builder()
                 .creatorId(userId)
                 .contentId(Long.parseLong(snowflakeIdId))
@@ -215,6 +223,22 @@ public class ContentServerImplement implements ContentServer {
             }
         }); // 发送消息
         return Response.success();
+    }
+
+    private void sendDelayMessage(Long userId) {
+        Message<Long> message = MessageBuilder.withPayload(userId)
+                .build();
+        rocketMQTemplate.asyncSend(MQConstant.TOPIC_DELAY_DELETE_PUBLISHED_CONTENT_LIST_REDIS_CACHE, message, new SendCallback() {
+            @Override
+            public void onSuccess(SendResult sendResult) {
+                log.info("====【内容发布】===>用户内容延迟删除发送MQ成功: {}, 延迟时间: {}", sendResult);
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                log.error("====【内容发布】===>用户内容延迟删除发送MQ失败: {}", throwable);
+            }
+        }, 3000,1);
     }
 
     @Override
@@ -414,7 +438,8 @@ public class ContentServerImplement implements ContentServer {
 
         // 删除redis中的内容详情数据
         String redisDetailKey = ContentDetailsKeyConstant.getContentDetailsKey(ContentId);
-        redisTemplate.delete(redisDetailKey);
+        String userHomePageCacheKey = ContentDetailsKeyConstant.getUserPublishContentListKey(userId);
+        redisTemplate.delete(Arrays.asList(redisDetailKey, userHomePageCacheKey));
 
         // 可见性
         Integer visible = contentUpdateReqVo.getVisible() ? 0 : 1; // 0: 可见 1: 不可见
@@ -434,7 +459,7 @@ public class ContentServerImplement implements ContentServer {
                 .contentUuid(content_uuid)
                 .build();
         contentDoMapper.updateByPrimaryKeySelective(contentDo);
-
+        sendDelayMessageUpdate(Arrays.asList(userId, ContentId));
         // 延时双删+消息队列(异步)
         Message<Long> message = MessageBuilder.withPayload(ContentId)
                 .build(); // 创建消息对象
@@ -464,11 +489,31 @@ public class ContentServerImplement implements ContentServer {
         return Response.success();
     }
 
+    private void sendDelayMessageUpdate(List<Long> list) {
+        Message<String> message = MessageBuilder.withPayload(JsonUtil.toJsonString(list))
+                .build();
+        rocketMQTemplate.asyncSend(MQConstant.TOPIC_DELAY_DELETE_PUBLISHED_CONTENT_LIST_REDIS_CACHE_UPDATE, message, new SendCallback() {
+            @Override
+            public void onSuccess(SendResult sendResult) {
+                log.info("====【内容修改】===>用户内容延迟删除发送MQ成功: {}, 延迟时间: {}", sendResult);
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                log.error("====【内容修改】===>用户内容延迟删除发送MQ失败: {}", throwable);
+            }
+        }, 3000,1);
+    }
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Response<?> DeleteContent(ContentDeleteReqVo contentDeleteReqVo) {
         Long ContentId = contentDeleteReqVo.getContentId();
         Long userId = LoginUserContextHolder.getUserId();
+
+        String redisDetailKey = ContentDetailsKeyConstant.getContentDetailsKey(ContentId);
+        String userHomePageCacheKey = ContentDetailsKeyConstant.getUserPublishContentListKey(userId);
+        redisTemplate.delete(Arrays.asList(redisDetailKey, userHomePageCacheKey));
         // 逻辑删除
         ContentDo contentDo = ContentDo.builder()
                 .id(ContentId)
@@ -480,8 +525,7 @@ public class ContentServerImplement implements ContentServer {
             throw new BusinessException(ResponseStatusEnum.CONTENT_NOT_EXIST);
         }
 
-        String redisDetailKey = ContentDetailsKeyConstant.getContentDetailsKey(ContentId);
-        redisTemplate.delete(redisDetailKey);
+        sendDelayMessageDelete(Arrays.asList(userId, ContentId));
 
         rocketMQTemplate.syncSend(MQConstant.TOPIC_DELETE_CONTENT_LOCAL_CACHE, ContentId);
         log.info("同步发送MQ(删除): {}", ContentId);
@@ -505,6 +549,22 @@ public class ContentServerImplement implements ContentServer {
             }
         }); // 发送消息
         return Response.success();
+    }
+
+    private void sendDelayMessageDelete(List<Long> list) {
+        Message<String> message = MessageBuilder.withPayload(JsonUtil.toJsonString(list))
+                .build();
+        rocketMQTemplate.asyncSend(MQConstant.TOPIC_DELAY_DELETE_PUBLISHED_CONTENT_LIST_REDIS_CACHE_UPDATE, message, new SendCallback() {
+            @Override
+            public void onSuccess(SendResult sendResult) {
+                log.info("====【内容删除】===>用户内容延迟删除发送MQ成功: {}, 延迟时间: {}", sendResult, 3000);
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                log.error("====【内容删除】===>用户内容延迟删除发送MQ失败",throwable);
+            }
+        }, 3000,1);
     }
 
     @Override
@@ -1212,7 +1272,30 @@ public class ContentServerImplement implements ContentServer {
         Long cursor = contentPublishListReqVo.getCursor();
         ContentPublishListResVo contentPublishListResVo = null;
         // todo 先缓存
-
+        String contentPublishListKey = ContentDetailsKeyConstant.getUserPublishContentListKey(userId);
+        if (Objects.isNull(cursor)) {
+            String contentPublishListKeyValue = redisTemplate.opsForValue().get(contentPublishListKey);
+            if (StringUtils.isNotBlank(contentPublishListKeyValue)) {
+                try {
+                    List<ContentPublishListItemResVo> contentPublishListItemResVos = JsonUtil.parseList(contentPublishListKeyValue, ContentPublishListItemResVo.class);
+                    List<ContentPublishListItemResVo> sortedList = contentPublishListItemResVos.stream()
+                            .sorted(Comparator.comparing(ContentPublishListItemResVo::getCreateTime).reversed()).toList();
+                    // 获取最后一个id为游标
+                    Optional<Long> lastId = sortedList.stream().map(ContentPublishListItemResVo::getContentId).min(Long::compareTo);
+                    // 实时更新作者的点赞数
+                    getAndSetLastLikedTotalForCreator(userId,sortedList);
+                    // 获取笔记的点赞状态
+                    batchGetLikedContent(sortedList);
+                    contentPublishListResVo = ContentPublishListResVo.builder()
+                            .contents(sortedList)
+                            .nextCursor(lastId.orElse(null))
+                            .build();
+                    return Response.success(contentPublishListResVo);
+                } catch (Exception e) {
+                    log.error("====【用户发布列表】===> 数据解析错误",e);
+                }
+            }
+        }
         // todo 数据库
         List<ContentDo> contentDos = contentDoMapper.selectPublishContentByUserIdAndCursor(userId,cursor);
         if (CollUtil.isNotEmpty(contentDos)) {
@@ -1255,36 +1338,23 @@ public class ContentServerImplement implements ContentServer {
                                 .creatorId(contentDo.getCreatorId())
                                 .isTop(contentDo.getIsTop())
                                 .createTime(contentDo.getCreateTime())
+                                .isLiked(false) // 默认未点赞
                                 .build();
                     })
                     .toList();
 
             // todo 调用远程服务
+            /*
+            CompletableFuture.supplyAsync() 创建一个异步任务，并返回一个CompletableFuture对象。
+             */
             CompletableFuture<FindUserByIdResDTO> findUserByIdResDTOFuture = CompletableFuture.supplyAsync(()->{
                 Optional<Long> creatorIdOptional = contentDos.stream().map(ContentDo::getCreatorId).findAny();
                 return userFeignApiService.getUserInfoById(creatorIdOptional.get());
             },threadPoolTaskExecutor);
-            /*if (Objects.nonNull(findUserByIdResDTO)) {
-                contentPublishListItemResVos.forEach(contentPublishListItemResVo -> {
-                    contentPublishListItemResVo.setCreatorName(findUserByIdResDTO.getNickname());
-                    contentPublishListItemResVo.setAvatar(findUserByIdResDTO.getAvatar());
-                });
-            }*/
-
             CompletableFuture<List<FindContentCountResDTO>> findContentCountResDTOSFuture = CompletableFuture.supplyAsync(()->{
                 List<Long> contentIds = contentDos.stream().map(ContentDo::getId).toList();
                 return countFeignServer.findContentCount(contentIds);
             },threadPoolTaskExecutor);
-            /*if (CollUtil.isNotEmpty(findContentCountResDTOS)) {
-                Map<Long,FindContentCountResDTO> findContentCountResDTOMap = findContentCountResDTOS.stream()
-                        .collect(Collectors.toMap(FindContentCountResDTO::getContentId, findContentCountResDTO -> findContentCountResDTO));
-
-                contentPublishListItemResVos.forEach(contentPublishListItemResVo -> {
-                    Long contentId = contentPublishListItemResVo.getContentId();
-                    FindContentCountResDTO findContentCountResDTO = findContentCountResDTOMap.get(contentId);
-                    contentPublishListItemResVo.setLikeTotal(Objects.isNull(findContentCountResDTO.getLikeTotal())? "0": String.valueOf(findContentCountResDTO.getLikeTotal()));
-                });
-            }*/
             CompletableFuture.allOf(findUserByIdResDTOFuture, findContentCountResDTOSFuture);
             try {
                 FindUserByIdResDTO findUserByIdResDTO = findUserByIdResDTOFuture.get();
@@ -1305,6 +1375,11 @@ public class ContentServerImplement implements ContentServer {
                         contentPublishListItemResVo.setLikeTotal(Objects.isNull(findContentCountResDTO.getLikeTotal())? "0": String.valueOf(findContentCountResDTO.getLikeTotal()));
                     });
                 }
+                // 批量设置点赞总数redis
+                setVOListLikeTotal(contentPublishListItemResVos, contentCountResDTOS);
+
+                // 批量获取点赞状态
+                batchGetLikedContent(contentPublishListItemResVos);
             } catch (Exception e) {
                 log.error("【发布列表查询】并发调用错误",e);
             }
@@ -1314,10 +1389,99 @@ public class ContentServerImplement implements ContentServer {
                     .nextCursor(lastContentIdOptional.get())
                     .build();
 
+            // 存第一页发布内容
+            if (Objects.isNull(cursor)) {
+                syncFirstPagePublished2Redis(contentPublishListResVo, contentPublishListKey);
+            }
+
         }
 
         // todo 缓存
         return Response.success(contentPublishListResVo);
+    }
+
+    private void batchGetLikedContent(List<ContentPublishListItemResVo> sortedList) {
+        Long userId = LoginUserContextHolder.getUserId();
+        if (Objects.nonNull(userId)) {
+            List<Long> contentIds = sortedList.stream().map(ContentPublishListItemResVo::getContentId).toList();
+            String userContentLikedKey = ContentDetailsKeyConstant.getBloomUserContentLikeListKey(userId);
+
+            DefaultRedisScript<List> redisScript = new DefaultRedisScript<>();
+            redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("lua/r64_batch_get_like_content.lua")));
+            redisScript.setResultType(List.class);
+
+            List<Long> results = redisTemplate.execute(redisScript, Lists.newArrayList(userContentLikedKey), contentIds.toArray());
+            Long result = results.get(0);
+            if (Objects.equals(result, ContentLikeLuaResultEnum.NOT_EXIST.getCode())) {
+                List<ContentLikeDo> contentLikeDos = contentLikeDoMapper.selectByContentIdAndContentIds(userId, contentIds);
+                if (CollUtil.isNotEmpty(contentLikeDos)) {
+                    Map<Long, ContentLikeDo> contentLikeDoMap = contentLikeDos.stream()
+                            .collect(Collectors.toMap(ContentLikeDo::getContentId, contentLikeDo -> contentLikeDo));
+                    for (ContentPublishListItemResVo contentPublishListItemResVo : sortedList) {
+                        Long contentId = contentPublishListItemResVo.getContentId();
+                        ContentLikeDo contentLikeDo = contentLikeDoMap.get(contentId);
+                        contentPublishListItemResVo.setLiked(Objects.nonNull(contentLikeDo));
+                    }
+                    threadPoolTaskExecutor.execute(() -> {
+                        asyncBatchAddContentLikeToBloomFilter(userId, 60 * 30 + RandomUtil.randomInt(60*30), userContentLikedKey);
+                    });
+                    return;
+                }
+            }
+            // 存在，获取状态
+            Map<Long,Boolean> liekdMap = new HashMap<>(results.size());
+            for (int i = 0; i < results.size(); i++) {
+                Boolean status = Objects.equals(results.get(i), ContentLikeLuaResultEnum.BLOOM_LIKED.getCode());
+                Long contentId = contentIds.get(i);
+                liekdMap.put(contentId, status);
+            }
+            sortedList.forEach(contentPublishListItemResVo -> {
+                contentPublishListItemResVo.setLiked(liekdMap.get(contentPublishListItemResVo.getContentId()));
+            });
+        }
+    }
+
+    private void setVOListLikeTotal(List<ContentPublishListItemResVo> contentPublishListItemResVos, List<FindContentCountResDTO> contentCountResDTOS) {
+        if (CollUtil.isNotEmpty(contentCountResDTOS)) {
+            // DTO 集合转 Map
+            Map<Long, FindContentCountResDTO> contentIdAndDTOMap = contentCountResDTOS.stream()
+                    .collect(Collectors.toMap(FindContentCountResDTO::getContentId, dto -> dto));
+
+            // 循环设置 VO 集合，设置每篇笔记的点赞量
+            contentPublishListItemResVos.forEach(noteItemRspVO -> {
+                Long currNoteId = noteItemRspVO.getContentId();
+                FindContentCountResDTO findContentCountsByIdRspDTO = contentIdAndDTOMap.get(currNoteId);
+                noteItemRspVO.setLikeTotal((Objects.nonNull(findContentCountsByIdRspDTO) && Objects.nonNull(findContentCountsByIdRspDTO.getLikeTotal())) ?
+                        NumberUtil.formatNumberString(findContentCountsByIdRspDTO.getLikeTotal()) : "0");
+            });
+        }
+    }
+
+    private void getAndSetLastLikedTotalForCreator(Long userId, List<ContentPublishListItemResVo> sortedList) {
+        Long momentUserId = LoginUserContextHolder.getUserId();
+        if (Objects.equals(userId, momentUserId)) {
+            // 获取用户点赞数
+            CompletableFuture<List<FindContentCountResDTO>> findContentCountResDTOSFuture = CompletableFuture.supplyAsync(()->{
+                List<Long> contentIds = sortedList.stream().map(ContentPublishListItemResVo::getCreatorId).toList();
+                return countFeignServer.findContentCount(contentIds);
+            },threadPoolTaskExecutor);
+            try {
+                /*FindUserByIdResDTO findUserByIdResDTO = findUserByIdResDTOFuture.get(); // 更新用户的数据消息*/
+                List<FindContentCountResDTO> contentCountResDTOS = findContentCountResDTOSFuture.get();
+                setVOListLikeTotal(sortedList, contentCountResDTOS);
+            } catch (Exception e) {
+                log.error("【发布列表查询(作者)】并发调用错误",e);
+            }
+        }
+
+    }
+
+    private void syncFirstPagePublished2Redis(ContentPublishListResVo contentPublishListResVo, String contentPublishListKey) {
+        if (CollUtil.isEmpty(contentPublishListResVo.getContents())) return;
+        threadPoolTaskExecutor.execute(() -> {
+            long expireTime = 60 * 10 + RandomUtil.randomInt(60*30); // 随机10-30分钟
+            redisTemplate.opsForValue().set(contentPublishListKey, JsonUtil.toJsonString(contentPublishListResVo.getContents()), expireTime, TimeUnit.SECONDS);
+        });
     }
 }
 

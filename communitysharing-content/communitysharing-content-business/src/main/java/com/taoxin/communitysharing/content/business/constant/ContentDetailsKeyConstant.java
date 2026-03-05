@@ -20,6 +20,11 @@ public class ContentDetailsKeyConstant {
 
     private static final String BLOOM_USER_CONTENT_COLLECT_ZSET_KEY = "user:content:collects:";
 
+    /**
+     * redis预先存储的内容列表，用于预加载
+     */
+    private static final String USER_CONTENT_LIST_KEY = "user:publish:list:";
+
     public static String getContentDetailsKey(Long contentId) {
         return CONTENT_DETAILS_KEY_PREFIX + contentId;
     }
@@ -48,5 +53,14 @@ public class ContentDetailsKeyConstant {
 
     public static String getBloomUserContentCollectZSetKey(Long userId) {
         return BLOOM_USER_CONTENT_COLLECT_ZSET_KEY + userId;
+    }
+
+    /**
+     * Redis Key for Content List
+     * @param userId
+     * @return
+     */
+    public static String getUserPublishContentListKey(Long userId) {
+        return USER_CONTENT_LIST_KEY + userId;
     }
 }
