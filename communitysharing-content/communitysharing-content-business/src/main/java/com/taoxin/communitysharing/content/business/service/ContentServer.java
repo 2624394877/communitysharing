@@ -4,6 +4,7 @@ import com.taoxin.communitysharing.common.response.Response;
 import com.taoxin.communitysharing.content.business.model.vo.ContentPublishVo;
 import com.taoxin.communitysharing.content.business.model.vo.req.*;
 import com.taoxin.communitysharing.content.business.model.vo.res.ContentDetailsResVo;
+import com.taoxin.communitysharing.content.business.model.vo.res.ContentPublishListResVo;
 import com.taoxin.communitysharing.content.business.model.vo.res.LikeCollectStatusJudgeResVo;
 
 public interface ContentServer {
@@ -31,4 +32,6 @@ public interface ContentServer {
     Response<?> UnCollectContent(UnCollectContentReqVo unCollectContentReqVo);
 
     Response<LikeCollectStatusJudgeResVo> LikeCollectStatusJudge(LikeCollectStatusJudge likeCollectStatusJudgeReqVo);
+
+    Response<ContentPublishListResVo> ContentPublishList(ContentPublishListReqVo contentPublishListReqVo);
 }

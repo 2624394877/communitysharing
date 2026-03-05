@@ -3,6 +3,8 @@ package com.taoxin.communitysharing.count.business.domain.mapper;
 import com.taoxin.communitysharing.count.business.domain.databaseObject.ContentCountDo;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface ContentCountDoMapper {
     int deleteByPrimaryKey(Long id);
 
@@ -21,4 +23,6 @@ public interface ContentCountDoMapper {
     void insertOrUpdateLikeTotalByContentId(@Param("contentId") Long contentId, @Param("likeTotal") Integer likeTotal);
 
     int insertOrUpdateCommentTotalByContentId(@Param("count") int count, @Param("contentId") Long contentId);
+
+    List<ContentCountDo> selectByContentIdList(@Param("contentIdList") List<Long> contentIdList);
 }

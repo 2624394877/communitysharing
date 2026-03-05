@@ -1,6 +1,9 @@
 package com.taoxin.communitysharing.content.business.domain.mapper;
 
 import com.taoxin.communitysharing.content.business.domain.databaseObject.ContentDo;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface ContentDoMapper {
     int deleteByPrimaryKey(Long id);
@@ -22,4 +25,6 @@ public interface ContentDoMapper {
     int updateIsTopByPrimaryKey(ContentDo record);
 
     Long selectCreatorByContentId(Long contentId);
+
+    List<ContentDo> selectPublishContentByUserIdAndCursor(@Param("userId") Long userId, @Param("cursor") Long cursor);
 }

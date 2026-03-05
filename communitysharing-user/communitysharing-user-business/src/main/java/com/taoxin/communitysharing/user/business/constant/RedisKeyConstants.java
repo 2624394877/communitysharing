@@ -21,6 +21,8 @@ public class RedisKeyConstants {
     // 用户信息 KEY 前缀
     private static final String USER_INFO_KEY_PREFIX = "user:info:";
 
+    private static final String USER_INFO_HOME_KEY_PREFIX = "user:home:info:";
+
     /**
      * 验证码 KEY 前缀
      */
@@ -50,5 +52,14 @@ public class RedisKeyConstants {
 
     public static String getVerificationCodeKey(String phoneOrEmail) {
         return VERIFICATION_CODE_KEY + phoneOrEmail;
+    }
+
+    /**
+     * 获取用户信息主页
+     * @param userId
+     * @return
+     */
+    public static String getUserInfoMainKey(Long userId) {
+        return USER_INFO_HOME_KEY_PREFIX + userId;
     }
 }

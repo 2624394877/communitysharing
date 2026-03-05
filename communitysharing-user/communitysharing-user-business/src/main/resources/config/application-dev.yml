@@ -51,6 +51,18 @@ spring:
           min-idle: 0 # 配置连接池最小连接数
           max-wait: -1ms # 配置连接池最大等待时间
 
+rocketmq:
+  name-server: 127.0.0.1:9876 # rocketmq的name-server（这里是docker的）
+  producer:
+    group: communitysharing_group # 生产者组
+    send-message-timeout: 3000 # 发送消息超时时间
+    retry-times-when-send-failed: 3 # 发送失败重试次数
+    retry-times-when-send-async-failed: 3 # 异步发送失败重试次数
+    max-message-size: 4096 # 最大消息大小 单位字节
+  consumer:
+    group: communitysharing_group # 消费者组
+    pull-batch-size: 5 # 拉取批量大小
+
 logging:
   level:
     com.taoxin.communitysharing.user.business.domain.mapper: debug

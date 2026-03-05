@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 //@MapperScan("com.taoxin.communitysharing.auth.domain.mapper") // 扫描mapper
-@EnableFeignClients({"com.communitysharing","com.taoxin.communitysharing"}) // 扫描FeignClient
+@EnableFeignClients({"com.taoxin.communitysharing"}) // 扫描FeignClient
 public class CommunitysharingAuthApplication {
 
     public static void main(String[] args) {

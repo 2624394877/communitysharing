@@ -44,4 +44,6 @@ public interface UserCountDoMapper {
     int insertOrUpdateCollectTotalByUserId(@Param("count") Integer count, @Param("userId") Long userId);
 
     int insertOrUpdateContentTotalByUserId(@Param("count") long count, @Param("userId") Long userId);
+
+    UserCountDo selectByUserId(@Param("userId") Long userId);
 }

@@ -34,7 +34,18 @@
   <select id="selectCreatorByContentId" resultType="java.lang.Long">
     select creator_id from t_content where id = #{contentId} and status = 1
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <select id="selectPublishContentByUserIdAndCursor" resultMap="BaseResultMap" parameterType="map">
+      select id, title, creator_id, is_top, `type`, img_uris, video_uri,
+             file_uris, url_uris, create_time
+      from t_content
+      where creator_id = #{userId} and status = 1 and visible = 0
+      <if test="cursor != null">
+        <![CDATA[ and id < #{cursor} ]]>
+      </if>
+      order by id desc
+      limit 20
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_content
     where id = #{id,jdbcType=BIGINT}
   </delete>

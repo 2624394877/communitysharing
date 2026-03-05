@@ -294,6 +294,12 @@
       <!-- 声明子模块的依赖以及其版本号 -->
       <dependency>
         <groupId>com.communitysharing</groupId>
+        <artifactId>communitysharing-count-api</artifactId>
+        <version>${revision}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.communitysharing</groupId>
         <artifactId>communitysharing-search-api</artifactId>
         <version>${revision}</version>
       </dependency>

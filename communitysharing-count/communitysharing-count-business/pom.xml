@@ -21,6 +21,11 @@
     <dependencies>
 
         <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-okhttp</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.github.phantomthief</groupId>
             <artifactId>buffer-trigger</artifactId>
         </dependency>
@@ -88,6 +93,11 @@
         <dependency>
             <groupId>com.communitysharing</groupId>
             <artifactId>communitysharing-spring-boot-starter-business-operationlog</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.communitysharing</groupId>
+            <artifactId>communitysharing-count-api</artifactId>
         </dependency>
 
         <dependency>

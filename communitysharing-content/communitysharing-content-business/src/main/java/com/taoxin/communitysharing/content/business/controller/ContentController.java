@@ -1,5 +1,6 @@
 package com.taoxin.communitysharing.content.business.controller;
 
+import com.taoxin.communitysharing.content.business.model.vo.res.ContentPublishListResVo;
 import com.taoxin.communitysharing.content.business.model.vo.res.LikeCollectStatusJudgeResVo;
 import com.taoxin.communitysharing.framework.business.operationlog.aspect.ApiOperationLog;
 import com.taoxin.communitysharing.common.response.Response;
@@ -84,5 +85,11 @@ public class ContentController {
     @ApiOperationLog(description = "判断内容是否点赞和收藏")
     public Response<LikeCollectStatusJudgeResVo> judgeLikeAndCollect(@Validated @RequestBody LikeCollectStatusJudge likeCollectStatusJudgeReqVo) {
         return contentServer.LikeCollectStatusJudge(likeCollectStatusJudgeReqVo);
+    }
+
+    @RequestMapping("/publish/list")
+    @ApiOperationLog(description = "内容发布列表")
+    public Response<ContentPublishListResVo> publishList(@Validated @RequestBody ContentPublishListReqVo contentPublishListReqVo) {
+        return contentServer.ContentPublishList(contentPublishListReqVo);
     }
 }

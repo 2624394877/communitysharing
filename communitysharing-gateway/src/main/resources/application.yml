@@ -48,6 +48,12 @@ spring:
               - Path=/comment/**
             filters:
               - StripPrefix=1
+          - id: count
+            uri: lb://communitysharing-count
+            predicates:
+                - Path=/count/**
+            filters:
+              - StripPrefix=1
   data:
     redis:
       database: 0

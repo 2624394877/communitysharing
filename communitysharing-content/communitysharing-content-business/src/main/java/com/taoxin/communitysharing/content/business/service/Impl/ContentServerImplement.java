@@ -3,7 +3,12 @@ package com.taoxin.communitysharing.content.business.service.Impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.taoxin.communitysharing.common.exception.BusinessException;
+import com.taoxin.communitysharing.content.business.model.vo.res.ContentPublishListItemResVo;
+import com.taoxin.communitysharing.content.business.model.vo.res.ContentPublishListResVo;
 import com.taoxin.communitysharing.content.business.model.vo.res.LikeCollectStatusJudgeResVo;
+import com.taoxin.communitysharing.content.business.rpc.CountFeignApiServer;
+import com.taoxin.communitysharing.count.api.CountFeignServer;
+import com.taoxin.communitysharing.count.model.dto.Res.FindContentCountResDTO;
 import com.taoxin.communitysharing.framework.business.context.holder.LoginUserContextHolder;
 import com.taoxin.communitysharing.common.response.Response;
 import com.taoxin.communitysharing.common.uitl.DateUtil;
@@ -53,6 +58,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static com.taoxin.communitysharing.content.business.enums.ContentCollectTypeEnum.*;
 
@@ -79,6 +85,8 @@ public class ContentServerImplement implements ContentServer {
     private RedisTemplate<String, String> redisTemplate;
     @Resource
     private RocketMQTemplate rocketMQTemplate;
+    @Resource
+    private CountFeignApiServer countFeignServer;
 
     private static final Cache<Long, String> LOCAL_CACHE = Caffeine.newBuilder()
             .initialCapacity(10000)
@@ -1197,5 +1205,119 @@ public class ContentServerImplement implements ContentServer {
         return false;
     }
 
+    @Override
+    public Response<ContentPublishListResVo> ContentPublishList(ContentPublishListReqVo contentPublishListReqVo) {
+        Long userId = contentPublishListReqVo.getUserId();
+
+        Long cursor = contentPublishListReqVo.getCursor();
+        ContentPublishListResVo contentPublishListResVo = null;
+        // todo 先缓存
+
+        // todo 数据库
+        List<ContentDo> contentDos = contentDoMapper.selectPublishContentByUserIdAndCursor(userId,cursor);
+        if (CollUtil.isNotEmpty(contentDos)) {
+            List<ContentPublishListItemResVo> contentPublishListItemResVos = contentDos.stream()
+                    .map(contentDo -> {
+                        Integer type = contentDo.getType();
+                        // 图片
+                        String imgUris = contentDo.getImgUris();
+                        List<String> imgUris_list = null;
+                        if (Objects.equals(type,ContentTypeEnum.IMAGE.getCode()) && StringUtils.isNotBlank(imgUris)) {
+                            imgUris_list = Arrays.asList(imgUris.split(","));
+                        }
+                        // 视频
+                        String videoUris = contentDo.getVideoUri();
+                        List<String> videoUris_list = null;
+                        if (Objects.equals(type,ContentTypeEnum.VIDEO.getCode()) && StringUtils.isNotBlank(videoUris)) {
+                            videoUris_list = Arrays.asList(videoUris.split(","));
+                        }
+                        // 文件
+                        String fileUris = contentDo.getFileUris();
+                        List<String> fileUris_list = null;
+                        if (Objects.equals(type,ContentTypeEnum.FILE.getCode()) && StringUtils.isNotBlank(fileUris)) {
+                            fileUris_list = Arrays.asList(fileUris.split(","));
+                        }
+                        // 链接
+                        String linkUris = contentDo.getUrlUris();
+                        List<String> linkUris_list = null;
+                        if (Objects.equals(type,ContentTypeEnum.LINK.getCode()) && StringUtils.isNotBlank(linkUris)) {
+                            linkUris_list = Arrays.asList(linkUris.split(","));
+                        }
+                        return ContentPublishListItemResVo.builder()
+                                .contentId(contentDo.getId())
+                                .cover(Objects.isNull(contentDo.getImgUris())?"":contentDo.getImgUris())
+                                .title(contentDo.getTitle())
+                                .type(type)
+                                .imgUris(imgUris_list)
+                                .videoUris(videoUris_list)
+                                .fileUris(fileUris_list)
+                                .linkUris(linkUris_list)
+                                .creatorId(contentDo.getCreatorId())
+                                .isTop(contentDo.getIsTop())
+                                .createTime(contentDo.getCreateTime())
+                                .build();
+                    })
+                    .toList();
+
+            // todo 调用远程服务
+            CompletableFuture<FindUserByIdResDTO> findUserByIdResDTOFuture = CompletableFuture.supplyAsync(()->{
+                Optional<Long> creatorIdOptional = contentDos.stream().map(ContentDo::getCreatorId).findAny();
+                return userFeignApiService.getUserInfoById(creatorIdOptional.get());
+            },threadPoolTaskExecutor);
+            /*if (Objects.nonNull(findUserByIdResDTO)) {
+                contentPublishListItemResVos.forEach(contentPublishListItemResVo -> {
+                    contentPublishListItemResVo.setCreatorName(findUserByIdResDTO.getNickname());
+                    contentPublishListItemResVo.setAvatar(findUserByIdResDTO.getAvatar());
+                });
+            }*/
+
+            CompletableFuture<List<FindContentCountResDTO>> findContentCountResDTOSFuture = CompletableFuture.supplyAsync(()->{
+                List<Long> contentIds = contentDos.stream().map(ContentDo::getId).toList();
+                return countFeignServer.findContentCount(contentIds);
+            },threadPoolTaskExecutor);
+            /*if (CollUtil.isNotEmpty(findContentCountResDTOS)) {
+                Map<Long,FindContentCountResDTO> findContentCountResDTOMap = findContentCountResDTOS.stream()
+                        .collect(Collectors.toMap(FindContentCountResDTO::getContentId, findContentCountResDTO -> findContentCountResDTO));
+
+                contentPublishListItemResVos.forEach(contentPublishListItemResVo -> {
+                    Long contentId = contentPublishListItemResVo.getContentId();
+                    FindContentCountResDTO findContentCountResDTO = findContentCountResDTOMap.get(contentId);
+                    contentPublishListItemResVo.setLikeTotal(Objects.isNull(findContentCountResDTO.getLikeTotal())? "0": String.valueOf(findContentCountResDTO.getLikeTotal()));
+                });
+            }*/
+            CompletableFuture.allOf(findUserByIdResDTOFuture, findContentCountResDTOSFuture);
+            try {
+                FindUserByIdResDTO findUserByIdResDTO = findUserByIdResDTOFuture.get();
+                List<FindContentCountResDTO> contentCountResDTOS = findContentCountResDTOSFuture.get();
+                if (CollUtil.isNotEmpty(contentCountResDTOS)) {
+                    contentPublishListItemResVos.forEach(contentPublishListItemResVo -> {
+                        contentPublishListItemResVo.setCreatorName(findUserByIdResDTO.getNickname());
+                        contentPublishListItemResVo.setAvatar(findUserByIdResDTO.getAvatar());
+                    });
+                }
+                if (CollUtil.isNotEmpty(contentCountResDTOS)) {
+                    Map<Long,FindContentCountResDTO> findContentCountResDTOMap = contentCountResDTOS.stream()
+                            .collect(Collectors.toMap(FindContentCountResDTO::getContentId, findContentCountResDTO -> findContentCountResDTO));
+
+                    contentPublishListItemResVos.forEach(contentPublishListItemResVo -> {
+                        Long contentId = contentPublishListItemResVo.getContentId();
+                        FindContentCountResDTO findContentCountResDTO = findContentCountResDTOMap.get(contentId);
+                        contentPublishListItemResVo.setLikeTotal(Objects.isNull(findContentCountResDTO.getLikeTotal())? "0": String.valueOf(findContentCountResDTO.getLikeTotal()));
+                    });
+                }
+            } catch (Exception e) {
+                log.error("【发布列表查询】并发调用错误",e);
+            }
+            Optional<Long> lastContentIdOptional = contentDos.stream().map(ContentDo::getId).min(Long::compareTo);
+            contentPublishListResVo = ContentPublishListResVo.builder()
+                    .contents(contentPublishListItemResVos)
+                    .nextCursor(lastContentIdOptional.get())
+                    .build();
+
+        }
+
+        // todo 缓存
+        return Response.success(contentPublishListResVo);
+    }
 }
 

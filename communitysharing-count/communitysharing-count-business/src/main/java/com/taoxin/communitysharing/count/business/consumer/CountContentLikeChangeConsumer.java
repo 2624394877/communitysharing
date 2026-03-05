@@ -98,7 +98,7 @@ public class CountContentLikeChangeConsumer implements RocketMQListener<String> 
                 redisTemplate.opsForHash().increment(contentKey, RedisKeyConstant.FIELD_LIKE_TOTAL, aggregationCountLikeUnlikeMQDTO.getLikeCount());
             }
 
-            String CountUserkey = RedisKeyConstant.buildCountUserKey(aggregationCountLikeUnlikeMQDTO.getContentId());
+            String CountUserkey = RedisKeyConstant.buildCountUserKey(aggregationCountLikeUnlikeMQDTO.getCreatorId());
             boolean isUserExisted = redisTemplate.hasKey(CountUserkey);
             if (isUserExisted) { // 用户维度的统计也进行更新
                 // 对 Hash 中的 likeTotal 字段进行加减操作

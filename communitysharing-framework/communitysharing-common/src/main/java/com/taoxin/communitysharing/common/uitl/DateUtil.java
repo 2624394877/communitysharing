@@ -2,12 +2,24 @@ package com.taoxin.communitysharing.common.uitl;
 
 import com.taoxin.communitysharing.common.constant.DateConstants;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class DateUtil {
+
+    /**
+     * 计算年龄
+     * @param localDate
+     * @return
+     */
+    public static int calculateYears(LocalDate localDate) {
+        return Period.between(localDate, LocalDate.now()).getYears();
+    }
+
     /**
      * LocalDateTime转时间戳
      * @param localDateTime 本地时间

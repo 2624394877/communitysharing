@@ -6,15 +6,23 @@ import cn.hutool.core.util.RandomUtil;
 import com.taoxin.communitysharing.common.Enums.DeletedEnum;
 import com.taoxin.communitysharing.common.Enums.StatusEnum;
 import com.taoxin.communitysharing.common.exception.BusinessException;
+import com.taoxin.communitysharing.common.uitl.DateUtil;
+import com.taoxin.communitysharing.common.uitl.NumberUtil;
+import com.taoxin.communitysharing.count.model.vo.res.FindUserCountsByIdResVo;
 import com.taoxin.communitysharing.framework.business.context.holder.LoginUserContextHolder;
 import com.taoxin.communitysharing.common.response.Response;
 import com.taoxin.communitysharing.common.uitl.JsonUtil;
 import com.taoxin.communitysharing.common.uitl.ParamsUtil;
+import com.taoxin.communitysharing.user.business.config.GlobalCaffeine;
+import com.taoxin.communitysharing.user.business.constant.MQConstant;
+import com.taoxin.communitysharing.user.business.model.vo.req.FindUserInfoReqVo;
 import com.taoxin.communitysharing.user.business.model.vo.req.UserUpdateMailReqVo;
 import com.taoxin.communitysharing.user.business.model.vo.req.UserUpdatePhoneReqVo;
+import com.taoxin.communitysharing.user.business.model.vo.res.FindUserInfoResVo;
 import com.taoxin.communitysharing.user.business.model.vo.res.UserInfoResVo;
 import com.taoxin.communitysharing.search.user.dto.requestDTO.*;
 import com.taoxin.communitysharing.search.user.dto.responseDTO.FindUsersByIdResponseDTO;
+import com.taoxin.communitysharing.user.business.rpc.CountFeignServcie;
 import com.taoxin.communitysharing.user.business.rpc.DisIdCostructorFeignService;
 import com.taoxin.communitysharing.user.business.constant.RedisKeyConstants;
 import com.taoxin.communitysharing.user.business.constant.RoleConstants;
@@ -39,10 +47,15 @@ import com.google.common.collect.Lists;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.rocketmq.client.producer.SendCallback;
+import org.apache.rocketmq.client.producer.SendResult;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SessionCallback;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,13 +87,12 @@ public class UserServiceImpl implements UserService {
     private RoleDoMapper roleDoMapper;
     @Resource
     private DisIdCostructorFeignService disIdCostructorFeignService;
+    @Resource
+    private RocketMQTemplate rocketMQTemplate;
+    @Resource
+    private GlobalCaffeine LOCAL_CACHE;
 
     // 初始化Caffeine本地缓存
-    private static final Cache<Long, FindUserByIdResDTO> LOCAL_CACHE = Caffeine.newBuilder()
-            .initialCapacity(10000) // 初始缓存10000个元素
-            .maximumSize(10000) // 最大缓存10000个元素
-            .expireAfterWrite(1, TimeUnit.HOURS)
-            .build();
 
     /**
      * @思路： 每个字段做验证，并进行对于操作；需要添加一个更新标记符。
@@ -175,17 +187,63 @@ public class UserServiceImpl implements UserService {
             int count = userDoMapper.updateByPrimaryKeySelective(userDo);
             if (count <= 0) throw new BusinessException(ResponseStatusEnum.UPDATE_USER_FAIL);
             userDo = userDoMapper.selectByPrimaryKey(userId);
-            LOCAL_CACHE.put(userId, FindUserByIdResDTO.builder()
+
+            FindUserByIdResDTO findUserByIdResDTO = FindUserByIdResDTO.builder()
+                    .id(userDo.getId())
                     .communitysharingId(userDo.getCommunitysharingId())
                     .nickname(userDo.getNickname())
                     .avatar(userDo.getAvatar())
                     .backgroundImg(userDo.getBackgroundImg())
                     .introduction(userDo.getIntroduction())
                     .isDeleted(userDo.isDeleted())
-                    .build()
-            );
+                    .build();
+            // 删除redis缓存
+            deleteUserRedis(userId);
+            // 缓存用户信息
+            sendLocalMQ(findUserByIdResDTO);
+            sendMQ(userId);
         }
         return Response.success();
+    }
+
+    private void sendLocalMQ(FindUserByIdResDTO findUserByIdResDTO) {
+        Message<String> message = MessageBuilder.withPayload(JsonUtil.toJsonString(findUserByIdResDTO)).build();
+            // 群发消息
+        rocketMQTemplate.asyncSend(MQConstant.USER_TOPIC_CACHE, message, new SendCallback() {
+            @Override
+            public void onSuccess(SendResult sendResult) {
+                log.info("========= 【用户更新缓存】发送成功 {}", sendResult);
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                log.error("========= 【用户更新缓存】发送失败 ============", throwable);
+            }
+        });
+    }
+
+    private void sendMQ(Long userId) {
+        Message<Long> message = MessageBuilder.withPayload(userId).build();
+        rocketMQTemplate.asyncSend(MQConstant.USER_TOPIC, message, new SendCallback() {
+
+            @Override
+            public void onSuccess(SendResult sendResult) {
+                log.info("========= 【用户更新删除redis】发送成功 {}", sendResult);
+            }
+
+            @Override
+            public void onException(Throwable throwable) {
+                log.error("========= 【用户更新删除redis】发送失败 ============", throwable);
+            }
+        }, 3000,1);
+    }
+
+    private void deleteUserRedis(Long userId) {
+        threadPoolTaskExecutor.execute(() -> {
+            //删除redis缓存
+            String userKey = RedisKeyConstants.getUserInfoKey(userId);
+            redisTemplate.delete(userKey);
+        });
     }
 
     /**
@@ -307,11 +365,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public Response<FindUserByIdResDTO> findUserById(FindUserByIdDTO findUserByIdDTO) {
         Long userId = findUserByIdDTO.getUserId();
-        // 在本地缓存中获取数据
-        FindUserByIdResDTO findUserByIdResDTOLocalCache = LOCAL_CACHE.getIfPresent(userId);
-        if (Objects.nonNull(findUserByIdResDTOLocalCache)) { // 本地缓存中存在数据
-            log.info("===> 从本地缓存中获取数据:{}", findUserByIdResDTOLocalCache); // 输出日志
-            return Response.success(findUserByIdResDTOLocalCache);
+        Long selfId = LoginUserContextHolder.getUserId();
+        if (Objects.nonNull(userId) && !Objects.equals(selfId, userId)) {
+            // 在本地缓存中获取数据
+            FindUserByIdResDTO findUserByIdResDTOLocalCache = LOCAL_CACHE.caffeineCache().getIfPresent(userId);
+            if (Objects.nonNull(findUserByIdResDTOLocalCache)) { // 本地缓存中存在数据
+                log.info("===> 从本地缓存中获取数据:{}", findUserByIdResDTOLocalCache); // 输出日志
+                return Response.success(findUserByIdResDTOLocalCache);
+            }
         }
 
         // 构建缓存键
@@ -326,7 +387,7 @@ public class UserServiceImpl implements UserService {
             // 调用异步线程将数据写入缓存
             threadPoolTaskExecutor.submit(() -> {
                 // 将数据写入本地缓存
-                LOCAL_CACHE.put(userId, findUserByIdResDTO);
+                LOCAL_CACHE.caffeineCache().put(userId, findUserByIdResDTO);
             });
             findUserByIdRes = findUserByIdResDTO;
             findUserByIdRes.setId(null);
@@ -475,7 +536,7 @@ public class UserServiceImpl implements UserService {
         Long userId = LoginUserContextHolder.getUserId();
 
         // 在本地缓存中获取数据
-        FindUserByIdResDTO findUserByIdResDTOLocalCache = LOCAL_CACHE.getIfPresent(userId);
+        FindUserByIdResDTO findUserByIdResDTOLocalCache = LOCAL_CACHE.caffeineCache().getIfPresent(userId);
         if (Objects.nonNull(findUserByIdResDTOLocalCache)) { // 本地缓存中存在数据
             log.info("===> 从本地缓存中获取数据:{}", findUserByIdResDTOLocalCache); // 输出日志
             return Response.success(findUserByIdResDTOLocalCache);
@@ -490,7 +551,7 @@ public class UserServiceImpl implements UserService {
             // 调用异步线程将数据写入缓存
             threadPoolTaskExecutor.submit(() -> {
                 // 将数据写入本地缓存
-                LOCAL_CACHE.put(userId, findUserByIdResDTO);
+                LOCAL_CACHE.caffeineCache().put(userId, findUserByIdResDTO);
             });
             findUserByIdRes = findUserByIdResDTO;
             return Response.success(findUserByIdRes);
@@ -604,4 +665,6 @@ public class UserServiceImpl implements UserService {
         if (update <= 0) throw new BusinessException(ResponseStatusEnum.UPDATE_USER_PHONE_ERROR);
         return Response.success();
     }
+
+
 }

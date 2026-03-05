@@ -19,6 +19,11 @@
 
     <dependencies>
 
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-okhttp</artifactId>
+        </dependency>
+
         <!-- Rocket MQ 客户端 -->
         <dependency>
             <groupId>org.apache.rocketmq</groupId>
@@ -100,6 +105,11 @@
         </dependency>
 
         <!-- 模块引用 -->
+        <dependency>
+            <groupId>com.communitysharing</groupId>
+            <artifactId>communitysharing-count-api</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.communitysharing</groupId>
             <artifactId>communitysharing-content-api</artifactId>

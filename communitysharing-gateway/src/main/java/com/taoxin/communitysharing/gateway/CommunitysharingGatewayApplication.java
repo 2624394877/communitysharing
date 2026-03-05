@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
-@EnableFeignClients(basePackages = {"com.taoxin.communitysharing", "com.communitysharing"})
+@EnableFeignClients(basePackages = {"com.taoxin.communitysharing"})
 public class CommunitysharingGatewayApplication
 {
     public static void main( String[] args ){
