@@ -12,8 +12,10 @@ import com.taoxin.communitysharing.search.business.enums.ContentSortTypeEnum;
 import com.taoxin.communitysharing.search.business.enums.ContentTimeRangeEnum;
 import com.taoxin.communitysharing.search.business.enums.ResponseStatusEnum;
 import com.taoxin.communitysharing.search.business.index.ContentIndex;
+import com.taoxin.communitysharing.search.business.model.vo.req.GetContentByChannelReqVo;
 import com.taoxin.communitysharing.search.business.model.vo.req.GetContentReqVo;
 import com.taoxin.communitysharing.search.business.model.vo.req.SearchContentReqVo;
+import com.taoxin.communitysharing.search.business.model.vo.res.GetContentByChannelResVo;
 import com.taoxin.communitysharing.search.business.model.vo.res.GetContentResVo;
 import com.taoxin.communitysharing.search.business.model.vo.res.SearchContentResVo;
 import com.taoxin.communitysharing.search.business.service.ContentServer;
@@ -186,11 +188,14 @@ public class ContentServiceImplement implements ContentServer {
                 // 获取所有字段
                 Map<String,Object> sourceAsMap = hit.getSourceAsMap();
                 Long contentId = ((Number) sourceAsMap.get(ContentIndex.FIELD_CONTENT_ID)).longValue();
+                String id = String.valueOf(contentId);
                 String cover = (String) sourceAsMap.get(ContentIndex.FIELD_CONTENT_COVER);
                 String title = (String) sourceAsMap.get(ContentIndex.FIELD_CONTENT_TITLE);
                 String nickname = (String) sourceAsMap.get(ContentIndex.FIELD_CONTENT_NICKNAME);
                 String avatar = (String) sourceAsMap.get(ContentIndex.FIELD_CONTENT_AVATAR);
+                Long topicId = ((Number) sourceAsMap.get(ContentIndex.FIELD_CONTENT_TOPIC_ID)).longValue();
                 String topic = (String) sourceAsMap.get(ContentIndex.FIELD_CONTENT_TOPIC);
+                Long channelId = ((Number) sourceAsMap.get(ContentIndex.FIELD_CONTENT_CHANNEL_ID)).longValue();
                 Object likeTotalObj = sourceAsMap.get(ContentIndex.FIELD_CONTENT_LIKE_TOTAL);
                 Integer likeTotal = (likeTotalObj instanceof Number) ? ((Number) likeTotalObj).intValue() : 0;
                 Object collectTotalObj = sourceAsMap.get(ContentIndex.FIELD_CONTENT_COLLECT_TOTAL);
@@ -206,13 +211,15 @@ public class ContentServiceImplement implements ContentServer {
                     HighLightKeyword = hit.getHighlightFields().get(ContentIndex.FIELD_CONTENT_TITLE).fragments()[0].toString();
                 }
                 SearchContentResVo searchContentResVo = SearchContentResVo.builder()
-                        .contentId(contentId)
+                        .contentId(id)
                         .cover(cover)
                         .title(title)
                         .highLightTitle(HighLightKeyword)
                         .avatar(avatar)
                         .nickname(nickname)
+                        .topicId(topicId)
                         .topic(topic)
+                        .channelId(channelId)
                         .type(contentType)
                         .likeTotal(NumberUtil.formatNumberString(likeTotal))
                         .collectTotal(NumberUtil.formatNumberString(collectTotal))
@@ -230,10 +237,12 @@ public class ContentServiceImplement implements ContentServer {
 
     @Override
     public Response<Long> rebuildDocument(RebuildContentDocReqDTO reqDTO) {
-        Long contentId = reqDTO.getContentId();
-        List<Map<String, Object>> result = selectMapper.selectEsContentIndexData(contentId, null);
+        Long contentId = Long.valueOf(reqDTO.getContentId());
+        Long userId = Long.valueOf(reqDTO.getUserId());
+        List<Map<String, Object>> result = selectMapper.selectEsContentIndexData(contentId, userId);
         if (CollectionUtils.isEmpty(result)) throw new BusinessException(ResponseStatusEnum.CONTENT_GET_FAIL);
         for (Map<String, Object> map : result) {
+            log.info("重建文档: {}", map);
             IndexRequest indexRequest = new IndexRequest(ContentIndex.NAME);
             indexRequest.id(map.get(ContentIndex.FIELD_CONTENT_ID).toString());
             indexRequest.source(map);
@@ -300,8 +309,8 @@ public class ContentServiceImplement implements ContentServer {
         functionScoreQueryBuilder.boostMode(CombineFunction.SUM);
         searchSourceBuilder.query(functionScoreQueryBuilder); // 设置查询
         // 设置分页，from 和 size
-        int pageSize = 20; // 每页展示数据量
-        int from = (pageNo - 1) * pageSize; // 偏移量
+        int pageSize = 10; // 每页展示数据量
+        int from = Math.max(pageNo - 1, 0) * pageSize; // 偏移量
         searchSourceBuilder.from(from);
         searchSourceBuilder.size(pageSize);
         searchRequest.source(searchSourceBuilder); // 设置查询
@@ -317,15 +326,140 @@ public class ContentServiceImplement implements ContentServer {
             getContentResVoList = Lists.newArrayList();
             // 获取结果的文档列表
             SearchHits hits = searchResponse.getHits();
+            // 遍历文档列表，构建返参数据
             for (SearchHit hit : hits) {
                 log.info("文档内容: {}", hit.getSourceAsString());
                 // 获取所有字段
                 Map<String,Object> sourceAsMap = hit.getSourceAsMap();
-                Long contentId = ((Number) sourceAsMap.get(ContentIndex.FIELD_CONTENT_ID)).longValue();
+                Long contentId = (( Number) sourceAsMap.get(ContentIndex.FIELD_CONTENT_ID)).longValue();
+                String id = String.valueOf(contentId);
                 String cover = (String) sourceAsMap.get(ContentIndex.FIELD_CONTENT_COVER);
                 String title = (String) sourceAsMap.get(ContentIndex.FIELD_CONTENT_TITLE);
                 String nickname = (String) sourceAsMap.get(ContentIndex.FIELD_CONTENT_NICKNAME);
                 String avatar = (String) sourceAsMap.get(ContentIndex.FIELD_CONTENT_AVATAR);
+                Long topicId = ((Number) sourceAsMap.get(ContentIndex.FIELD_CONTENT_TOPIC_ID)).longValue();
+                String topic = (String) sourceAsMap.get(ContentIndex.FIELD_CONTENT_TOPIC);
+                Long channelId = ((Number) sourceAsMap.get(ContentIndex.FIELD_CONTENT_CHANNEL_ID)).longValue();
+                Object likeTotalObj = sourceAsMap.get(ContentIndex.FIELD_CONTENT_LIKE_TOTAL);
+                Integer likeTotal = (likeTotalObj instanceof Number) ? ((Number) likeTotalObj).intValue() : 0;
+                Object collectTotalObj = sourceAsMap.get(ContentIndex.FIELD_CONTENT_COLLECT_TOTAL);
+                Integer collectTotal = (collectTotalObj instanceof Number) ? ((Number) collectTotalObj).intValue() : 0;
+                Object commentTotalObj = sourceAsMap.get(ContentIndex.FIELD_CONTENT_COMMENT_TOTAL);
+                Integer commentTotal = (commentTotalObj instanceof Number) ? ((Number) commentTotalObj).intValue() : 0;
+                DateTimeFormatter dateTimeStr = DateTimeFormatter.ofPattern(DateConstants.LOCAL_DATE_TIME_PATTERN);
+                LocalDateTime createTime = LocalDateTime.parse((String)sourceAsMap.get(ContentIndex.FIELD_CONTENT_CREATE_TIME), dateTimeStr);
+                LocalDateTime updateTime = LocalDateTime.parse((String) sourceAsMap.get(ContentIndex.FIELD_CONTENT_UPDATE_TIME), dateTimeStr);
+                Integer contentType = ((Number) sourceAsMap.get(ContentIndex.FIELD_CONTENT_TYPE)).intValue();
+                GetContentResVo getContentResVo = GetContentResVo.builder()
+                        .contentId(id)
+                        .cover(cover)
+                        .title(title)
+                        .avatar(avatar)
+                        .nickname(nickname)
+                        .topicId(topicId)
+                        .topic(topic)
+                        .channelId(channelId)
+                        .type(contentType)
+                        .likeTotal(NumberUtil.formatNumberString(likeTotal))
+                        .collectTotal(NumberUtil.formatNumberString(collectTotal))
+                        .commentTotal(NumberUtil.formatNumberString(commentTotal))
+                        .createTime(DateUtil.formatRelativeTime(createTime))
+                        .updateTime(DateUtil.formatRelativeTime(updateTime))
+                        .build();
+                log.info("构建返回数据: {}", getContentResVo);
+                getContentResVoList.add(getContentResVo);
+            }
+        } catch (Exception e) {
+            log.error("查询内容失败:", e);
+        }
+        return PageResponse.success(getContentResVoList, pageNo, total);
+    }
+
+    @Override
+    public PageResponse<GetContentByChannelResVo> getContentByChannel(GetContentByChannelReqVo reqVo) {
+        Long channelId = reqVo.getChannelId();
+
+        // 当前页码
+        Integer pageNo = reqVo.getPageNo();
+
+        SearchRequest searchRequest = new SearchRequest(ContentIndex.NAME);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        // 构建搜索条件
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
+                .filter(QueryBuilders.termQuery(ContentIndex.FIELD_CONTENT_CHANNEL_ID, channelId));
+
+        FunctionScoreQueryBuilder functionScoreQueryBuilder = QueryBuilders.functionScoreQuery(
+                boolQueryBuilder,
+                new FunctionScoreQueryBuilder.FilterFunctionBuilder[]{
+                        // like_total 权重
+                        new FunctionScoreQueryBuilder.FilterFunctionBuilder(
+                                ScoreFunctionBuilders.fieldValueFactorFunction(ContentIndex.FIELD_CONTENT_LIKE_TOTAL)
+                                        .factor(0.5f)
+                                        .modifier(FieldValueFactorFunction.Modifier.SQRT)
+                                        .missing(0)
+                        ),
+                        // collect_total 权重
+                        new FunctionScoreQueryBuilder.FilterFunctionBuilder(
+                                ScoreFunctionBuilders.fieldValueFactorFunction(ContentIndex.FIELD_CONTENT_COLLECT_TOTAL)
+                                        .factor(0.3f)
+                                        .modifier(FieldValueFactorFunction.Modifier.SQRT)
+                                        .missing(0)
+                        ),
+                        // comment_total 权重
+                        new FunctionScoreQueryBuilder.FilterFunctionBuilder(
+                                ScoreFunctionBuilders.fieldValueFactorFunction(ContentIndex.FIELD_CONTENT_COMMENT_TOTAL)
+                                        .factor(0.2f)
+                                        .modifier(FieldValueFactorFunction.Modifier.SQRT)
+                                        .missing(0)
+                        ),
+                        // 时间衰减
+                        new FunctionScoreQueryBuilder.FilterFunctionBuilder(
+                                ScoreFunctionBuilders.gaussDecayFunction(
+                                        ContentIndex.FIELD_CONTENT_UPDATE_TIME,
+                                        "now",
+                                        "7d",
+                                        null,
+                                        0.5
+                                ).setWeight(0.8f)
+                        )
+                }
+        );
+
+        // 设置 score_mode 和 boost_mode
+        functionScoreQueryBuilder.scoreMode(FunctionScoreQuery.ScoreMode.SUM);
+        functionScoreQueryBuilder.boostMode(CombineFunction.SUM);
+        searchSourceBuilder.query(functionScoreQueryBuilder); // 设置查询
+        searchSourceBuilder.trackTotalHits(true); // 设置返回总记录数
+        // 设置分页，from 和 size
+        int pageSize = 10; // 每页展示数据量
+        int from = Math.max(pageNo - 1, 0) * pageSize; // 偏移量
+        searchSourceBuilder.from(from);
+        searchSourceBuilder.size(pageSize);
+        searchRequest.source(searchSourceBuilder); // 设置查询
+
+        List<GetContentByChannelResVo> getContentResVoList = null;
+        long total = 0;
+        try {
+            log.info("搜索内容: {}", searchSourceBuilder.toString());
+            SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+            // 处理结果
+            total = searchResponse.getHits().getTotalHits().value;
+            log.info("总记录数: {}", total);
+            getContentResVoList = Lists.newArrayList();
+            // 获取结果的文档列表
+            SearchHits hits = searchResponse.getHits();
+            // 遍历文档列表，构建返参数据
+            for (SearchHit hit : hits) {
+                log.info("文档内容: {}", hit.getSourceAsString());
+                // 获取所有字段
+                Map<String,Object> sourceAsMap = hit.getSourceAsMap();
+                Long contentId = (( Number) sourceAsMap.get(ContentIndex.FIELD_CONTENT_ID)).longValue();
+                String id = String.valueOf(contentId);
+                String cover = (String) sourceAsMap.get(ContentIndex.FIELD_CONTENT_COVER);
+                String title = (String) sourceAsMap.get(ContentIndex.FIELD_CONTENT_TITLE);
+                String nickname = (String) sourceAsMap.get(ContentIndex.FIELD_CONTENT_NICKNAME);
+                String avatar = (String) sourceAsMap.get(ContentIndex.FIELD_CONTENT_AVATAR);
+                Long topicId = ((Number) sourceAsMap.get(ContentIndex.FIELD_CONTENT_TOPIC_ID)).longValue();
                 String topic = (String) sourceAsMap.get(ContentIndex.FIELD_CONTENT_TOPIC);
                 Object likeTotalObj = sourceAsMap.get(ContentIndex.FIELD_CONTENT_LIKE_TOTAL);
                 Integer likeTotal = (likeTotalObj instanceof Number) ? ((Number) likeTotalObj).intValue() : 0;
@@ -337,17 +471,15 @@ public class ContentServiceImplement implements ContentServer {
                 LocalDateTime createTime = LocalDateTime.parse((String)sourceAsMap.get(ContentIndex.FIELD_CONTENT_CREATE_TIME), dateTimeStr);
                 LocalDateTime updateTime = LocalDateTime.parse((String) sourceAsMap.get(ContentIndex.FIELD_CONTENT_UPDATE_TIME), dateTimeStr);
                 Integer contentType = ((Number) sourceAsMap.get(ContentIndex.FIELD_CONTENT_TYPE)).intValue();
-                String HighLightKeyword = null;
-                if ( CollUtil.isNotEmpty(hit.getHighlightFields()) && hit.getHighlightFields().containsKey(ContentIndex.FIELD_CONTENT_TITLE)) {
-                    HighLightKeyword = hit.getHighlightFields().get(ContentIndex.FIELD_CONTENT_TITLE).fragments()[0].toString();
-                }
-                GetContentResVo getContentResVo = GetContentResVo.builder()
-                        .contentId(contentId)
+                GetContentByChannelResVo getContentResVo = GetContentByChannelResVo.builder()
+                        .contentId(id)
                         .cover(cover)
                         .title(title)
                         .avatar(avatar)
                         .nickname(nickname)
+                        .topicId(topicId)
                         .topic(topic)
+                        .channelId(channelId)
                         .type(contentType)
                         .likeTotal(NumberUtil.formatNumberString(likeTotal))
                         .collectTotal(NumberUtil.formatNumberString(collectTotal))
@@ -355,6 +487,7 @@ public class ContentServiceImplement implements ContentServer {
                         .createTime(DateUtil.formatRelativeTime(createTime))
                         .updateTime(DateUtil.formatRelativeTime(updateTime))
                         .build();
+                log.info("构建返回数据: {}", getContentResVo);
                 getContentResVoList.add(getContentResVo);
             }
         } catch (Exception e) {

@@ -9,14 +9,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SearchContentResVo {
+public class GetContentByChannelResVo {
     private String contentId;
 
     private String cover;
 
     private String title;
-
-    private String highLightTitle; // 高亮标题
 
     private String avatar;
 

@@ -57,14 +57,10 @@ public class UserFeignService {
      * @param email 邮箱
      * @return 用户id
      */
-    public Long findUserByEmail(String email) {
+    public Response<Long> findUserByEmail(String email) {
         FindUserByEmailDTO findUserByEmailDTO = new FindUserByEmailDTO();
         findUserByEmailDTO.setEmail(email);
-        Response<Long> response = userFeignApi.findUserByEmail(findUserByEmailDTO);
-        if (!response.isSuccess()) {
-            return null;
-        }
-        return response.getData();
+        return userFeignApi.findUserByEmail(findUserByEmailDTO);
     }
 
     /**

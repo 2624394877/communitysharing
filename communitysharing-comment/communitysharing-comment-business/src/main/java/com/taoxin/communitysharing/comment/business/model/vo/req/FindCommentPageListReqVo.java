@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class FindCommentPageListReqVo {
     @NotNull(message = "内容ID不能为空")
-    private Long contentId;
+    private String contentId;
     @NotNull(message = "页码不能为空")
     private Integer pageNo;
 }

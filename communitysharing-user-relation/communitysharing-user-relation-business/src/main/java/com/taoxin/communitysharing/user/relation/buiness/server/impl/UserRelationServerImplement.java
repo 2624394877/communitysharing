@@ -162,8 +162,7 @@ public class UserRelationServerImplement implements UserRelationServer {
         redisScript.setResultType(Long.class);
         Long result = redisTemplate.execute(redisScript, Collections.singletonList(followingUserIdKey), unfollowingUserId);
         // 检查是否被关注
-        if (Objects.equals(result, LuaResultEnum.ZSCORE_NOT_FOLLOWED.getCode()))
-            throw new BusinessException(ResponseStatusEnum.UN_FOLLOWED_USER);
+        if (Objects.equals(result, LuaResultEnum.ZSCORE_NOT_FOLLOWED.getCode())) throw new BusinessException(ResponseStatusEnum.UN_FOLLOWED_USER);
         if (Objects.equals(result, LuaResultEnum.ZSET_NOT_EXIST.getCode())) {
             // redis 缓存不存在，进入到数据库查询
             List<FollowingDo> followingDoList = followingDoMapper.selectByUserId(userid);

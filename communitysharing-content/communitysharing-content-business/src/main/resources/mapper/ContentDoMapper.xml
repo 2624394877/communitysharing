@@ -115,6 +115,9 @@
       <if test="contentUuid != null">
         content_uuid,
       </if>
+      <if test="channelId != null">
+        channel_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -167,6 +170,9 @@
       </if>
       <if test="contentUuid != null">
         #{contentUuid,jdbcType=VARCHAR},
+      </if>
+      <if test="channelId != null">
+        #{channelId,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>

@@ -17,4 +17,6 @@ public class UserIndex {
     public static final String FIELD_FANS_COUNT = "fans_total";
     // 内容数
     public static final String FIELD_CONTENT_COUNT = "content_total";
+
+    public static final String FIELD_LIKE_TOTAL = "like_total";
 }

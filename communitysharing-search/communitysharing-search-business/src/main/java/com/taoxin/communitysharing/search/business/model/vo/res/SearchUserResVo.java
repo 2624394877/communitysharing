@@ -17,4 +17,5 @@ public class SearchUserResVo {
     private String contentTotal; // 内容总数
     private String fansTotal; // 粉丝总数
     private String HighLightKeyword;
+    private String likeTotal;
 }

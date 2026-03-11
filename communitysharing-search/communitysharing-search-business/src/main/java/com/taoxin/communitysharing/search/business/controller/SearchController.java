@@ -3,9 +3,11 @@ package com.taoxin.communitysharing.search.business.controller;
 import com.taoxin.communitysharing.common.response.PageResponse;
 import com.taoxin.communitysharing.common.response.Response;
 import com.taoxin.communitysharing.framework.business.operationlog.aspect.ApiOperationLog;
+import com.taoxin.communitysharing.search.business.model.vo.req.GetContentByChannelReqVo;
 import com.taoxin.communitysharing.search.business.model.vo.req.GetContentReqVo;
 import com.taoxin.communitysharing.search.business.model.vo.req.SearchContentReqVo;
 import com.taoxin.communitysharing.search.business.model.vo.req.SearchUserReqVo;
+import com.taoxin.communitysharing.search.business.model.vo.res.GetContentByChannelResVo;
 import com.taoxin.communitysharing.search.business.model.vo.res.GetContentResVo;
 import com.taoxin.communitysharing.search.business.model.vo.res.SearchContentResVo;
 import com.taoxin.communitysharing.search.business.model.vo.res.SearchUserResVo;
@@ -53,6 +55,12 @@ public class SearchController {
     @ApiOperationLog(description = "获取内容")
     public PageResponse<GetContentResVo> getContent(@Validated @RequestBody GetContentReqVo reqVo) {
         return contentServer.getContent(reqVo);
+    }
+
+    @PostMapping("/content/get/channel")
+    @ApiOperationLog(description = "根据频道获取")
+    public PageResponse<GetContentByChannelResVo> getContentByChannel(@Validated @RequestBody GetContentByChannelReqVo reqVo) {
+        return contentServer.getContentByChannel(reqVo);
     }
 
     /* ---------------------------------下面是其他服务调用接口------------------------------------ */

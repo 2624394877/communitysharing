@@ -32,4 +32,7 @@ public class ContentPublishVo {
     private String content;
 
     private Long topicId;
+
+    @NotNull(message = "频道是必要的")
+    private Long channelId;
 }

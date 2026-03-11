@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class RebuildUserDocReqDTO {
     @NotNull(message = "userId不能为空")
-    private Long userId;
+    private String userId;
 }

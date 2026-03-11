@@ -63,6 +63,10 @@ public class RedisKeyConstant {
         return COUNT_CONTENT_KEY_PREFIX + contentId;
     }
 
+    public static String getCountContentKeyPrefix(String contentId) {
+        return COUNT_CONTENT_KEY_PREFIX + contentId;
+    }
+
     /**
      * 构建评论维度计数 Key
      * @param commentId

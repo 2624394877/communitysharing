@@ -70,7 +70,7 @@
   </select>
   <select id="selectSecondCommentByLeve1CommentId" resultMap="BaseResultMap" parameterType="map">
     select id, user_id,content_id, content_uuid, is_content_empty, image_url, like_total,
-        is_top, create_time, update_time,parent_id, reply_user_id
+        is_top, create_time, update_time,parent_id, reply_user_id, reply_comment_id
     from t_comment where parent_id = #{Leve1CommentId} and `level` = 2
     order by create_time desc
     limit #{offset}, #{pageSize}

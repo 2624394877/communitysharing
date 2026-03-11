@@ -64,7 +64,7 @@ public class PublishCountShardingXxlJob {
                         log.info("【用户发布数据对齐】{}缓存成功。。。。",userCountZSetKey);
                     }
                 }
-                searchFeignApiService.rebuildUserDoc(creatorId);
+                searchFeignApiService.rebuildUserDoc(String.valueOf(creatorId));
             });
             deleteMapper.batchDeleteDataAlignPublishCountTempTable(tableNameSuffix, creatorIdList);
             alginedTotal += creatorIdList.size();

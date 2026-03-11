@@ -20,4 +20,6 @@ public interface UserServer {
      * @return 响应
      */
     Response<Long> rebuildDocument(RebuildUserDocReqDTO reqDTO);
+
+
 }

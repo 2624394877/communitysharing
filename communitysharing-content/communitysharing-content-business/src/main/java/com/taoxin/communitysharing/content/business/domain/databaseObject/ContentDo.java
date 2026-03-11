@@ -44,4 +44,6 @@ public class ContentDo {
     private Integer status; // 状态
 
     private String contentUuid; // 内容在非关系数据库的id
+
+    private Long channelId; // 频道id
 }

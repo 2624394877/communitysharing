@@ -12,7 +12,9 @@ import com.taoxin.communitysharing.count.business.domain.databaseObject.UserCoun
 import com.taoxin.communitysharing.count.business.domain.mapper.ContentCountDoMapper;
 import com.taoxin.communitysharing.count.business.domain.mapper.UserCountDoMapper;
 import com.taoxin.communitysharing.count.business.enums.ResponseStatusEnum;
+import com.taoxin.communitysharing.count.business.model.vo.req.FindContentCountByIdReqVo;
 import com.taoxin.communitysharing.count.business.model.vo.req.FindUserCountsByIdReqVo;
+import com.taoxin.communitysharing.count.business.model.vo.res.FindContentCountByIdResVo;
 import com.taoxin.communitysharing.count.business.model.vo.res.FindUserCountsByIdResVo;
 import com.taoxin.communitysharing.count.business.service.CountServer;
 import com.taoxin.communitysharing.count.model.dto.Req.FindContentCountReqDTO;
@@ -27,6 +29,7 @@ import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -155,6 +158,50 @@ public class CountServerImplement implements CountServer {
         }
         // 更新缓存
         return Response.success(findContentCountResDTOs);
+    }
+
+    @Override
+    public Response<FindContentCountByIdResVo> findContentCountsById(FindContentCountByIdReqVo reqVo) {
+        Long contentId = Long.valueOf(reqVo.getContentId());
+        String buildCountContentKey = RedisKeyConstant.buildCountContentKey(contentId);
+        List<Object> redisList = redisTemplate.opsForHash().multiGet(buildCountContentKey,
+                List.of(RedisKeyConstant.FIELD_LIKE_TOTAL,
+                        RedisKeyConstant.FIELD_COLLECT_TOTAL,
+                        RedisKeyConstant.FIELD_COMMENT_TOTAL
+                ));
+        Integer likeTotal = (Integer) redisList.get(0);
+        Integer collectTotal = (Integer) redisList.get(1);
+        Integer commentTotal = (Integer) redisList.get(2);
+        if (!Objects.isNull(likeTotal) && !Objects.isNull(collectTotal) && !Objects.isNull(commentTotal))
+            return Response.success(FindContentCountByIdResVo.builder()
+                    .contentId(String.valueOf(contentId))
+                    .likeTotal(Long.valueOf(likeTotal))
+                    .collectTotal(Long.valueOf(collectTotal))
+                    .commentTotal(Long.valueOf(commentTotal))
+                    .build());
+        ContentCountDo contentCountDo = contentCountDoMapper.selectByPrimaryKey(contentId);
+        if (Objects.isNull(contentCountDo)) throw new BusinessException(ResponseStatusEnum.PARAMS_ERROR.getErrorCode(),"统计数据不存在");
+        FindContentCountByIdResVo findContentCountByIdReqVo = FindContentCountByIdResVo.builder()
+                .contentId(String.valueOf(contentId))
+                .likeTotal(contentCountDo.getLikeTotal())
+                .collectTotal(contentCountDo.getCollectTotal())
+                .commentTotal(contentCountDo.getCommentTotal())
+                .build();
+        Map<String, Long> contentCountMap = Maps.newHashMap();
+        if (Objects.nonNull(likeTotal)) contentCountMap.put(RedisKeyConstant.FIELD_LIKE_TOTAL, findContentCountByIdReqVo.getLikeTotal());
+        if (Objects.nonNull(collectTotal)) contentCountMap.put(RedisKeyConstant.FIELD_COLLECT_TOTAL, findContentCountByIdReqVo.getCollectTotal());
+        if (Objects.nonNull(commentTotal)) contentCountMap.put(RedisKeyConstant.FIELD_COMMENT_TOTAL, findContentCountByIdReqVo.getCommentTotal());
+        redisTemplate.executePipelined(new SessionCallback() {
+
+            @Override
+            public Object execute(RedisOperations operations) throws DataAccessException {
+                operations.opsForHash().putAll(buildCountContentKey, contentCountMap);
+                long expire = 60 * 60 * 12 + RandomUtil.randomLong(60 * 60 * 12);
+                operations.expire(buildCountContentKey, expire, TimeUnit.SECONDS);
+                return null;
+            }
+        });
+        return Response.success(findContentCountByIdReqVo);
     }
 
     private void async2redis(List<FindContentCountResDTO> findContentCountResDTOs, Map<Long, ContentCountDo> map) {

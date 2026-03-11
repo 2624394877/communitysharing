@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ContentLikeReqVo {
     @NotNull(message = "点赞的内容id不为空")
-    private Long contentId;
+    private String contentId;
 }

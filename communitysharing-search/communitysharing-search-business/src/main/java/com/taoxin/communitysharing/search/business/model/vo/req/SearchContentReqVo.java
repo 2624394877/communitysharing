@@ -17,10 +17,10 @@ public class SearchContentReqVo {
     @Min(value = 1, message = "页码不能小于1")
     private Integer pageNo = 1;
 
-    // 搜索类型：null 为所有，1 为内容，2 为用户
+    // 搜索类型：null 为所有，0 为内容，1 为用户
     private Integer type;
     // 排序方式：null 为默认，1 为更新时间降序，2 为点赞数降序，3 为评论数降序，4 为收藏数降序
     private Integer sort;
-    // 时间范围：null 为所有，0 为最近一天，2 为最近一个周，3 为最近一个月，4 为最近半年
+    // 时间范围：null 为所有，0 为最近一天，1 为最近一个周，2 为最近一个月，3 为最近半年
     private Integer timeRange;
 }

@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UnCollectContentReqVo {
     @NotNull(message = "contentId不能为空")
-    private Long contentId;
+    private String contentId;
 }

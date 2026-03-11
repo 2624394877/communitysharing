@@ -168,6 +168,8 @@ public class ContentServerImplement implements ContentServer {
         if (Objects.nonNull(topicId)) {
             topicName = topicDoMapper.getTopicNameByTopicId(topicId);
         }
+
+        Long channelId = contentPublishVo.getChannelId();
         // 构建实体
         ContentDo contentDo = ContentDo.builder()
                 .id(Long.parseLong(snowflakeIdId))
@@ -176,6 +178,7 @@ public class ContentServerImplement implements ContentServer {
                 .creatorId(userId)
                 .topicId(topicId)
                 .topicName(topicName)
+                .channelId(channelId)
                 .isTop(Boolean.FALSE) // 默认不置顶
                 .type(type)
                 .imgUris(imgUris)
@@ -243,7 +246,7 @@ public class ContentServerImplement implements ContentServer {
 
     @Override
     public Response<ContentDetailsResVo> ContentDetails(ContentDetailsReqVo contentDetailsReqVo) {
-        Long ContentId = contentDetailsReqVo.getId(); // 获取内容id
+        Long ContentId = Long.valueOf(contentDetailsReqVo.getId()); // 获取内容id
         Long Userid = LoginUserContextHolder.getUserId(); // 获取用户id
         // 从Caffeine中获取内容详情
         String contentDetailsResVoCache = LOCAL_CACHE.getIfPresent(ContentId);
@@ -367,7 +370,7 @@ public class ContentServerImplement implements ContentServer {
     @Transactional(rollbackFor = Exception.class)
     public Response<?> UpdateContent(ContentUpdateReqVo contentUpdateReqVo) {
         Long userId = LoginUserContextHolder.getUserId();
-        Long ContentId = contentUpdateReqVo.getContentId();
+        Long ContentId = Long.valueOf(contentUpdateReqVo.getContentId());
         Long creatorId = contentDoMapper.selectByPrimaryKey(ContentId).getCreatorId();
 
         if (!Objects.equals(userId,creatorId)) throw new BusinessException(ResponseStatusEnum.CANT_UPDATE_YOURSELF_CONTENT);
@@ -381,16 +384,24 @@ public class ContentServerImplement implements ContentServer {
         String videoUris = null;
         String fileUris = null;
         String urlUris = null;
+
+        List<String> imgUris_list = contentUpdateReqVo.getImgUris(); // 获取图片列表
+        // 校验空数组
+        Preconditions.checkArgument(CollUtil.isNotEmpty(imgUris_list), "至少一张需要封面图"); // 判断数组是否为空
+        // 校验图片数量
+        Preconditions.checkArgument(imgUris_list.size() <= 10, "图片数量不能超过10张");
+        // 拼接数组
+        imgUris = StringUtils.join(imgUris_list, ",");
         switch (contentTypeEnum) {
-            case IMAGE:
-                List<String> imgUris_list = contentUpdateReqVo.getImgUris(); // 获取图片列表
-                // 校验空数组
-                Preconditions.checkArgument(CollUtil.isNotEmpty(imgUris_list), "图片列表不能为空"); // 判断数组是否为空
-                // 校验图片数量
-                Preconditions.checkArgument(imgUris_list.size() <= 10, "图片数量不能超过10张");
-                // 拼接数组
-                imgUris = StringUtils.join(imgUris_list, ",");
-                break;
+//            case IMAGE:
+//                List<String> imgUris_list = contentUpdateReqVo.getImgUris(); // 获取图片列表
+//                // 校验空数组
+//                Preconditions.checkArgument(CollUtil.isNotEmpty(imgUris_list), "图片列表不能为空"); // 判断数组是否为空
+//                // 校验图片数量
+//                Preconditions.checkArgument(imgUris_list.size() <= 10, "图片数量不能超过10张");
+//                // 拼接数组
+//                imgUris = StringUtils.join(imgUris_list, ",");
+//                break;
             case VIDEO: // 音视频
                 List<String> videoUris_list = contentUpdateReqVo.getVideoUris();
                 Preconditions.checkArgument(CollUtil.isNotEmpty(videoUris_list), "视频列表不能为空");
@@ -508,7 +519,7 @@ public class ContentServerImplement implements ContentServer {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Response<?> DeleteContent(ContentDeleteReqVo contentDeleteReqVo) {
-        Long ContentId = contentDeleteReqVo.getContentId();
+        Long ContentId = Long.valueOf(contentDeleteReqVo.getContentId());
         Long userId = LoginUserContextHolder.getUserId();
 
         String redisDetailKey = ContentDetailsKeyConstant.getContentDetailsKey(ContentId);
@@ -626,7 +637,7 @@ public class ContentServerImplement implements ContentServer {
      */
     @Override
     public Response<?> ContentLike(ContentLikeReqVo contentLikeReqVo) {
-        Long contentId = contentLikeReqVo.getContentId();
+        Long contentId = Long.valueOf(contentLikeReqVo.getContentId());
         // 1. 校验被点赞的笔记是否存在
         Long creator = checkContentIsExist(contentId);
         // 2. 判断目标笔记，是否已经点赞过
@@ -773,7 +784,7 @@ public class ContentServerImplement implements ContentServer {
 
     @Override
     public Response<?> ContentUnlike(ContentUnlikeReqVo contentUnlikeReqVo) {
-        Long contentId = contentUnlikeReqVo.getContentId();
+        Long contentId = Long.valueOf(contentUnlikeReqVo.getContentId());
         // 1. 校验被点赞的笔记是否存在
         Long creator = checkContentIsExist(contentId);
         // 2. 判断目标笔记，是否已经点踩过
@@ -839,7 +850,7 @@ public class ContentServerImplement implements ContentServer {
 
     @Override
     public Response<?> CollectContent(CollectContentReqVo collectContentReqVo) {
-        Long contentId = collectContentReqVo.getContentId();
+        Long contentId = Long.valueOf(collectContentReqVo.getContentId());
         // 1. 校验被收藏的笔记是否存在
         Long creator = checkContentIsExist(contentId);
         // 2. 判断是否已经收藏过了
@@ -950,7 +961,7 @@ public class ContentServerImplement implements ContentServer {
 
     @Override
     public Response<?> UnCollectContent(UnCollectContentReqVo unCollectContentReqVo) {
-        Long contentId = unCollectContentReqVo.getContentId();
+        Long contentId = Long.valueOf(unCollectContentReqVo.getContentId());
         // 1. 校验被取消收藏的笔记是否存在
         Long creator = checkContentIsExist(contentId);
         // 2. 判断是否已经收藏过了
@@ -1165,7 +1176,7 @@ public class ContentServerImplement implements ContentServer {
                 }
                 // 存在，同步缓存
                 threadPoolTaskExecutor.submit(()->{
-                    ContentDetailsReqVo contentDetailsReqVo = ContentDetailsReqVo.builder().Id(contentId).build();
+                    ContentDetailsReqVo contentDetailsReqVo = ContentDetailsReqVo.builder().Id(String.valueOf(contentId)).build();
                     // 直接调用查找方法
                     ContentDetails(contentDetailsReqVo);
                 });
@@ -1188,7 +1199,7 @@ public class ContentServerImplement implements ContentServer {
 
     @Override
     public Response<LikeCollectStatusJudgeResVo> LikeCollectStatusJudge(LikeCollectStatusJudge likeCollectStatusJudgeReqVo) {
-        Long contentId = likeCollectStatusJudgeReqVo.getContentId();
+        Long contentId = Long.valueOf(likeCollectStatusJudgeReqVo.getContentId());
         Long userId = LoginUserContextHolder.getUserId();
 
         boolean like = false;
@@ -1205,7 +1216,7 @@ public class ContentServerImplement implements ContentServer {
 
 
         LikeCollectStatusJudgeResVo likeCollectStatusJudgeResVo = LikeCollectStatusJudgeResVo.builder()
-                .contentId(contentId)
+                .contentId(String.valueOf(contentId))
                 .like(like)
                 .collect(collect)
                 .build();
@@ -1267,9 +1278,9 @@ public class ContentServerImplement implements ContentServer {
 
     @Override
     public Response<ContentPublishListResVo> ContentPublishList(ContentPublishListReqVo contentPublishListReqVo) {
-        Long userId = contentPublishListReqVo.getUserId();
+        Long userId = Long.valueOf(contentPublishListReqVo.getUserId());
 
-        Long cursor = contentPublishListReqVo.getCursor();
+        Long cursor = Long.valueOf(contentPublishListReqVo.getCursor());
         ContentPublishListResVo contentPublishListResVo = null;
         // todo 先缓存
         String contentPublishListKey = ContentDetailsKeyConstant.getUserPublishContentListKey(userId);

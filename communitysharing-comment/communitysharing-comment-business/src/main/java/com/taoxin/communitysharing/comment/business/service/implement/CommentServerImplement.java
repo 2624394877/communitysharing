@@ -127,7 +127,7 @@ public class CommentServerImplement implements CommentServer {
     @Override
     public PageResponse<FindCommentItemRspVo> findCommentPageList(FindCommentPageListReqVo findCommentPageListReqVo) {
         // 内容ID
-        Long contentId = findCommentPageListReqVo.getContentId();
+        Long contentId = Long.valueOf(findCommentPageListReqVo.getContentId());
         // 当前页码
         Integer pageNo = findCommentPageListReqVo.getPageNo();
         // 设置每一页需要的数据

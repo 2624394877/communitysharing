@@ -15,5 +15,5 @@ public class CollectContentReqVo {
      * 内容id
      */
     @NotNull(message = "内容id不能为空")
-    private Long contentId;
+    private String contentId;
 }

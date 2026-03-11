@@ -2,11 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.taoxin.communitysharing.search.business.domain.mapper.SelectMapper">
     <select id="selectEsContentIndexData" resultType="java.util.Map" parameterType="map">
-        select n.id, n.title, n.topic_name as topic, n.type,
+        select n.id, n.title, n.topic_name as topic,n.topic_id as topic_id, n.type,
+                n.channel_id as channel_id,
                SUBSTRING_INDEX(n.img_uris, ',', 1) AS cover,
                DATE_FORMAT(n.create_time, '%Y-%m-%d %H:%i:%s') AS create_time,
                DATE_FORMAT(n.update_time, '%Y-%m-%d %H:%i:%s') AS update_time,
                u.nickname AS creator_nickname, u.avatar AS creator_avatar,
+               u.avatar AS avator,
                ifnull(nc.like_total,0) as like_total,
                ifnull(nc.collect_total, 0) as collect_total,
                ifnull(nc.comment_total,0) as comment_total
@@ -14,16 +16,18 @@
                          left join t_content_count nc on n.id = nc.content_id
         where n.visible = 0 and n.`status` = 1
         <if test="contentId != null">
-            and n.id = #{contentId} limit 1
+            and n.id = #{contentId}
         </if>
         <if test="userId != null">
             and n.creator_id = #{userId}
         </if>
+        limit 1
     </select>
     <select id="selectEsUserIndexData" resultType="java.util.Map" parameterType="map">
         select u.id, u.nickname, u.avatar, u.communitysharing_id,
                 ifnull(uc.content_total,0) as content_total,
-                ifnull(uc.fans_total,0) as fans_total
+                ifnull(uc.fans_total,0) as fans_total,
+                ifnull(uc.like_total,0) as like_total
         from t_user u left join t_user_count uc on u.id = uc.user_id
         where u.`status` = 0 and u.is_deleted = 0
         <if test="userId != null">

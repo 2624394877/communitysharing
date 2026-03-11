@@ -108,6 +108,7 @@ public class UserServiceImplement implements UserServer {
                 String avatar = (String) sourceAsMap.get(UserIndex.FIELD_AVATAR);
                 Integer fansTotal = ((Number) sourceAsMap.get(UserIndex.FIELD_FANS_COUNT)).intValue();
                 Integer contentTotal = ((Number) sourceAsMap.get(UserIndex.FIELD_CONTENT_COUNT)).intValue();
+                Integer likeTotdal = ((Number) sourceAsMap.get(UserIndex.FIELD_LIKE_TOTAL)).intValue();
                 String HighLightKeyword = null;
                 if ( CollUtil.isNotEmpty(hit.getHighlightFields()) && hit.getHighlightFields().containsKey(UserIndex.FIELD_NICKNAME)) {
                     HighLightKeyword = hit.getHighlightFields().get(UserIndex.FIELD_NICKNAME).fragments()[0].toString();
@@ -123,6 +124,7 @@ public class UserServiceImplement implements UserServer {
                         .contentTotal(NumberUtil.formatNumberString(contentTotal))
                         .fansTotal(NumberUtil.formatNumberString(fansTotal))
                         .HighLightKeyword(HighLightKeyword)
+                        .likeTotal(NumberUtil.formatNumberString(likeTotdal))
                         .build();
                 searchUserResVoList.add(searchUserResVo);
             }
@@ -134,7 +136,7 @@ public class UserServiceImplement implements UserServer {
 
     @Override
     public Response<Long> rebuildDocument(RebuildUserDocReqDTO reqDTO) {
-        Long userId = reqDTO.getUserId();
+        Long userId = Long.valueOf(reqDTO.getUserId());
         List<Map<String, Object>> result = selectMapper.selectEsUserIndexData(userId);
         if (CollUtil.isEmpty(result)) throw new BusinessException(ResponseStatusEnum.USER_GET_FAIL);
         for (Map<String, Object> map : result) {

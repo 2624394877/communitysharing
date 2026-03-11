@@ -29,16 +29,12 @@ public class CountFollowing2DBConsumer implements RocketMQListener<String> {
     @Override
     public void onMessage(String body) {
         rateLimiter.acquire();
-
         log.info("## 消费到了 MQ 【计数: 关注数入库】, {}...", body);
-
         CountFollowUnfollowMqDTO countFollowUnfollowMqDTO = JsonUtil.parseObject(body, CountFollowUnfollowMqDTO.class);
-
         // 操作类型：关注 or 取关
         Integer type = countFollowUnfollowMqDTO.getType();
         // 原用户ID
         Long userId = countFollowUnfollowMqDTO.getUserId();
-
         // 关注数：关注 +1， 取关 -1
         int count = Objects.equals(type, FollowUnfollowTypeEnum.follow.getCode()) ? 1 : -1;
         // 判断数据库中，若原用户的记录不存在，则插入；若记录已存在，则直接更新

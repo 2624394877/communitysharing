@@ -131,8 +131,12 @@ public class UserServiceImplement implements UserService {
     public Response<?> LoginByEmail(UserloginRequestByEmailVo userloginRequestByEmailVo) {
         String email = userloginRequestByEmailVo.getEmail(); // 邮箱
         String code = userloginRequestByEmailVo.getCode(); // 验证码
-        Long userIdFeign = userFeignService.findUserByEmail(email);
-        log.info("用户邮箱{}查询结果：{}", email, JsonUtil.toJsonString(userIdFeign));
+        Response<Long> response = userFeignService.findUserByEmail(email);
+        log.info("用户邮箱{}查询结果：{}", response);
+        Long userIdFeign = null;
+        if (Objects.nonNull(response) && response.isSuccess()) {
+            userIdFeign = response.getData();
+        } else throw new BusinessException(ResponseStatusEnum.USER_NOT_FOUND.getErrorCode(),response.getMessage());
         Long userId = null; // 用户id
         if (StringUtils.isBlank(code)) { // 判断验证码是否为空，空则抛出参数无效异常
             throw new BusinessException(ResponseStatusEnum.PARAMS_NOT_VALID);

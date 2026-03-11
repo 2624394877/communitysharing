@@ -65,7 +65,7 @@ public class CollectionCountShardingXxlJob {
                     }
                 }
                 // 索引更新
-                searchFeignApiService.rebuildContentDoc(contentId);
+                searchFeignApiService.rebuildContentDoc(String.valueOf(contentId));
             });
             deleteMapper.batchDeleteDataAlignCollectCountTempTable(tableNameSuffix, contentIdList);
             alginedTotal += contentIdList.size();

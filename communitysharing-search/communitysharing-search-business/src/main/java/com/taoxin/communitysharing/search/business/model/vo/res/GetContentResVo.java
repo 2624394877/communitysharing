@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class GetContentResVo {
-    private Long contentId;
+    private String contentId;
 
     private String cover;
 
@@ -20,7 +20,11 @@ public class GetContentResVo {
 
     private String nickname;
 
+    private Long topicId;
+
     private String topic;
+
+    private Long channelId;
 
     private Integer type;
 

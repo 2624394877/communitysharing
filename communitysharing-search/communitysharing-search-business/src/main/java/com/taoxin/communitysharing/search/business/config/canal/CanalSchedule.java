@@ -61,6 +61,8 @@ public class CanalSchedule implements Runnable{
         } catch (Exception e) {
             log.error("Canal调度失败: {}", e);
             canalConnector.rollback(batchId);
+//            canalConnector.ack(batchId);
+
         }
     }
 

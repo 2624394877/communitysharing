@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 public class ContentUpdateReqVo {
     @NotNull(message = "内容id不能为空")
-    private Long contentId;
+    private String contentId;
 
     private String title;
 

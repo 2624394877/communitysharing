@@ -64,7 +64,7 @@ public class FansCountShardingXxlJob {
                         log.info("【用户数据对齐】缓存更新成功");
                     }
                 }
-                searchFeignApiService.rebuildUserDoc(userId);
+                searchFeignApiService.rebuildUserDoc(String.valueOf(userId));
             });
             deleteMapper.batchDeleteDataAlignFansCountTempTable(tableNameSuffix, userIdList);
             alginedTotal += userIdList.size();

@@ -13,14 +13,14 @@ public class SearchFeignApiService {
     @Resource
     private SearchFeignApi searchFeignApi;
 
-    public void rebuildContentDoc(Long contentId) {
+    public void rebuildContentDoc(String contentId) {
         RebuildContentDocReqDTO reqDTO = RebuildContentDocReqDTO.builder()
                 .contentId(contentId)
                 .build();
         searchFeignApi.rebuildContentDoc(reqDTO);
     }
 
-    public void rebuildUserDoc(Long userId) {
+    public void rebuildUserDoc(String userId) {
         RebuildUserDocReqDTO reqDTO = RebuildUserDocReqDTO.builder()
                 .userId(userId)
                 .build();

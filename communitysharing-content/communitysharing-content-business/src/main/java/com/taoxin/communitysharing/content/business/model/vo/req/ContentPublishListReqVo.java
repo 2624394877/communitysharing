@@ -15,12 +15,12 @@ import java.util.List;
 public class ContentPublishListReqVo {
 
     @NotNull(message = "用户ID不能为空")
-    private Long userId;
+    private String userId;
 
     /**
      * 游标
      */
-    private Long cursor;
+    private String cursor;
 
     /*private Integer type;
 

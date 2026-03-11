@@ -1,4 +1,4 @@
-package com.taoxin.communitysharing.content.business.model.vo.req;
+package com.taoxin.communitysharing.count.business.model.vo.req;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,10 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class LikeCollectStatusJudge {
-
-    /**
-     * 内容id
-     */
+public class FindContentCountByIdReqVo {
     private String contentId;
 }

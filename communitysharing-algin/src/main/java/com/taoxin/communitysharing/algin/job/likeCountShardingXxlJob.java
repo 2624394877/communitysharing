@@ -64,7 +64,7 @@ public class likeCountShardingXxlJob {
                         log.info("【内容点赞数据对齐】{}缓存成功。。。。",contentCountZSetKey);
                     }
                 }
-                searchFeignApiService.rebuildContentDoc(contentId);
+                searchFeignApiService.rebuildContentDoc(String.valueOf(contentId));
             });
             deleteMapper.batchDeleteDataAlignLikeCountTempTable(tableNameSuffix, contentIdList);
             alginedTotal += contentIdList.size();

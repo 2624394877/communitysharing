@@ -9,5 +9,7 @@ import lombok.*;
 @Builder
 public class RebuildContentDocReqDTO {
     @NotNull(message = "contentId不能为空")
-    private Long contentId;
+    private String contentId;
+
+    private String userId;
 }

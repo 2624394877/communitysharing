@@ -1,7 +1,9 @@
 package com.taoxin.communitysharing.count.business.controller;
 
 import com.taoxin.communitysharing.common.response.Response;
+import com.taoxin.communitysharing.count.business.model.vo.req.FindContentCountByIdReqVo;
 import com.taoxin.communitysharing.count.business.model.vo.req.FindUserCountsByIdReqVo;
+import com.taoxin.communitysharing.count.business.model.vo.res.FindContentCountByIdResVo;
 import com.taoxin.communitysharing.count.business.model.vo.res.FindUserCountsByIdResVo;
 import com.taoxin.communitysharing.count.business.service.CountServer;
 import com.taoxin.communitysharing.count.model.dto.Req.FindContentCountReqDTO;
@@ -31,5 +33,11 @@ public class CountController {
     @ApiOperationLog(description = "查询内容计数数据")
     public Response<List<FindContentCountResDTO>> findContentCount(@Validated @RequestBody FindContentCountReqDTO reqVo) {
         return countServer.findContentCount(reqVo);
+    }
+
+    @PostMapping("/content/data/id")
+    @ApiOperationLog(description = "查询内容计数数据")
+    public Response<FindContentCountByIdResVo> findContentCountById(@Validated @RequestBody FindContentCountByIdReqVo reqVo) {
+        return countServer.findContentCountsById(reqVo);
     }
 }
