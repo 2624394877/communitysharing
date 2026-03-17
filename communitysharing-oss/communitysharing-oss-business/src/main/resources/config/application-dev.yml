@@ -3,7 +3,3 @@ storage:
     endpoint: http://127.0.0.1:9000
     accessKey: communitysharing
     secretKey: communitysharing
-  aliyun-oss:
-    endpoint: oss-cn-hangzhou.aliyuncs.com
-    accessKeyId: LTAI5tJ6AMtKJEPRzSBwASq1
-    accessKey: ENNgnFyHySR1OGbweOT2OqDivMtnsr
