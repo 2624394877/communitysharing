@@ -10,10 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FindFansListReqVo {
-    @NotNull(message = "查询用户 ID 不能为空")
+public class FollowStatusJudgeReqVo {
+    @NotNull(message = "用户id不能为空")
     private String userId;
-
-    @NotNull(message = "页码不能为空")
-    private Integer pageNumber = 1; // 默认值为第一页
 }

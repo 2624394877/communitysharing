@@ -15,7 +15,7 @@
     select 
     <include refid="Base_Column_List" />
     from t_content_count
-    where id = #{id,jdbcType=BIGINT}
+    where content_id = #{id,jdbcType=BIGINT}
   </select>
     <select id="selectByContentIdList" resultMap="BaseResultMap" parameterType="map">
       select

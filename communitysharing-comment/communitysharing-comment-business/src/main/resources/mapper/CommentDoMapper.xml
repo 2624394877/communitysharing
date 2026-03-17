@@ -35,7 +35,7 @@
   <select id="selectByCommentIds" resultMap="BaseResultMap" parameterType="list">
       select id, user_id, content_uuid, is_content_empty, image_url, reply_total,
              like_total, is_top, create_time, child_comment_total, first_reply_comment_id,
-             parent_id, `level`, heat, update_time, content_id
+             parent_id, `level`, heat, update_time, content_id, reply_comment_id, reply_user_id
       from t_comment where id in
         <foreach collection="commentIds" item="commentId" open="(" index="index" separator="," close=")">
           #{commentId}
@@ -97,7 +97,10 @@
     from t_comment
     where reply_comment_id = #{commentId}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <select id="selectParentIdByCommentId" resultType="java.lang.Long" parameterType="map">
+      select parent_id from t_comment where id = #{commentId}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_comment
     where id = #{id,jdbcType=BIGINT}
   </delete>

@@ -16,6 +16,7 @@ import com.taoxin.communitysharing.comment.business.constant.CountConentRedisKey
 import com.taoxin.communitysharing.comment.business.constant.MQConstant;
 import com.taoxin.communitysharing.comment.business.constant.RedisKeyConstant;
 import com.taoxin.communitysharing.comment.business.domain.databaseObject.CommentDo;
+import com.taoxin.communitysharing.comment.business.domain.databaseObject.CommentLikeDo;
 import com.taoxin.communitysharing.comment.business.domain.mapper.CommentDoMapper;
 import com.taoxin.communitysharing.comment.business.domain.mapper.CommentLikeDoMapper;
 import com.taoxin.communitysharing.comment.business.domain.mapper.ContentCountDoMapper;
@@ -36,6 +37,7 @@ import com.taoxin.communitysharing.common.response.PageResponse;
 import com.taoxin.communitysharing.common.response.Response;
 import com.taoxin.communitysharing.common.uitl.DateUtil;
 import com.taoxin.communitysharing.common.uitl.JsonUtil;
+import com.taoxin.communitysharing.framework.business.context.filter.HeaderUserIdContextFilter;
 import com.taoxin.communitysharing.framework.business.context.holder.LoginUserContextHolder;
 import com.taoxin.communitysharing.search.user.dto.responseDTO.FindUsersByIdResDTO;
 import jakarta.annotation.Resource;
@@ -93,6 +95,8 @@ public class CommentServerImplement implements CommentServer {
             .build(); // 创建缓存对象
     @Autowired
     private RocketMQTemplate rocketMQTemplate;
+    @Autowired
+    private HeaderUserIdContextFilter loginUserContextHolder;
 
     @Override
     public Response<?> publishComtent(CommentPublishReqVo commentPublishReqVo) {
@@ -126,6 +130,7 @@ public class CommentServerImplement implements CommentServer {
 
     @Override
     public PageResponse<FindCommentItemRspVo> findCommentPageList(FindCommentPageListReqVo findCommentPageListReqVo) {
+        Long userid = LoginUserContextHolder.getUserId();
         // 内容ID
         Long contentId = Long.valueOf(findCommentPageListReqVo.getContentId());
         // 当前页码
@@ -248,7 +253,7 @@ public class CommentServerImplement implements CommentServer {
                 if (CollUtil.isNotEmpty(expiredCommentIds)) {
                     // 对于不存在的一级评论，需要批量从数据库中查询，并添加到 findCommentItemRspVoList 中
                     List<CommentDo> commentDoList = commentDoMapper.selectByCommentIds(expiredCommentIds);
-                    getCommentDataAndSync2Redis(commentDoList, contentId, findCommentItemRspVoList);
+                    getCommentDataAndSync2Redis(commentDoList, contentId, findCommentItemRspVoList, userid);
                 }
             }
             // todo 根据拿到的id表去redis中拿数据，并返回
@@ -269,13 +274,14 @@ public class CommentServerImplement implements CommentServer {
         // 查询一级评论
         List<CommentDo> commentDoList = commentDoMapper.selectPageList(contentId, offset, pageSize);
 //        log.info("一级评论：{}", commentDoList);
-        getCommentDataAndSync2Redis(commentDoList, contentId, findCommentItemRspVoList);
+        getCommentDataAndSync2Redis(commentDoList, contentId, findCommentItemRspVoList, userid);
         getCommentDataAndSync2Cache(findCommentItemRspVoList); // 本地缓存一级评论
         return PageResponse.success(findCommentItemRspVoList, pageNo, totalCount, pageSize);
     }
 
     @Override
     public PageResponse<FindSecondCommentItemRspVo> findChildCommentPageList(SecondCommentPageListReqVo secondCommentPageListReqVo) {
+        Long userid = LoginUserContextHolder.getUserId();
         Long level1CommentId = secondCommentPageListReqVo.getLeve1CommentId();
         Integer pageNo = secondCommentPageListReqVo.getPageNo();
         long pageSize = 10;
@@ -393,7 +399,7 @@ public class CommentServerImplement implements CommentServer {
                 if (CollUtil.isNotEmpty(expiredCommentIds)) {
                     // 对于不存在的评论，需要批量从数据库中查询，并添加到 findCommentItemRspVoList 中
                     List<CommentDo> commentDoList = commentDoMapper.selectByCommentIds(expiredCommentIds);
-                    getSecondCommentDataAndSync2Redis(commentDoList, findSecondCommentItemRspVoList);
+                    getSecondCommentDataAndSync2Redis(commentDoList, findSecondCommentItemRspVoList,userid);
                 }
 
                 if (CollUtil.isNotEmpty(findSecondCommentItemRspVoList)) {
@@ -413,7 +419,7 @@ public class CommentServerImplement implements CommentServer {
         // 批量查询
         List<CommentDo> commentDoList = commentDoMapper.selectSecondCommentByLeve1CommentId(level1CommentId, offset, pageSize);
 
-        getSecondCommentDataAndSync2Redis(commentDoList, findSecondCommentItemRspVoList);
+        getSecondCommentDataAndSync2Redis(commentDoList, findSecondCommentItemRspVoList, userid);
 
         return PageResponse.success(findSecondCommentItemRspVoList, pageNo, totalCount, pageSize);
     }
@@ -453,6 +459,8 @@ public class CommentServerImplement implements CommentServer {
                 if (liked > 0) throw new BusinessException(ResponseStatusEnum.ALREADY_LIKED);
             }
         }
+        // 点赞之后删除redis
+        updateLike2redis(commentId, true);
         // 点赞后发送消息落库
         LikeUnLikeCommentDTO likeUnLikeCommentDTO = LikeUnLikeCommentDTO.builder()
                 .commentId(commentId)
@@ -474,7 +482,7 @@ public class CommentServerImplement implements CommentServer {
                 log.info("========= 【评论点赞消息】 ====> {}", throwable);
             }
         });
-
+        LOCAL_CACHE.invalidate(commentId);
         return Response.success("点赞成功");
     }
 
@@ -509,6 +517,7 @@ public class CommentServerImplement implements CommentServer {
                 if (liked <= 0) throw new BusinessException(ResponseStatusEnum.NOT_LIKED);
             }
         }
+        updateLike2redis(commentId,false);
         // 取消点赞后发送消息落库
         LikeUnLikeCommentDTO likeUnLikeCommentDTO = LikeUnLikeCommentDTO.builder()
                 .commentId(commentId)
@@ -530,7 +539,69 @@ public class CommentServerImplement implements CommentServer {
                 log.info("========= 【取消评论点赞消息】 ====> {}", throwable);
             }
         });
+        LOCAL_CACHE.invalidate(commentId);
         return Response.success("取消点赞成功");
+    }
+
+    private void updateLike2redis(Long commentId, boolean like) {
+
+        taskExecutor.submit(() -> {
+
+            String commentKey = CommentContentKeyConstant.getCommentDetail(commentId);
+            String childKey = CommentContentKeyConstant.getCommentChildDetail(commentId);
+
+            // ---------- 一级评论 ----------
+            String value = (String) redisTemplate.opsForValue().get(commentKey);
+            if (value != null) {
+                FindCommentItemRspVo vo = JsonUtil.parseObject(value, FindCommentItemRspVo.class);
+                if (vo == null) {
+                    redisTemplate.delete(commentKey);
+                    return;
+                }
+
+                vo.setLike(like);
+                redisTemplate.opsForValue().set(commentKey, JsonUtil.toJsonString(vo));
+                return;
+            }
+
+            // ---------- 二级评论 ----------
+            value = (String) redisTemplate.opsForValue().get(childKey);
+            if (value != null) {
+                FindSecondCommentItemRspVo vo = JsonUtil.parseObject(value, FindSecondCommentItemRspVo.class);
+                if (vo == null) {
+                    redisTemplate.delete(childKey);
+                    return;
+                }
+
+                vo.setLike(like);
+                redisTemplate.opsForValue().set(childKey, JsonUtil.toJsonString(vo));
+            }
+
+            // ---------- 父评论 firstReply ----------
+            Long parentId = commentDoMapper.selectParentIdByCommentId(commentId);
+            if (parentId == null) return;
+
+            String parentKey = CommentContentKeyConstant.getCommentDetail(parentId);
+
+            value = (String) redisTemplate.opsForValue().get(parentKey);
+            if (value == null) return;
+
+            FindCommentItemRspVo parentVo = JsonUtil.parseObject(value, FindCommentItemRspVo.class);
+            if (parentVo == null) {
+                redisTemplate.delete(parentKey);
+                return;
+            }
+
+            FindCommentItemRspVo firstReply = parentVo.getFirstReplyComment();
+
+            if (firstReply != null && Objects.equals(firstReply.getCommentId(), commentId)) {
+
+                firstReply.setLike(like);
+
+                redisTemplate.opsForValue().set(parentKey, JsonUtil.toJsonString(parentVo));
+            }
+
+        });
     }
 
     @Override
@@ -764,7 +835,7 @@ public class CommentServerImplement implements CommentServer {
         return commentIdAndCountMap;
     }
 
-    private void getSecondCommentDataAndSync2Redis(List<CommentDo> commentDoList, List<FindSecondCommentItemRspVo> findSecondCommentItemRspVoList) {
+    private void getSecondCommentDataAndSync2Redis(List<CommentDo> commentDoList, List<FindSecondCommentItemRspVo> findSecondCommentItemRspVoList, Long userid) {
         // 调用 KV 服务需要的入参
         List<FindCommentContentReqDTO> findCommentContentReqDTOS = Lists.newArrayList();
         // 调用用户服务的入参
@@ -807,15 +878,32 @@ public class CommentServerImplement implements CommentServer {
             userInfoMap = findUsersByIdResDTOS.stream()
                     .collect(Collectors.toMap(FindUsersByIdResDTO::getId, findUsersByIdResDTO -> findUsersByIdResDTO));
         }
+
+        // 批量获取用户点赞信息
+        List<CommentLikeDo> commentLikeDos = commentLikeDoMapper.selectByUserIdList(userid);
+        Map<Long, CommentLikeDo> commentLikeMap = null;
+        if (CollUtil.isNotEmpty(commentLikeDos)) {
+            commentLikeMap = commentLikeDos.stream()
+                    .collect(Collectors.toMap(CommentLikeDo::getCommentId, commentLikeDo -> commentLikeDo));
+        }
         for (CommentDo commentDo : commentDoList) {
             Long userId = commentDo.getUserId();
+            Long commentId = commentDo.getId();
+            boolean isLike = false;
+            if (CollUtil.isNotEmpty(commentLikeMap)) {
+                CommentLikeDo commentLikeDo = commentLikeMap.get(commentId);
+                if (Objects.nonNull(commentLikeDo)) {
+                    isLike = true;
+                }
+            }
             FindSecondCommentItemRspVo findSecondCommentItemRspVo = FindSecondCommentItemRspVo.builder()
-                    .commentId(commentDo.getId())
+                    .commentId(commentId)
                     .userId(userId)
                     .imageUrl(commentDo.getImageUrl())
                     .likeTotal(commentDo.getLikeTotal())
                     .createTime(DateUtil.formatRelativeTime(commentDo.getCreateTime()))
                     .updateTime(commentDo.getUpdateTime())
+                    .like(isLike)
                     .build();
             if (CollUtil.isNotEmpty(commentContentMap)) {
                 String uuid = commentDo.getContentUuid();
@@ -963,7 +1051,7 @@ public class CommentServerImplement implements CommentServer {
      * @param contentId 内容 ID
      * @param findCommentItemRspVoList 返参集合
      */
-    private void getCommentDataAndSync2Redis(List<CommentDo> commentDoList, Long contentId, List<FindCommentItemRspVo> findCommentItemRspVoList) {
+    private void getCommentDataAndSync2Redis(List<CommentDo> commentDoList, Long contentId, List<FindCommentItemRspVo> findCommentItemRspVoList, Long userid) {
         // 过滤出所有最早回复的二级评论 ID
         List<Long> firstReplyCommentIdList = commentDoList.stream()
                 .map(CommentDo::getFirstReplyCommentId)
@@ -1017,13 +1105,25 @@ public class CommentServerImplement implements CommentServer {
             userInfoMap = findUsersByIdResDTOS.stream()
                     .collect(Collectors.toMap(FindUsersByIdResDTO::getId, findUsersByIdResDTO -> findUsersByIdResDTO));
         }
+
+        // 批量获取用户点赞信息
+        List<CommentLikeDo> commentLikeDos = commentLikeDoMapper.selectByUserIdList(userid);
+        Map<Long, CommentLikeDo> commentLikeMap = null;
+        if (CollUtil.isNotEmpty(commentLikeDos)) {
+            commentLikeMap = commentLikeDos.stream()
+                    .collect(Collectors.toMap(CommentLikeDo::getCommentId, commentLikeDo -> commentLikeDo));
+        }
+
         // DO 转 VO, 组合拼装一二级评论数据
         for (CommentDo commentDo : commentDoList) {
 //                log.info("一级评论：{}", commentDo);
             // 一级评论
             Long userId = commentDo.getUserId();
+            Long commentId = commentDo.getId();
+            CommentLikeDo commentLikeDo = commentLikeMap.get(commentId);
+            boolean isLike = Objects.nonNull(commentLikeDo);
             FindCommentItemRspVo firstCommentItemRspVo = FindCommentItemRspVo.builder()
-                    .commentId(commentDo.getId())
+                    .commentId(commentId)
                     .userId(userId)
                     .imageUrl(commentDo.getImageUrl())
                     .likeTotal(commentDo.getLikeTotal())
@@ -1031,6 +1131,7 @@ public class CommentServerImplement implements CommentServer {
                     .updateTime(commentDo.getUpdateTime())
                     .childrenCommentTotal(commentDo.getChildCommentTotal()) // 子评论数
                     .heat(commentDo.getHeat())
+                    .like(isLike)
                     .build();
             setCommentcontent(firstCommentItemRspVo, commentDo, commentContentMap);
             setUserInfo(userInfoMap,userId,firstCommentItemRspVo);
@@ -1041,6 +1142,7 @@ public class CommentServerImplement implements CommentServer {
                 CommentDo firstReplyCommentUser = firstReplyCommentMap.get(firstReplyCommentId);
                 if (Objects.nonNull(firstReplyCommentUser)) {
                     Long firstReplyUserId = firstReplyCommentUser.getUserId();
+                    isLike = Objects.nonNull(commentLikeMap.get(firstReplyCommentId));
                     FindCommentItemRspVo firstReplyCommentItemRspVo = FindCommentItemRspVo.builder()
                             .commentId(firstReplyCommentId)
                             .userId(firstReplyUserId)
@@ -1049,6 +1151,7 @@ public class CommentServerImplement implements CommentServer {
                             .createTime(DateUtil.formatRelativeTime(firstReplyCommentUser.getCreateTime()))
                             .updateTime(firstReplyCommentUser.getUpdateTime())
                             .heat(firstReplyCommentUser.getHeat())
+                            .like(isLike)
                             .build();
                     setCommentcontent(firstReplyCommentItemRspVo, firstReplyCommentUser, commentContentMap);
                     setUserInfo(userInfoMap,firstReplyUserId,firstReplyCommentItemRspVo);

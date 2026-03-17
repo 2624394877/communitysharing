@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class FollowingUsersListReqVo {
     @NotNull(message = "用户id不能为空")
-    private Long userId;
+    private String userId;
 
     @NotNull(message = "页码不能为空")
     private Integer pageNumber;

@@ -84,4 +84,6 @@ public interface CommentDoMapper {
     List<CommentDo> selectByReplyCommentId(@Param("commentId") Long commentId);
 
     int DeleteCommentByReplyCommentId(@Param("commentId") Long commentId);
+
+    Long selectParentIdByCommentId(@Param("commentId") Long commentId);
 }

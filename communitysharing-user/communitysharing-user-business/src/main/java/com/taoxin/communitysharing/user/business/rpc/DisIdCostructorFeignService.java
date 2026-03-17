@@ -18,7 +18,7 @@ public class DisIdCostructorFeignService {
     }
 
     public String getUserId() {
-        return idConstructorFeignApi.getSnowflakeId(BIZ_TAG_COMMUNITYSHARING_USER_ID);
+        return idConstructorFeignApi.getSegmentId(BIZ_TAG_COMMUNITYSHARING_USER_ID);
     }
 
     public String getSnowflakeId() {

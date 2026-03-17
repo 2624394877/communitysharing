@@ -144,6 +144,13 @@ public class ContentServerImplement implements ContentServer {
                 fileUris = StringUtils.join(file_list, ",");
                 break;
         } // 对多媒体文件类型进行分支存储
+        List<String> imgUris_list = contentPublishVo.getImgUris(); // 封面
+        String cover = null;
+        if (CollUtil.isNotEmpty(imgUris_list)) {
+            cover = imgUris_list.get(0);
+        }
+        imgUris = cover;
+
         // 获取雪花ID
         String snowflakeIdId = idConstructorFeignApiService.getSnowflakeId();
         // 定义内容的id
@@ -1280,7 +1287,7 @@ public class ContentServerImplement implements ContentServer {
     public Response<ContentPublishListResVo> ContentPublishList(ContentPublishListReqVo contentPublishListReqVo) {
         Long userId = Long.valueOf(contentPublishListReqVo.getUserId());
 
-        Long cursor = Long.valueOf(contentPublishListReqVo.getCursor());
+        Long cursor = contentPublishListReqVo.getCursor();
         ContentPublishListResVo contentPublishListResVo = null;
         // todo 先缓存
         String contentPublishListKey = ContentDetailsKeyConstant.getUserPublishContentListKey(userId);

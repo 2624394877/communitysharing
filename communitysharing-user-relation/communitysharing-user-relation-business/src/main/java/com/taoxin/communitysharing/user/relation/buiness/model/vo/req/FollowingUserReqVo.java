@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class FollowingUserReqVo {
     @NotNull(message = "被关注用户id不能为空")
-    private Long followingUserId;
+    private String followingUserId;
 }

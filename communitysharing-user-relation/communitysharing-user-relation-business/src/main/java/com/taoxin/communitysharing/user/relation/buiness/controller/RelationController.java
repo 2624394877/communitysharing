@@ -3,10 +3,8 @@ package com.taoxin.communitysharing.user.relation.buiness.controller;
 import com.taoxin.communitysharing.framework.business.operationlog.aspect.ApiOperationLog;
 import com.taoxin.communitysharing.common.response.PageResponse;
 import com.taoxin.communitysharing.common.response.Response;
-import com.taoxin.communitysharing.user.relation.buiness.model.vo.req.FindFansListReqVo;
-import com.taoxin.communitysharing.user.relation.buiness.model.vo.req.FollowingUserReqVo;
-import com.taoxin.communitysharing.user.relation.buiness.model.vo.req.FollowingUsersListReqVo;
-import com.taoxin.communitysharing.user.relation.buiness.model.vo.req.UnfollowUserReqVo;
+import com.taoxin.communitysharing.user.relation.buiness.model.vo.req.*;
+import com.taoxin.communitysharing.user.relation.buiness.model.vo.res.FollowStatusJudgeResVo;
 import com.taoxin.communitysharing.user.relation.buiness.server.UserRelationServer;
 import jakarta.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
@@ -42,5 +40,11 @@ public class RelationController {
     @ApiOperationLog(description = "获取粉丝列表")
     public PageResponse<?> findFansList(@Validated @RequestBody FindFansListReqVo fansListReqVo) {
         return userRelationServer.findFansList(fansListReqVo);
+    }
+
+    @RequestMapping("/judgeFollowStatus")
+    @ApiOperationLog(description = "判断是否关注")
+    public Response<FollowStatusJudgeResVo> judgeFollowStatus(@Validated @RequestBody FollowStatusJudgeReqVo followStatusJudgeReqVo) {
+        return userRelationServer.judgeFollowStatus(followStatusJudgeReqVo);
     }
 }

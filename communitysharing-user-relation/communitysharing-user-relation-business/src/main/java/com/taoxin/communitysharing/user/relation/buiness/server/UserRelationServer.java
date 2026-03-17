@@ -2,11 +2,9 @@ package com.taoxin.communitysharing.user.relation.buiness.server;
 
 import com.taoxin.communitysharing.common.response.PageResponse;
 import com.taoxin.communitysharing.common.response.Response;
-import com.taoxin.communitysharing.user.relation.buiness.model.vo.req.FindFansListReqVo;
-import com.taoxin.communitysharing.user.relation.buiness.model.vo.req.FollowingUserReqVo;
-import com.taoxin.communitysharing.user.relation.buiness.model.vo.req.FollowingUsersListReqVo;
-import com.taoxin.communitysharing.user.relation.buiness.model.vo.req.UnfollowUserReqVo;
+import com.taoxin.communitysharing.user.relation.buiness.model.vo.req.*;
 import com.taoxin.communitysharing.user.relation.buiness.model.vo.res.FindFansUsersListRseVo;
+import com.taoxin.communitysharing.user.relation.buiness.model.vo.res.FollowStatusJudgeResVo;
 import com.taoxin.communitysharing.user.relation.buiness.model.vo.res.FollowingUsersListResVo;
 
 public interface UserRelationServer {
@@ -38,4 +36,6 @@ public interface UserRelationServer {
      * @return 响应对象
      */
     PageResponse<FindFansUsersListRseVo> findFansList(FindFansListReqVo findFansListReqVO);
+
+    Response<FollowStatusJudgeResVo> judgeFollowStatus(FollowStatusJudgeReqVo followStatusJudgeReqVo);
 }

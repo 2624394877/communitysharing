@@ -36,4 +36,8 @@ public interface FollowingDoMapper {
                                              @Param("limit") long limit);
 
     List<FollowingDo> selectAllByUserId(Long userId);
+
+    int selectCountByUserIdAndFollowingUserId(@Param("userId") Long userId, @Param("followingUserId") Long followingUserId);
+
+    List<FollowingDo> selectByFollowingsByUserId(@Param("userId") Long userId);
 }

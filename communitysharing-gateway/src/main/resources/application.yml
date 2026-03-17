@@ -54,6 +54,12 @@ spring:
                 - Path=/count/**
             filters:
               - StripPrefix=1
+          - id: oss
+            uri: lb://communitysharing-oss
+            predicates:
+                - Path=/file/**
+            filters:
+              - StripPrefix=1
   data:
     redis:
       database: 0

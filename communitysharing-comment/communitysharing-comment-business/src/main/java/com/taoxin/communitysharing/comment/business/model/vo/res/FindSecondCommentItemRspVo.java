@@ -66,4 +66,9 @@ public class FindSecondCommentItemRspVo {
      * 更新时间
      */
     private LocalDateTime updateTime;
+
+    /**
+     * 是否点赞
+     */
+    private boolean like;
 }

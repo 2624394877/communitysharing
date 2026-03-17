@@ -2,6 +2,7 @@ package com.taoxin.communitysharing.user.relation.buiness.server.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.RandomUtil;
+import com.google.common.collect.Lists;
 import com.taoxin.communitysharing.common.exception.BusinessException;
 import com.taoxin.communitysharing.framework.business.context.holder.LoginUserContextHolder;
 import com.taoxin.communitysharing.common.response.PageResponse;
@@ -17,15 +18,14 @@ import com.taoxin.communitysharing.user.relation.buiness.domain.databaseObject.F
 import com.taoxin.communitysharing.user.relation.buiness.domain.databaseObject.FollowingDo;
 import com.taoxin.communitysharing.user.relation.buiness.domain.mapper.FansDoMapper;
 import com.taoxin.communitysharing.user.relation.buiness.domain.mapper.FollowingDoMapper;
+import com.taoxin.communitysharing.user.relation.buiness.enums.FollowStatusEnum;
 import com.taoxin.communitysharing.user.relation.buiness.enums.LuaResultEnum;
 import com.taoxin.communitysharing.user.relation.buiness.enums.ResponseStatusEnum;
 import com.taoxin.communitysharing.user.relation.buiness.model.dto.FollowUserMqDTO;
 import com.taoxin.communitysharing.user.relation.buiness.model.dto.UnfollowUserMqDTO;
-import com.taoxin.communitysharing.user.relation.buiness.model.vo.req.FindFansListReqVo;
-import com.taoxin.communitysharing.user.relation.buiness.model.vo.req.FollowingUserReqVo;
-import com.taoxin.communitysharing.user.relation.buiness.model.vo.req.FollowingUsersListReqVo;
-import com.taoxin.communitysharing.user.relation.buiness.model.vo.req.UnfollowUserReqVo;
+import com.taoxin.communitysharing.user.relation.buiness.model.vo.req.*;
 import com.taoxin.communitysharing.user.relation.buiness.model.vo.res.FindFansUsersListRseVo;
+import com.taoxin.communitysharing.user.relation.buiness.model.vo.res.FollowStatusJudgeResVo;
 import com.taoxin.communitysharing.user.relation.buiness.model.vo.res.FollowingUsersListResVo;
 import com.taoxin.communitysharing.user.relation.buiness.rpc.UserFeignApiService;
 import com.taoxin.communitysharing.user.relation.buiness.server.UserRelationServer;
@@ -68,7 +68,7 @@ public class UserRelationServerImplement implements UserRelationServer {
     public Response<?> followUser(FollowingUserReqVo followingUserReqVo) {
         Long userid = LoginUserContextHolder.getUserId(); // 获取用户id
         if (Objects.isNull(userid)) throw new BusinessException(ResponseStatusEnum.SYSTEMP_ERROR.getErrorCode(),"关注失败，请重试");
-        Long followingUserId = followingUserReqVo.getFollowingUserId(); // 获取被关注用户id
+        Long followingUserId = Long.valueOf(followingUserReqVo.getFollowingUserId()); // 获取被关注用户id
         // 验证用户id
         if (Objects.equals(userid, followingUserId)) {
             throw new BusinessException(ResponseStatusEnum.CANT_FOLLOWING_YOURSELF);
@@ -150,7 +150,7 @@ public class UserRelationServerImplement implements UserRelationServer {
     @Override
     public Response<?> UnfollowUser(UnfollowUserReqVo unfollowUserReqVo) {
         Long userid = LoginUserContextHolder.getUserId();
-        Long unfollowingUserId = unfollowUserReqVo.getUnfollowUserId();
+        Long unfollowingUserId = Long.valueOf(unfollowUserReqVo.getUnfollowUserId());
         if (Objects.isNull(userid)) throw new BusinessException(ResponseStatusEnum.SYSTEMP_ERROR.getErrorCode(),"取消关注失败，请重试");
         if (Objects.equals(userid, unfollowingUserId)) throw new BusinessException(ResponseStatusEnum.CANT_UN_FOLLOWING_YOURSELF);
         FindUserByIdResDTO findUserByIdResDTO = userFeignApiService.getUserInfoById(unfollowingUserId);
@@ -212,7 +212,7 @@ public class UserRelationServerImplement implements UserRelationServer {
     @Override
     public PageResponse<FollowingUsersListResVo> getFollowingList(FollowingUsersListReqVo followingUsersListReqVo) {
         Long userid = LoginUserContextHolder.getUserId();
-        Long id = followingUsersListReqVo.getUserId(); // 需要查询的用户id
+        Long id = Long.valueOf(followingUsersListReqVo.getUserId()); // 需要查询的用户id
         Integer pageNumber = followingUsersListReqVo.getPageNumber();
 
         String followingUserIdKey = RedisKeyConstant.getUserFollowRelationKey(id);
@@ -286,7 +286,7 @@ public class UserRelationServerImplement implements UserRelationServer {
     @Override
     public PageResponse<FindFansUsersListRseVo> findFansList(FindFansListReqVo findFansListReqVO) {
         // 想要查询的用户 ID
-        Long userId = findFansListReqVO.getUserId();
+        Long userId = Long.valueOf(findFansListReqVO.getUserId());
         // 页码
         Integer pageNo = findFansListReqVO.getPageNumber();
 
@@ -358,6 +358,58 @@ public class UserRelationServerImplement implements UserRelationServer {
             }
         }
         return PageResponse.success(fansUsersListRseVos, pageNo, total);
+    }
+
+    @Override
+    public Response<FollowStatusJudgeResVo> judgeFollowStatus(FollowStatusJudgeReqVo followStatusJudgeReqVo) {
+        Long followUserId = Long.valueOf(followStatusJudgeReqVo.getUserId());
+        Long userId = LoginUserContextHolder.getUserId();
+        if (Objects.isNull(userId)) throw new BusinessException(ResponseStatusEnum.PAGE_NUMBER_ERROR.getErrorCode(), "未登录/失效");
+        if (Objects.equals(followUserId, userId)) throw new BusinessException(ResponseStatusEnum.PAGE_NUMBER_ERROR.getErrorCode(), "不能查询自己");
+        boolean follow = false;
+
+        String followingUserKey =  RedisKeyConstant.getBloomUserFollowListKey(userId);
+        DefaultRedisScript<Long> script = new DefaultRedisScript<>();
+        script.setScriptSource(new ResourceScriptSource(new ClassPathResource("lua/judge_following_user.lua")));
+        script.setResultType(Long.class);
+        Long result = redisTemplate.execute(script, Collections.singletonList(followingUserKey), followUserId);
+        FollowStatusEnum followStatusEnum = FollowStatusEnum.getByCode(result);
+        if (Objects.nonNull(followStatusEnum)) {
+            switch (followStatusEnum) {
+                case FOLLOW -> follow = true;
+                case NOT_FOLLOW -> follow = false;
+                case NOT_EXOST -> {
+                    int count = followingDoMapper.selectCountByUserIdAndFollowingUserId(userId, followUserId);
+                    if (count > 0) {
+                        threadPoolTaskExecutor.submit(()->{
+                            try {
+                                List<FollowingDo> followingDoList = followingDoMapper.selectByFollowingsByUserId(userId);
+                                if (CollUtil.isNotEmpty(followingDoList)) {
+                                    DefaultRedisScript<Long> redisScript = new DefaultRedisScript<>();
+                                    redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("lua/r64_bitmap_batch_add_user_follow_and_expire.lua")));
+                                    redisScript.setResultType(Long.class);
+                                    List<Object> LuaArgs = Lists.newArrayList();
+                                    for (FollowingDo followingDo : followingDoList) {
+                                        LuaArgs.add(followingDo.getFollowingUserId());
+                                    }
+                                    long expireTime = 60*30 + RandomUtil.randomInt(60*30);
+                                    LuaArgs.add(expireTime);
+                                    redisTemplate.execute(redisScript, Collections.singletonList(followingUserKey), LuaArgs.toArray());
+                                }
+                            } catch (Exception e) {
+                                log.error("【用户关注】批量添加用户关注id添加到bitmap失败", e);
+                            }
+                        });
+                        follow = true;
+                    }
+                }
+            }
+        }
+        FollowStatusJudgeResVo followStatusJudgeResVo = FollowStatusJudgeResVo.builder()
+                .followUserId(followUserId.toString())
+                .follow(follow)
+                .build();
+        return Response.success(followStatusJudgeResVo);
     }
 
     /**

@@ -22,7 +22,12 @@
   <select id="selectByCommentId" resultType="java.lang.Long" parameterType="map">
     select user_id from t_comment_like where comment_id = #{commentId}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    <select id="selectByUserIdList" resultMap="BaseResultMap" parameterType="map">
+      select
+          <include refid="Base_Column_List" />
+      from t_comment_like where user_id = #{userId}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from t_comment_like
     where id = #{id,jdbcType=BIGINT}
   </delete>

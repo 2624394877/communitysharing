@@ -35,4 +35,6 @@ public interface CommentLikeDoMapper {
      */
     int updateLikeTotalByCommentId(@Param("count") Integer count,
                                    @Param("commentId") Long commentId);
+
+    List<CommentLikeDo> selectByUserIdList(@Param("userId") Long userId);
 }

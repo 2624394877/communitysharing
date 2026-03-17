@@ -20,7 +20,7 @@ public class ContentPublishListReqVo {
     /**
      * 游标
      */
-    private String cursor;
+    private Long cursor;
 
     /*private Integer type;
 
