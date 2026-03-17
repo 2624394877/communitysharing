@@ -67,10 +67,6 @@ spring:
           ssl:
             enable: false
 
-aliyun:
-  accessKeyId: LTAI5tJ6AMtKJEPRzSBwASq1
-  accessKeySecret: ENNgnFyHySR1OGbweOT2OqDivMtnsr
-
 logging:
   level:
     com.taoxin.communitysharing.auth.domain.mapper: debug # 显示mapper层日志
