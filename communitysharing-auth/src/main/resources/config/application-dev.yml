@@ -68,8 +68,6 @@ spring:
             enable: false
 
 aliyun:
-  accessKeyId: LTAI5tJ6AMtKJEPRzSBwASq1
-  accessKeySecret: ENNgnFyHySR1OGbweOT2OqDivMtnsr
 
 logging:
   level:
